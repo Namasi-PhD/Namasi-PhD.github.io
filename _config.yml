@@ -10,10 +10,10 @@ description: >
   PhD researcher working on scalable quantum optimisation,
   HADOF framework, and applications in genomics.
 
-url: "https://yourusername.github.io"
+url: "https://Namasi-PhD.github.io"
 baseurl: ""
 
-theme: minimal-mistakes-jekyll
+remote_theme: mmistakes/minimal-mistakes
 markdown: kramdown
 
 plugins:
