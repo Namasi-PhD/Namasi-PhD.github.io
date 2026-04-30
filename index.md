@@ -5,14 +5,20 @@ title: "Namasi G. Sankar"
 ---
 
 **PhD Student | Quantum Computing & Optimization**  
-**University College Dublin (UCD)**
+**University College Dublin (UCD), Ireland**
 
 [[Google Scholar](https://scholar.google.com/citations?hl=en&user=WMRJjRkAAAAJ)]        [[GitHub](https://github.com/Namasi-PhD/)]        [[Email](mailto:namasivayam.gomathisankar@ucdconnect.ie)]
 
 ## 🧬 Professional Profile
-I am a Doctoral candidate at **University College Dublin**, specializing in quantum algorithms and optimization. My research focuses on bridging the gap between theoretical quantum methods and practical applications, particularly in solving NP-hard problems within **genomics**.
+I am a Doctoral candidate at **University College Dublin**, specializing in quantum algorithms and optimization. My research focuses on bridging the gap between theoretical quantum methods and practical applications, particularly in solving NP-hard problems within **genomics**. Quantum computing is rapidly evolving from a theoretical curiosity into a transformative computational paradigm. By leveraging the fundamental laws of physics, it offers a way to bypass the scaling walls that traditional silicon-based computers are beginning to hit.
 
-I developed the **Hamiltonian Auto Decomposition Optimisation Framework (HADOF)**, a novel approach designed to enable scalable optimization beyond current hardware and qubit limitations.
+**Why Quantum? Solving the "Hard" Problems**
+Classical computers process information in bits (0 or 1). While they are incredibly efficient, they struggle with problems where the number of possible states grows exponentially. Quantum computers use qubits, which utilize three key phenomena to navigate these massive problem spaces:
+*   Superposition: Unlike a bit, a qubit can exist in a complex linear combination of states. This allows a quantum computer to represent a vast multidimensional space of possibilities simultaneously.
+*   Entanglement: This creates a deep correlation between qubits. When qubits are entangled, the state of one cannot be described independently of the others, allowing the system to perform massive parallel-like logic across the entire processor.
+*   Quantum Tunneling: In the context of optimization, quantum systems can "tunnel" through high-energy barriers in a probability landscape to find the lowest energy state (the solution) more efficiently than classical "hill-climbing" algorithms.
+
+I developed the **Hamiltonian Auto Decomposition Optimisation Framework (HADOF)**, a novel approach designed to enable scalable optimization beyond hardware and qubit limitations on currently available quantum hardware. Using HADOF, I was able to perform genome assembly of *Pseudomonas aeruginosa* using data from a DNA sequencer.
 
 
 
