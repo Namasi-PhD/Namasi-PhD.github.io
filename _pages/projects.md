@@ -4,7 +4,7 @@ title: "Research Journey"
 permalink: /projects/
 ---
 
-# From Computation to Quantum Optimisation in Genomics
+## From Computation to Quantum Optimisation in Genomics
 
 My research journey has been shaped by a persistent question:  
 **how can abstract computational theories be translated into systems that solve real-world, large-scale problems?**  
