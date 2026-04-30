@@ -8,16 +8,13 @@ author:
   avatar : "bio-photo.jpg" # Path to your uploaded image
   bio: "PhD Student in Quantum Computing"
   location: "Dublin, Ireland"
-  links:
-    - label: "Email"
-      icon: "fas fa-fw fa-envelope-square"
-      url: "mailto:namasivayam.gomathisankar@ucdconnect.ie"
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/Namasi-PhD"
-    - label: "University"
-      icon: "fas fa-fw fa-university"
-      url: "https://www.ucd.ie"
+  email: "namasivayam.gomathisankar@ucdconnect.ie"
+  github: "Namasi-PhD"
+  googlescholar: "https://scholar.google.com/citations?hl=en&user=WMRJjRkAAAAJ"
+  # You can also add these if you have them:
+  orcid: "0000-0000-0000-0000" 
+  linkedin: "your-username"
+  twitter: "your-username"
 
 defaults:
   - scope:
