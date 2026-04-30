@@ -19,7 +19,7 @@ Current classical devices use highly optimized heuristics that work exceptionall
 
 Quantum Advantage occurs when a quantum device solves a useful, real-world problem faster or more accurately than the best possible classical supercomputer. To reach this, we must scale to large-scale problems where the "quantum speedup" (often exponential) finally overtakes the raw processing speed of classical hardware.
 
-We are currently in the NISQ (Noisy Intermediate-Scale Quantum) era. Our hardware is limited by:
+We are currently in the Noisy Intermediate-Scale Quantum (NISQ) era. Our hardware is limited by:
 *   **Qubit Count:** Not enough "memory" for large problems.
 *   **Hardware Noise:** Environmental interference causes "decoherence," leading to errors.
 *   **Connectivity:** Physical limitations on how many qubits can "talk" to each other.
@@ -28,14 +28,17 @@ We are currently in the NISQ (Noisy Intermediate-Scale Quantum) era. Our hardwar
 
 **A Framework for Quantum Supercomputing**
 
-My vision involves the creation of a High-Performance Quantum (HPQ) framework. This framework treats the Quantum Processing Unit (QPU) not as a standalone machine, but as a specialized accelerator within a larger supercomputing ecosystem—much like how GPUs are used today for AI.
+My vision involves the creation of a High Performance Quantum (HPQ) framework. This framework treats the Quantum Processing Unit (QPU) not as a standalone machine, but as a specialized accelerator within a larger supercomputing ecosystem—much like how GPUs are used today for AI.
 
 As hardware improves and we move toward Fault-Tolerant Quantum Computing, these algorithms will scale to even larger datasets, eventually enabling a true "Quantum Supercomputer" capable of solving global challenges in materials science, medicine, and cryptography.
 
 By focusing on algorithmic efficiency under current constraints, we don't just wait for better hardware—we actively pull the future of quantum advantage into the present.
 
 ## 🚀 Current Progress
-I developed the **Hamiltonian Auto Decomposition Optimisation Framework (HADOF)**, a novel approach designed to enable scalable optimization beyond hardware and qubit limitations on currently available quantum hardware. Using HADOF, I was able to perform genome assembly of *Pseudomonas aeruginosa* using data from a DNA sequencer.
+I developed the **Hamiltonian Auto Decomposition Optimisation Framework (HADOF)**, a novel federated approach designed to enable robust scalable optimization beyond hardware and qubit limitations on currently available quantum hardware. HADOF supports parallel execution across
+multiple Quantum Processing Units (QPUs), forming a foundation for High Performance Quantum (HPQ) computing. 
+
+Using HADOF, we demonstrated genome assembly of a 7.3 million base pair (bp) genome from real sequencing data within a standard pipeline on IBM quantum hardware, pushing boundaries of current state-of-the-art compared to ~5000bp simulated datasets in literature. The aim of my PhD is to establish quantum optimisation as a practical tool for real world workloads on current quantum hardware, with a focus on high impact applications including viral outbreak and cancer genomics.
 
 
 
