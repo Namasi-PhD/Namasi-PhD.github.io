@@ -5,7 +5,7 @@ affiliation: "University College Dublin"
 
 author:
   name   : "Namasi G. Sankar"
-  avatar : "images/profile.png" # Path to your uploaded image
+  avatar : "/images/profile.png" # Path to your uploaded image
   bio    : "PhD Student in Quantum Computing"
   location: "Dublin, Ireland"
   links:
@@ -14,7 +14,7 @@ author:
       url: "https://github.com/Namasi-PhD"
 
 email: "namasivayam.gomathisankar@ucdconnect.ie"
-github_username: "yourusername"
+github_username: "Namasi-PhD"
 
 description: >
   PhD researcher working on scalable quantum optimisation,
