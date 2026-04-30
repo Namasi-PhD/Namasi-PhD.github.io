@@ -6,15 +6,14 @@ affiliation: "University College Dublin"
 author:
   name: "Namasi G. Sankar"
   avatar : "bio-photo.jpg" # Path to your uploaded image
-  bio: "PhD Student in Quantum Computing"
-  location: "Dublin, Ireland"
+  bio: "Doctoral Candidate | Quantum Computing and Optimisation | Genomics"
+  location: "University College Dublin, Ireland"
   email: "namasivayam.gomathisankar@ucdconnect.ie"
   github: "Namasi-PhD"
   googlescholar: "https://scholar.google.com/citations?hl=en&user=WMRJjRkAAAAJ"
-  # You can also add these if you have them:
-  orcid: "0000-0000-0000-0000" 
-  linkedin: "your-username"
-  twitter: "your-username"
+
+
+
 
 defaults:
   - scope:
