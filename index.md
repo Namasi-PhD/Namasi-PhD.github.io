@@ -1,12 +1,13 @@
 ---
 layout: home
 author_profile: true
+title: "Namasi G. Sankar"
 ---
-# Namasi G. Sankar
+
 **PhD Student | Quantum Computing & Optimization**  
 **University College Dublin (UCD)**
 
-[Google Scholar](https://scholar.google.com) | [GitHub](https://namasi-phd.github.io) | [Email](mailto:namasivayam.gomathisankar@ucdconnect.ie)
+[Google Scholar](https://scholar.google.com/citations?hl=en&user=WMRJjRkAAAAJ) | [GitHub](https://github.com/Namasi-PhD/) | [Email](mailto:namasivayam.gomathisankar@ucdconnect.ie)
 
 ---
 
