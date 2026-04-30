@@ -11,7 +11,7 @@ My research journey has been shaped by a persistent question:
 
 This question did not emerge suddenly during my PhD. It is the natural culmination of a series of projects across physics, computation, biology, and machine learning, each contributing a layer of perspective that now defines my work in quantum optimisation.
 
----
+
 
 ## Early Foundations: Computation Through Physical Systems
 
@@ -21,7 +21,7 @@ Working on **space-dependent diffusion in Brownian motion**, I simulated molecul
 
 In parallel, my work on **stochastic processes in financial systems** involved simulating Ornstein–Uhlenbeck processes and validating theoretical models in option pricing. These projects collectively trained me to think rigorously about dynamical systems, numerical simulation, and the translation of theory into computational pipelines.
 
----
+
 
 ## Game Theory and the Shift Toward Strategic Computation
 
@@ -45,7 +45,7 @@ Project links:
 
 This experience fundamentally changed how I approached research. Biology introduced: high-dimensional systems, real data constraints and the necessity of scalable computational methods. It was here that I began to see a clear gap: classical methods often struggle to scale efficiently for complex biological optimisation problems.
 
----
+
 
 ## Formalising Machine Learning and Causality
 
@@ -59,7 +59,7 @@ In parallel, my work on carbon premium in financial markets applied causal infer
 
 These projects solidified my ability to handle real-world datasets, design statistically rigorous models and connect theory with empirical validation  
 
----
+
 
 ## The Transition to Quantum Optimisation
 
@@ -71,7 +71,7 @@ By the end of my undergraduate and Master’s work, a clear convergence had emer
 
 This led me directly into my PhD at University College Dublin.
 
----
+
 
 ## Leadership and Community Building
 
@@ -84,7 +84,6 @@ Alongside research, I have taken on leadership roles that shape the research env
 These roles reflect an important aspect of my approach:  
 **research is not just individual output—it is a collaborative ecosystem.**
 
----
 
 
 
