@@ -4,12 +4,7 @@ author_profile: true
 title: "Namasi G. Sankar"
 ---
 
-**PhD Student | Quantum Computing & Optimization**  
-**University College Dublin (UCD), Ireland**
-
-[[Google Scholar](https://scholar.google.com/citations?hl=en&user=WMRJjRkAAAAJ)]        [[GitHub](https://github.com/Namasi-PhD/)]        [[Email](mailto:namasivayam.gomathisankar@ucdconnect.ie)]
-
-## 🧬 Professional Profile
+## 🧬 Vision
 I am a Doctoral candidate at **University College Dublin**, specializing in quantum algorithms and optimization. My research focuses on bridging the gap between theoretical quantum methods and practical applications, particularly in solving NP-hard problems within **genomics**. Quantum computing is rapidly evolving from a theoretical curiosity into a transformative computational paradigm. By leveraging the fundamental laws of physics, it offers a way to bypass the scaling walls that traditional silicon-based computers are beginning to hit.
 
 **Why Quantum? Solving the "Hard" Problems**
