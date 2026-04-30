@@ -4,10 +4,7 @@ position: "PhD Student in Quantum Computing"
 affiliation: "University College Dublin"
 
 author:
-  name   : "Namasi G. Sankar"
   avatar : "bio-photo.jpg" # Path to your uploaded image
-  bio    : "PhD Student in Quantum Computing"
-  location: "University College Dublin, Ireland"
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
