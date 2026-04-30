@@ -19,6 +19,14 @@ author:
       icon: "fas fa-fw fa-university"
       url: "https://www.ucd.ie"
 
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+      author_profile: true
+
 email: "namasivayam.gomathisankar@ucdconnect.ie"
 github_username: "Namasi-PhD"
 
