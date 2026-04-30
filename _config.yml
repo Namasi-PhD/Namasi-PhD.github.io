@@ -4,11 +4,20 @@ position: "PhD Student in Quantum Computing"
 affiliation: "University College Dublin"
 
 author:
+  name: "Namasi G. Sankar"
   avatar : "bio-photo.jpg" # Path to your uploaded image
+  bio: "PhD Student in Quantum Computing"
+  location: "Dublin, Ireland"
   links:
+    - label: "Email"
+      icon: "fas fa-fw fa-envelope-square"
+      url: "mailto:namasivayam.gomathisankar@ucdconnect.ie"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/Namasi-PhD"
+    - label: "University"
+      icon: "fas fa-fw fa-university"
+      url: "https://www.ucd.ie"
 
 email: "namasivayam.gomathisankar@ucdconnect.ie"
 github_username: "Namasi-PhD"
