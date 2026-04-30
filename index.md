@@ -3,8 +3,6 @@ layout: home
 author_profile: true
 ---
 
-## Welcome
-
 I am a PhD researcher in quantum computing at University College Dublin, focusing on scalable quantum optimisation.
 
 My work introduces the **Hamiltonian Auto-Decomposition Optimisation Framework (HADOF)**, enabling optimisation beyond current hardware limits.
