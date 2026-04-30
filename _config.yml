@@ -5,7 +5,7 @@ affiliation: "University College Dublin"
 
 author:
   name   : "Namasi G. Sankar"
-  avatar : "/images/bio-photo.jpg" # Path to your uploaded image
+  avatar : "images/bio-photo.jpg" # Path to your uploaded image
   bio    : "PhD Student in Quantum Computing"
   location: "Dublin, Ireland"
   links:
