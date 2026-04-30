@@ -1,7 +1,7 @@
 ---
 layout: single
-title: "Previous Projects"
-permalink: /projects/
+title: "Research Outputs"
+permalink: /research/
 ---
 
 ## Background
