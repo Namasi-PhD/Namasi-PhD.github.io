@@ -13,6 +13,7 @@ title: "Namasi G. Sankar"
 I am a Doctoral candidate at **University College Dublin**, specializing in quantum algorithms and optimization. My research focuses on bridging the gap between theoretical quantum methods and practical applications, particularly in solving NP-hard problems within **genomics**. Quantum computing is rapidly evolving from a theoretical curiosity into a transformative computational paradigm. By leveraging the fundamental laws of physics, it offers a way to bypass the scaling walls that traditional silicon-based computers are beginning to hit.
 
 **Why Quantum? Solving the "Hard" Problems**
+
 Classical computers process information in bits (0 or 1). While they are incredibly efficient, they struggle with problems where the number of possible states grows exponentially. Quantum computers use qubits, which utilize three key phenomena to navigate these massive problem spaces:
 *   Superposition: Unlike a bit, a qubit can exist in a complex linear combination of states. This allows a quantum computer to represent a vast multidimensional space of possibilities simultaneously.
 *   Entanglement: This creates a deep correlation between qubits. When qubits are entangled, the state of one cannot be described independently of the others, allowing the system to perform massive parallel-like logic across the entire processor.
