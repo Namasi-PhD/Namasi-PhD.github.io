@@ -14,7 +14,7 @@ I am a Doctoral candidate at **University College Dublin**, specializing in quan
 
 I developed the **Hamiltonian Auto Decomposition Optimisation Framework (HADOF)**, a novel approach designed to enable scalable optimization beyond current hardware and qubit limitations.
 
----
+
 
 ## 🎓 Education
 *   **PhD in Computer Science** | University College Dublin  
@@ -22,7 +22,7 @@ I developed the **Hamiltonian Auto Decomposition Optimisation Framework (HADOF)*
 *   **BS-MS Integrated** | Indian Institute of Science Education and Research (IISER), Pune 
     *2019 – 2024*
 
----
+
 
 ## 🔬 Research & Experience
 
@@ -40,7 +40,7 @@ I developed the **Hamiltonian Auto Decomposition Optimisation Framework (HADOF)*
 **IISC, Bangalore** | *Oct 2023 – May 2024*
 *   Investigated "Carbon Premium" in S&P 500 companies using fixed-effects analysis and propensity score weighting.
 
----
+
 
 ## 🏆 Awards & Honors
 *   **IBM Qiskit Quantum Credits (2025):** Awarded 12 hours of QPU usage ($55k value).
@@ -48,14 +48,14 @@ I developed the **Hamiltonian Auto Decomposition Optimisation Framework (HADOF)*
 *   **iGEM Gold Medals (2021, 2022):** Won as a participant (2021) and mentor (2022) for synthetic biology projects.
 *   **KVPY Scholar (2019):** Ranked in the top 2% of science students in India.
 
----
+
 
 ## 📝 Selected Publications
 1.  **Scalable quantum optimisation using HADOF**, *AIQXQIA 2025* (ECAI Workshop).
 2.  **The carbon premium: Correlation or causality?**, *Energy Economics*, 2024.
 3.  **Quantum-Enhanced Resilient Reinforcement Learning**, *COMSNETS*, 2024.
 
----
+
 
 ## 🛠 Skills
 *   **Programming:** Python, C++, Fortran, MATLAB, R, LaTeX, JavaScript.
