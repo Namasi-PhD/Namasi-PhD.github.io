@@ -9,7 +9,6 @@ title: "Namasi G. Sankar"
 
 [Google Scholar](https://scholar.google.com/citations?hl=en&user=WMRJjRkAAAAJ) | [GitHub](https://github.com/Namasi-PhD/) | [Email](mailto:namasivayam.gomathisankar@ucdconnect.ie)
 
----
 
 ## 🧬 Professional Profile
 I am a Doctoral candidate at **University College Dublin**, specializing in quantum algorithms and optimization. My research focuses on bridging the gap between theoretical quantum methods and practical applications, particularly in solving NP-hard problems within **genomics**.
