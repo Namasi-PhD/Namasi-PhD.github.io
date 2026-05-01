@@ -1,7 +1,7 @@
 ---
 layout: single
-title: "Research Journey"
-permalink: /projects/
+title: "Publications"
+permalink: /publications/
 ---
 
 ## Scalable Quantum Optimisation using HADOF
