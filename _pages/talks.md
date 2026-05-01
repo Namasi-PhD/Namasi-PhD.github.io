@@ -8,15 +8,11 @@ permalink: /talks/
 
 <div align="center">
   <iframe 
-    width="100%" 
-    style="aspect-ratio: 16/9;" 
     src="https://www.youtube.com/embed/QtSvdsE0lHA" 
-    title="YouTube video player" 
+    style="width: 100%; max-width: 800px; aspect-ratio: 16 / 9;" 
     frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
     allowfullscreen>
   </iframe>
 </div>
 
-[![Watch the video](https://img.youtube.com/vi/QtSvdsE0lHA/maxresdefault.jpg)](https://www.youtube.com/watch?v=QtSvdsE0lHA)
 
