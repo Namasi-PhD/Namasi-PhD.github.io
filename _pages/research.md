@@ -27,10 +27,15 @@ HADOF iteratively decomposes a global quantum Hamiltonian into small sub-Hamilto
 
 **General Overview** 
 HADOF proceeds iteratively: 
+
 1) Encode the full QUBO as a Hamiltonian.
+   
 2) Solve small sub-Hamiltonians using a sampling-based optimiser.
+   
 3) Estimate marginal variable probabilities from samples.
+
 4) Update the sub-Hamiltonians using this global information.
+
 5) Aggregate sampled sub-solutions into global candidate solutions.
 
 HADOF scales to problem sizes more than 12x beyond the native qubit capacity of current devices with 40x higher accuracy that currently used standard QAOA on NISQ devices. Empirically, HADOF demonstrates strong scalability properties. We demonstrated the optimisation of QUBO problems up to 500 binary variables using only 5 qubit circuits by decomposition, while maintaining above 95\% accuracy compared to classical Simulated Annealing (in traditional quantum methods such as QAOA, this would require 500 qubits in an ideal noise-free setting). 
