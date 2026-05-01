@@ -5,7 +5,10 @@ permalink: /research/
 ---
 ---
 {% if site.author.github %}
-  <div class="wordwrap">All the code is publicly available on <a href="{(https://github.com/Namasi-PhD)}">my Github</a>.</div>
+  <div class="wordwrap">
+    All the code is publicly available on 
+    <a href="https://github.com/{{ site.author.github }}">my Github</a>.
+  </div>
 {% endif %}
 
 ---
