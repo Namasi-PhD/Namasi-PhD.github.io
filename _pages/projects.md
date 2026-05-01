@@ -29,7 +29,7 @@ At IIT Bombay, I worked on quantum game theory, demonstrating how entanglement-e
 
 I later expanded this perspective through mean-field game theory, where I generalized quantum mechanical formulations to large-scale agent-based systems. These experiences were pivotal—they reframed computation not just as simulation, but as optimisation under competing objectives, a theme that now sits at the core of my PhD.
 
----
+
 
 ## Biology, Systems Thinking, and Real-World Constraints
 
