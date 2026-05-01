@@ -5,8 +5,9 @@ permalink: /research/
 ---
 
 {% if site.author.github %}
-  <div class="wordwrap">Code is publicly available on <a href="{{site.author.github}}">my Github</a>.</div>
+  <div class="wordwrap">All the code is publicly available on <a href="{{site.author.github}}">my Github</a>.</div>
 {% endif %}
+
 
 Quantum computing is showing promise in solving combinatorial optimisation problems that are hard to tackle classically. These problems are ubiquitous in various fields including, but not limited to, machine learning, finance, and bioinformatics. Quantum algorithms such as Quantum Annealing (QA), Grover search and Variational Quantum Algorithms (VQA) have been able to show theoretical speed-ups in the time complexity for combinatorial optimisation problems. The bioinformatics domain inherently includes many NP-hard combinatorial optimisation problems such as genome assembly, sequence alignment, metagenomic binning, etc. Current high performance computing (HPC) solutions still require days to solve a genome assembly problem, where time could be a crucial factor in events like a viral outbreak. The hope is that quantum approaches could significantly reduce the time to solutions for these types of problems. To encode these problems for a quantum solver, they can be transformed into Quadratic Unconstrained Binary Optimisation (QUBO) embeddings.
 
