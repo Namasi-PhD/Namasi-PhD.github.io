@@ -15,7 +15,7 @@ This question did not emerge suddenly during my PhD. It is the natural culminati
 
 My first exposure to computation as a *physical process* came during my time at IISER Pune, where I explored stochastic systems and statistical physics.  
 
-Working on **space-dependent diffusion in Brownian motion**, I simulated molecular dynamics systems to understand how stochastic integration frameworks like Ito and Stratonovich influence macroscopic behavior. This was more than a physics exercise, it introduced me to the idea that the choice of mathematical formalism directly impacts computational outcomes.
+Working on space-dependent diffusion in Brownian motion, I simulated molecular dynamics systems to understand how stochastic integration frameworks like Ito and Stratonovich influence macroscopic behavior. This was more than a physics exercise, it introduced me to the idea that the choice of mathematical formalism directly impacts computational outcomes.
 
 In parallel, my work on stochastic processes in financial systems involved simulating Ornstein–Uhlenbeck processes and validating theoretical models in option pricing. These projects collectively trained me to think rigorously about dynamical systems, numerical simulation, and the translation of theory into computational pipelines.
 
@@ -33,7 +33,7 @@ I later expanded this perspective through mean-field game theory, where I genera
 
 ## Biology, Systems Thinking, and Real-World Constraints
 
-A major turning point in my journey was my involvement in **iGEM (International Genetically Engineered Machine)**:
+A major turning point in my journey was my involvement in iGEM (International Genetically Engineered Machine):
 Our team developed a negative carbon footprint fuel generation method using synthetic bacterial co-cultures to convert CO₂ into biofuel.  
 We **won a Gold Medal** with nominations for Best Manufacturing and Education. Te following year, I **mentored a team to Gold Medal** again. 
 
