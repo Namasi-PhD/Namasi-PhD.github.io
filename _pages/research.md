@@ -22,6 +22,9 @@ In overlap graphs, reads are represented as vertices and edges correspond to suf
 ## Scalable Quantum Optimisation using HADOF
 HADOF iteratively decomposes a global quantum Hamiltonian into small sub-Hamiltonians and refines a global solution using sampled distributions. HADOF is compatible with optimisation methods that return sampleable distributions biased toward good solutions. This allows it to scale beyond available qubits while preserving access to multiple good candidate solutions.
 
+<img width="3780" height="1890" alt="overview" src="https://github.com/user-attachments/assets/caf2e638-2497-42f4-915a-6319a40e9b2c" />
+
+
 **General Overview** 
 HADOF proceeds iteratively: 
 1) Encode the full QUBO as a Hamiltonian.
@@ -33,7 +36,15 @@ HADOF proceeds iteratively:
 HADOF scales to problem sizes more than 12x beyond the native qubit capacity of current devices with 40x higher accuracy that currently used standard QAOA on NISQ devices. Empirically, HADOF demonstrates strong scalability properties. We demonstrated the optimisation of QUBO problems up to 500 binary variables using only 5 qubit circuits by decomposition, while maintaining above 95\% accuracy compared to classical Simulated Annealing (in traditional quantum methods such as QAOA, this would require 500 qubits in an ideal noise-free setting). 
 
 ## Parallelisation and Quantum Supercomputing
+
+<img width="709" height="480" alt="ttsquantum" src="https://github.com/user-attachments/assets/7311e06f-61a5-41a5-936d-2620772d1844" />
+
+
 To further improve scalability and runtime, HADOF was extended to a parallel execution model, forming a High Performance Quantum (HPQ) framework, where sub-Hamiltonians are generated independently and solved concurrently. Unlike the sequential variant, which updates marginal probabilities after each subproblem, the parallel version uses marginal estimates from the previous iteration, enabling asynchronous execution. This design transforms each iteration into a collection of independent sub-circuits, allowing efficient utilisation of classical multi-core systems and multiple quantum processing units (QPUs). Parallelisation reduces wall clock time by 3-5x without degrading the quality of the best solutions, as observed in the benchmarking experiments on IBM QPUs. Importantly, results indicate that HPQ preserves the optimisation landscape’s high quality regions while improving computational efficiency. These findings validate parallel decomposition as a viable strategy for scaling quantum optimisation.
 
 ## Quantum Genome Assembly
+
+<img width="1536" height="905" alt="Assembly-2-2" src="https://github.com/user-attachments/assets/effba69b-e7b9-47be-91cb-642b41a8365b" />
+
+
 Building on the scalability of HADOF, the framework was applied to genome assembly, formulated as a Hamiltonian path problem on string graphs. This represents a significant step beyond prior work, which has been limited to small synthetic datasets. Preliminary simulated experiments demonstrate that HADOF can effectively solve assembly problems with increasing graph sizes. Accuracy is evaluated using mis-edge counts and post-processed path lengths, showing that HADOF produces high quality solutions. Further analysis showed that HADOF-QAOA with small circuits outperforms standard QAOA on real hardware, highlighting the advantage of decomposition under noise. Crucially, HADOF enables solving problems beyond hardware limits. The framework was applied to real sequencing data from *Pseudomonas aeruginosa* and integrated into standard assembly practice. The genome consists of 7.3 million base pairs, which is a significant step-up in size compared to current simulated datasets which show examples scaling up to 5 thousand base pairs. The corresponding overlap graph contains 524 nodes and 2313 edges, requiring 2313 noise-free qubits for accurate optimisation, far exceeding the capabilities of current quantum devices (around 150 qubits for gate based devices). By leveraging HADOF-based decomposition, the problem becomes tractable through federated optimisation. 
