@@ -38,8 +38,8 @@ Our team developed a negative carbon footprint fuel generation method using synt
 We **won a Gold Medal** with nominations for Best Manufacturing and Education. Te following year, I **mentored a team to Gold Medal** again. 
 
 Project links:  
-- https://2021.igem.org/Team:IISER-Pune-India  
-- https://2022.igem.wiki/iiser-pune-india/
+- [Synbactory](https://2021.igem.org/Team:IISER-Pune-India)  
+- [Hydrazome](https://2022.igem.wiki/iiser-pune-india/)
 
 This experience fundamentally changed how I approached research. Biology introduced: high-dimensional systems, real data constraints and the necessity of scalable computational methods. It was here that I began to see a clear gap: classical methods often struggle to scale efficiently for complex biological optimisation problems.
 
