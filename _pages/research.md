@@ -26,6 +26,7 @@ HADOF iteratively decomposes a global quantum Hamiltonian into small sub-Hamilto
 
 
 **General Overview** 
+
 HADOF proceeds iteratively: 
 
 1) Encode the full QUBO as a Hamiltonian.
