@@ -15,19 +15,19 @@ This question did not emerge suddenly during my PhD. It is the natural culminati
 
 My first exposure to computation as a *physical process* came during my time at IISER Pune, where I explored stochastic systems and statistical physics.  
 
-Working on **space-dependent diffusion in Brownian motion**, I simulated molecular dynamics systems to understand how stochastic integration frameworks like Ito and Stratonovich influence macroscopic behavior. This was more than a physics exercise, it introduced me to the idea that **the choice of mathematical formalism directly impacts computational outcomes**.
+Working on **space-dependent diffusion in Brownian motion**, I simulated molecular dynamics systems to understand how stochastic integration frameworks like Ito and Stratonovich influence macroscopic behavior. This was more than a physics exercise, it introduced me to the idea that the choice of mathematical formalism directly impacts computational outcomes.
 
-In parallel, my work on **stochastic processes in financial systems** involved simulating Ornstein–Uhlenbeck processes and validating theoretical models in option pricing. These projects collectively trained me to think rigorously about dynamical systems, numerical simulation, and the translation of theory into computational pipelines.
+In parallel, my work on stochastic processes in financial systems involved simulating Ornstein–Uhlenbeck processes and validating theoretical models in option pricing. These projects collectively trained me to think rigorously about dynamical systems, numerical simulation, and the translation of theory into computational pipelines.
 
 
 
 ## Game Theory and the Shift Toward Strategic Computation
 
-This foundation naturally extended into **game theory**, where I began exploring how agents interact under constraints.
+This foundation naturally extended into game theory, where I began exploring how agents interact under constraints.
 
-At IIT Bombay, I worked on **quantum game theory**, demonstrating how entanglement-enabled strategies could outperform classical Nash equilibria in team decision problems. This was my first concrete encounter with **quantum advantage in structured optimisation settings**.
+At IIT Bombay, I worked on quantum game theory, demonstrating how entanglement-enabled strategies could outperform classical Nash equilibria in team decision problems. This was my first concrete encounter with quantum advantage in structured optimisation settings.
 
-I later expanded this perspective through **mean-field game theory**, where I generalized quantum mechanical formulations to large-scale agent-based systems. These experiences were pivotal—they reframed computation not just as simulation, but as **optimisation under competing objectives**, a theme that now sits at the core of my PhD.
+I later expanded this perspective through mean-field game theory, where I generalized quantum mechanical formulations to large-scale agent-based systems. These experiences were pivotal—they reframed computation not just as simulation, but as optimisation under competing objectives, a theme that now sits at the core of my PhD.
 
 ---
 
@@ -35,7 +35,7 @@ I later expanded this perspective through **mean-field game theory**, where I ge
 
 A major turning point in my journey was my involvement in **iGEM (International Genetically Engineered Machine)**:
 Our team developed a negative carbon footprint fuel generation method using synthetic bacterial co-cultures to convert CO₂ into biofuel.  
-We won a **Gold Medal** with nominations for Best Manufacturing and Education. Te following year, I mentored a team to **Gold Medal** again. 
+We **won a Gold Medal** with nominations for Best Manufacturing and Education. Te following year, I **mentored a team to Gold Medal** again. 
 
 Project links:  
 - https://2021.igem.org/Team:IISER-Pune-India  
