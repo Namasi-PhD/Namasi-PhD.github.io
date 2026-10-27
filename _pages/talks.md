@@ -4,6 +4,14 @@ title: "Talks and Presentations"
 permalink: /talks/
 ---
 
+## IBM Quantum Developer Conference, Chicago, 2026 (poster)
+
+**HADOF: Industrial Scale Applications on Today’s QPUs**
+
+- [Live demo: animated poster companion](/qdc2026/)
+- [HADOF research presentation (animated)](/presentation/)
+
+
 ## AIQxQIA Workshop, ECAI, Bologna, 2025
 
 <div align="center">

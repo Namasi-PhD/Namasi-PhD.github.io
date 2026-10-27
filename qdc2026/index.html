@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="HADOF: industrial-scale quantum optimisation on today's IBM QPUs. Live companion to the QDC 2026 poster.">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+<title>HADOF Live</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a genome-browser read of one HADOF story. Each section is a "track" with a nucleotide-coloured lane;
+   #loop turns the same sections into a full-screen kiosk that advances on its own, for a tablet beside the poster. */
+:root{
+  --bg:#EDF1F3; --surface:#FFFFFF; --sunk:#F3F6F8; --fg:#132029; --muted:#55636E; --line:#D3DCE1;
+  --nA:#1F7F55; --nC:#2448B8; --nG:#9C730A; --nT:#BF3A2B;
+  --accent:var(--nC); --accent-soft:#DDE5FA; --green-soft:#DAF0E4;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --sans:"IBM Plex Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C1317; --surface:#141E24; --sunk:#1A262D; --fg:#E5ECEF; --muted:#94A5AF; --line:#2B3A43;
+  --nA:#55C68E; --nC:#86A2FF; --nG:#E2B84A; --nT:#F27767; --accent-soft:#22305A; --green-soft:#183A2B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C1317; --surface:#141E24; --sunk:#1A262D; --fg:#E5ECEF; --muted:#94A5AF; --line:#2B3A43;
+  --nA:#55C68E; --nC:#86A2FF; --nG:#E2B84A; --nT:#F27767; --accent-soft:#22305A; --green-soft:#183A2B; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--sans);margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* sequence band */
+.seq{overflow:hidden;border-bottom:1px solid var(--line);background:var(--surface);height:34px;display:flex;align-items:center}
+.seq-in{display:flex;white-space:nowrap;font:500 14px/1 var(--mono);letter-spacing:.22em;animation:scroll 90s linear infinite}
+.nA{color:var(--nA)} .nC{color:var(--nC)} .nG{color:var(--nG)} .nT{color:var(--nT)}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* hero */
+.hero{padding-block:clamp(36px,7vw,84px) clamp(28px,5vw,56px);display:grid;gap:18px}
+.eyebrow{font:500 13px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.mark{margin:0;font:800 clamp(64px,13vw,168px)/.86 var(--display);letter-spacing:-.035em}
+.mark span{display:inline-block}
+.tagline{margin:0;font:700 clamp(26px,4.2vw,50px)/1.05 var(--display);letter-spacing:-.015em;max-width:20ch;text-wrap:balance}
+.lede{margin:0;font-size:clamp(17px,1.8vw,21px);line-height:1.5;color:var(--muted);max-width:60ch;text-wrap:pretty}
+.byline{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:15px;color:var(--muted)}
+.byline b{color:var(--fg);font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.btn{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:8px;font:600 15px/1.2 var(--sans);border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.btn.primary{background:var(--fg);color:var(--surface);border-color:var(--fg)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* tracks */
+.track{border-top:1px solid var(--line);padding-block:clamp(36px,6vw,72px)}
+.lane{display:flex;align-items:center;gap:12px;font:500 13px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.lane i{width:34px;height:8px;border-radius:4px;background:var(--lc)}
+.lane .pos{margin-left:auto;letter-spacing:.04em}
+.track h2{margin:0 0 12px;font:700 clamp(30px,4.4vw,54px)/1.04 var(--display);letter-spacing:-.02em;max-width:22ch;text-wrap:balance}
+.grid2{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start;margin-top:26px}
+@media (max-width:820px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(14px,2vw,22px);min-width:0}
+.cap{font:400 13px/1.45 var(--mono);color:var(--muted);margin-top:10px}
+.label{font:500 12px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+canvas,svg{display:block;max-width:100%}
+.mono{font-family:var(--mono)}
+.num{font-variant-numeric:tabular-nums}
+
+/* stats */
+.stats{display:grid;gap:18px}
+.stat{border-top:3px solid var(--lc,var(--fg));padding-top:12px;display:grid;gap:4px}
+.stat .v{font:800 clamp(38px,5vw,60px)/1 var(--display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat .v small{font-size:.5em;font-weight:700}
+.stat p{margin:0;color:var(--muted);font-size:16px;line-height:1.4;max-width:34ch}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;margin-top:26px}
+
+/* steps */
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:14px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:36px minmax(0,1fr);gap:12px;align-items:start}
+.steps li::before{counter-increment:s;content:counter(s);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--surface);font:600 14px/1 var(--mono)}
+.steps b{display:block;font:700 19px/1.2 var(--display)}
+.steps span{color:var(--muted);font-size:15px}
+
+/* sim */
+.simrow{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:16px;align-items:end}
+@media (max-width:520px){.simrow{grid-template-columns:minmax(0,1fr)}}
+.simtxt{font:500 14px/1.4 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums;margin-top:10px;min-height:2.8em}
+
+/* reads */
+.reads{position:relative;height:230px;background:var(--sunk);border-radius:10px;overflow:hidden}
+.read{position:absolute;left:0;top:0;display:flex;border-radius:4px;background:var(--surface);box-shadow:0 0 0 1px var(--line);transition:transform 1.1s cubic-bezier(.2,.7,.2,1),opacity .6s}
+.read b{text-align:center;font-weight:600;font-family:var(--mono)}
+.cons{position:absolute;left:0;bottom:16px;display:flex;opacity:0;transition:opacity .8s}
+.cons.on{opacity:1}
+.cons b{text-align:center;font-weight:700;font-family:var(--mono)}
+.stage-lab{position:absolute;right:12px;top:10px;font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.facts{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:var(--sunk);border:1px solid var(--line);font:500 13px/1.3 var(--mono);color:var(--fg)}
+.bars{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.bar{display:grid;gap:6px}
+.bar .top{display:flex;justify-content:space-between;gap:10px;font-size:15px}
+.bar .top b{font:600 15px/1.2 var(--mono);font-variant-numeric:tabular-nums}
+.bar .tr{height:12px;border-radius:6px;background:var(--sunk);overflow:hidden}
+.bar .tr span{display:block;height:100%;border-radius:6px;background:var(--bc,var(--muted));width:var(--w)}
+.bar.hl .top{font-weight:600}
+.callout{margin-top:20px;padding:14px 16px;border-radius:10px;background:var(--green-soft);font-size:16px;line-height:1.45}
+
+/* results table */
+.tbl-wrap{overflow-x:auto;margin-top:18px}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 12px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
+td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.key td{font-weight:600}
+.ask{display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:10px 16px;border-radius:999px;border:2px dashed var(--nT);color:var(--fg);font:600 15px/1.2 var(--sans)}
+.ask i{width:10px;height:10px;border-radius:50%;background:var(--nT);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+.hexrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:620px){.hexrow{grid-template-columns:minmax(0,1fr)}}
+.hexcard{display:grid;gap:8px}
+.hexcard .big{font:800 clamp(30px,4vw,44px)/1 var(--display);font-variant-numeric:tabular-nums}
+.hexcard .big small{font:500 14px/1.2 var(--mono);color:var(--muted);margin-left:6px;letter-spacing:0}
+
+/* apps */
+.apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:24px}
+.app{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:8px;align-content:start}
+.app h3{margin:0;font:700 20px/1.2 var(--display)}
+.app p{margin:0;color:var(--muted);font-size:15px;line-height:1.45}
+.st{justify-self:start;font:600 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:5px 8px;border-radius:4px}
+.st.demo{background:var(--nA);color:var(--surface)}
+.st.bench{background:var(--nC);color:var(--surface)}
+.st.same{background:var(--sunk);color:var(--muted);border:1px solid var(--line)}
+
+/* contact */
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:22px}
+.links > div{display:grid;gap:4px;min-width:0}
+.links .v{font:500 17px/1.4 var(--mono);overflow-wrap:anywhere}
+.pubs{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:12px}
+.pubs li{display:grid;gap:2px}
+.pubs li span{color:var(--muted);font-size:14px;font-family:var(--mono)}
+.foot{border-top:1px solid var(--line);padding-block:24px 40px;color:var(--muted);font-size:14px}
+
+/* ---------- kiosk loop (#loop) ---------- */
+html.loop,html.loop body{height:100%;overflow:hidden}
+html.loop .seq{position:fixed;inset:0 0 auto;z-index:5}
+html.loop main{position:fixed;inset:34px 0 54px;overflow:hidden}
+html.loop .scene{position:absolute;inset:0;overflow:hidden;border-top:0;display:flex;flex-direction:column;justify-content:center;opacity:0;visibility:hidden;transition:opacity .7s ease,visibility 0s linear .7s}
+html.loop .scene.cur{opacity:1;visibility:visible;transition:opacity .7s ease}
+html.loop .scene > .wrap{width:100%;transform-origin:center center}
+html.loop .foot,html.loop .actions{display:none}
+html.loop .hero{padding-block:0}
+.kbar{display:none}
+html.loop .kbar{display:flex;position:fixed;inset:auto 0 0;z-index:6;height:54px;align-items:center;gap:14px;background:var(--surface);border-top:1px solid var(--line);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-bottom:env(safe-area-inset-bottom,0px)}
+.ideo{flex:1;display:flex;gap:4px;align-items:center;height:16px;min-width:0}
+.ideo button{all:unset;cursor:pointer;flex:1;height:8px;border-radius:4px;background:var(--lc);opacity:.3;transition:height .25s,opacity .25s}
+.ideo button.done{opacity:.6}
+.ideo button.cur{opacity:1;height:14px}
+.kbar .btn{padding:7px 12px;font-size:14px}
+.kname{font:500 13px/1 var(--mono);color:var(--muted);white-space:nowrap}
+@media (max-width:620px){.kname{display:none}}
+
+@media (prefers-reduced-motion: reduce){
+  .seq-in{animation:none}
+  .ask i{animation:none}
+  .read,.cons,html.loop .scene{transition:none}
+}
+</style>
+
+<div class="seq" aria-hidden="true"><div class="seq-in" id="seq"></div></div>
+
+<main id="main">
+  <section class="scene" id="start" data-lane="nC" data-name="HADOF" data-dur="9">
+    <div class="wrap hero">
+      <div class="eyebrow">IBM Quantum Developer Conference 2026 · Poster companion</div>
+      <h1 class="mark"><span class="nA">H</span><span class="nC">A</span><span class="nG">D</span><span class="nT">O</span><span>F</span></h1>
+      <p class="tagline">Industrial Scale Applications on Today’s QPUs</p>
+      <p class="lede">The Hamiltonian Auto-Decomposition Optimisation Framework splits optimisation problems far larger than any quantum processor into circuits that fit on it, then recombines the answers. It has already assembled a bacterial genome on IBM hardware.</p>
+      <div class="byline"><span><b>Namasi G. Sankar</b> · University College Dublin</span><span><b>Georgios Miliotis</b> · University of Galway</span><span><b>Simon Caton</b> · University College Dublin</span></div>
+      <div class="actions">
+        <button class="btn primary" id="playLoop" type="button">Play as a loop</button>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene track" id="gap" data-lane="nT" data-name="The gap" data-dur="12">
+    <div class="wrap">
+      <div class="lane" style="--lc:var(--nT)"><i></i>The gap</div>
+      <h2>Real problems are hundreds of times bigger than the chip</h2>
+      <p class="lede">A state-of-the-art IBM Heron processor has 156 qubits. Industrial optimisation problems run to tens of thousands of variables.</p>
+      <div class="grid2">
+        <div class="panel"><canvas id="gapCanvas" aria-label="A grid of 45,000 variables beside a 156-qubit heavy-hex chip; pieces of the grid light up and are sent to the chip in turn"></canvas>
+          <div class="cap">Left: 45,000 variables, one dot each. Right: ibm_aachen’s 156 qubits (heavy-hex, layout illustrative). HADOF sends the problem through the chip piece by piece.</div></div>
+        <div class="stats">
+          <div class="stat" style="--lc:var(--nT)"><div class="v num">45,000</div><p>variables in our largest run, a fully dense QUBO</p></div>
+          <div class="stat" style="--lc:var(--nG)"><div class="v num">1.01<small> billion</small></div><p>pairwise couplings in that problem</p></div>
+          <div class="stat" style="--lc:var(--nC)"><div class="v num">156</div><p>qubits available on the IBM device</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene track" id="how" data-lane="nC" data-name="How it works" data-dur="18">
+    <div class="wrap">
+      <div class="lane" style="--lc:var(--nC)"><i></i>How it works</div>
+      <h2>Solve a few qubits at a time, share what each piece learns</h2>
+      <div class="grid2">
+        <div class="panel">
+          <div class="simrow">
+            <svg id="sim" viewBox="0 0 560 250" aria-label="Toy HADOF run: 24 variables in 8 groups of 3; the active group is outlined; shading is each variable's probability of being 1"></svg>
+            <svg id="simq" viewBox="0 0 150 250" aria-label="Measured probabilities for the 8 states of the active 3-qubit circuit"></svg>
+          </div>
+          <div class="simtxt" id="simtxt">Sweep 1</div>
+          <div class="cap">Toy run computed live in this page: 24 variables, 3-qubit circuits, a Boltzmann sampler standing in for QAOA. Shade shows each variable’s probability of being 1. Not benchmark data.</div>
+        </div>
+        <ol class="steps">
+          <li><div><b>Decompose</b><span>Split the QUBO into small groups of variables that each fit in one circuit.</span></div></li>
+          <li><div><b>Solve on the QPU</b><span>Run each group as a small circuit. Every other variable enters through its current probability, so each piece sees the rest of the problem.</span></div></li>
+          <li><div><b>Share and repeat</b><span>Update the probabilities from the measured samples and sweep again. The circuit size never grows with the problem.</span></div></li>
+          <li><div><b>Recombine</b><span>Assemble thousands of full candidate solutions and keep the best. Any sampler plugs in: QAOA, quantum annealing, SA, FALQON.</span></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene track" id="proof" data-lane="nA" data-name="Proven on hardware" data-dur="13">
+    <div class="wrap">
+      <div class="lane" style="--lc:var(--nA)"><i></i>Proven on IBM hardware</div>
+      <h2>Small circuits hold their quality where full circuits collapse</h2>
+      <div class="grid2">
+        <div class="panel">
+          <div class="label">Best solution quality vs simulated annealing · ibm_kingston</div>
+          <svg id="kchart" viewBox="0 0 560 300" aria-label="Line chart: HADOF with 5-qubit circuits stays between 0.92 and 1.0 from 10 to 50 variables, while full-circuit QAOA falls from 1.0 to 0.49"></svg>
+          <div class="cap">Same random QUBOs, same 156-qubit device. Full QAOA uses one qubit per variable; HADOF uses 5-qubit circuits. Sankar, Miliotis &amp; Caton, HPQ paper (QCE).</div>
+        </div>
+        <div class="stats">
+          <div class="stat" style="--lc:var(--nA)"><div class="v num">0.92<small> vs 0.49</small></div><p>best quality at 50 variables on ibm_kingston: HADOF vs full-circuit QAOA</p></div>
+          <div class="stat" style="--lc:var(--nC)"><div class="v num">3–4<small>×</small></div><p>less wall-clock time running HADOF across four IBM QPUs, at comparable quality</p></div>
+          <div class="stat" style="--lc:var(--nG)"><div class="v num">0.98</div><p>of simulated annealing’s quality at 500 variables, using 5-qubit sub-circuits (ECAI 2025)</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene track" id="genome" data-lane="nG" data-name="Genome assembly" data-dur="16">
+    <div class="wrap">
+      <div class="lane" style="--lc:var(--nG)"><i></i>Flagship application</div>
+      <h2>Quantum genome assembly of the <i>P. aeruginosa</i> bacterial chromosome</h2>
+      <p class="lede">Exploiting today’s quantum computers for real optimisation workloads: real nanopore reads, a standard assembly pipeline, and the hard ordering step solved by HADOF on ibm_torino.</p>
+      <div class="grid2">
+        <div class="panel">
+          <div class="reads" id="reads"><div class="stage-lab" id="readlab">Reads</div><div class="cons" id="cons"></div></div>
+          <div class="facts">
+            <span class="chip">7.14 Mbp chromosome</span><span class="chip">21,969 nanopore reads</span><span class="chip">524-read overlap graph</span><span class="chip">2,313 QUBO variables</span><span class="chip">&gt;17× the qubits on ibm_torino</span>
+          </div>
+        </div>
+        <div>
+          <div class="label" style="margin-bottom:14px">Genome recovered, best sample</div>
+          <div class="bars">
+            <div class="bar"><div class="top"><span>Unicycler (classical reference)</span><b>100%</b></div><div class="tr"><span style="--w:100%"></span></div></div>
+            <div class="bar"><div class="top"><span>Simulated annealing</span><b>100%</b></div><div class="tr"><span style="--w:100%"></span></div></div>
+            <div class="bar"><div class="top"><span>HADOF, ideal simulation</span><b>100%</b></div><div class="tr"><span style="--w:100%;--bc:var(--nC)"></span></div></div>
+            <div class="bar hl"><div class="top"><span>HADOF on IBM ibm_torino</span><b>99.348%</b></div><div class="tr"><span style="--w:99.348%;--bc:var(--nA)"></span></div></div>
+          </div>
+          <div class="callout">To our knowledge, the first complete genome assembled from real sequencing data on quantum hardware: over 100× larger than previous hardware demonstrations, with a duplication ratio of 1.0.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene track" id="scale" data-lane="nT" data-name="Scaling up" data-dur="17">
+    <div class="wrap">
+      <div class="lane" style="--lc:var(--nT)"><i></i>New · Topology-aware HADOF</div>
+      <h2>From 5-qubit circuits to 150-qubit circuits</h2>
+      <p class="lede">Our newest version fills almost the whole chip in every circuit. That took a fully dense 45,000-variable QUBO onto ibm_aachen in 300 circuits.</p>
+      <div class="grid2">
+        <div class="panel">
+          <div class="hexrow">
+            <div class="hexcard"><div class="label">Published HADOF</div><canvas id="hexA" aria-label="156-qubit heavy-hex chip with 5 qubits lit"></canvas><div class="big num" id="hexAn">5<small>qubits per circuit</small></div></div>
+            <div class="hexcard"><div class="label">Topology-aware HADOF</div><canvas id="hexB" aria-label="156-qubit heavy-hex chip with 150 qubits lit"></canvas><div class="big num" id="hexBn">150<small>qubits per circuit</small></div></div>
+          </div>
+          <div class="cap">ibm_aachen, 156-qubit Heron r2. Lattice drawn for illustration; which qubits each circuit uses is not shown.</div>
+        </div>
+        <div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>Random dense QUBO</th><th>22,350 vars</th><th>45,000 vars</th></tr></thead>
+            <tbody>
+              <tr class="key"><td>QAOA-HADOF on ibm_aachen<br><span class="label" style="font-weight:500">quality vs full SA</span></td><td class="n">52.6%</td><td class="n">49.1%</td></tr>
+              <tr class="key"><td>SA-HADOF, same groups<br><span class="label" style="font-weight:500">quality vs full SA</span></td><td class="n">98.5%</td><td class="n">98.8%</td></tr>
+              <tr><td>SA-HADOF speed-up vs full SA</td><td class="n">7.9×</td><td class="n">8.6×</td></tr>
+              <tr><td>QPU execution time</td><td class="n">~35 min</td><td class="n">73 min</td></tr>
+              <tr><td>Time in the IBM queue</td><td class="n">~6.4 h</td><td class="n">~74.6 h</td></tr>
+            </tbody>
+          </table></div>
+          <div class="ask"><i></i>Method unpublished. Ask us how it works.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene track" id="any" data-lane="nA" data-name="Any QUBO" data-dur="11">
+    <div class="wrap">
+      <div class="lane" style="--lc:var(--nA)"><i></i>Where it applies</div>
+      <h2>If your problem is a QUBO, HADOF can run it on hardware too small for it</h2>
+      <div class="apps">
+        <div class="app"><span class="st demo">Demonstrated on hardware</span><h3>Genome assembly</h3><p>Ordering DNA reads into a chromosome, end to end on ibm_torino.</p></div>
+        <div class="app"><span class="st bench">Benchmarked to 45,000 variables</span><h3>Dense random QUBOs</h3><p>The hardest general case: every variable coupled to every other.</p></div>
+        <div class="app"><span class="st same">Same formulation</span><h3>Routing and logistics</h3><p>Vehicle routing and travelling-salesman tours share assembly’s maths.</p></div>
+        <div class="app"><span class="st same">Same formulation</span><h3>Scheduling</h3><p>Shifts, jobs and machine time with conflicts as penalties.</p></div>
+        <div class="app"><span class="st same">Same formulation</span><h3>Portfolio optimisation</h3><p>Asset selection under risk and budget penalties.</p></div>
+        <div class="app"><span class="st same">Same formulation</span><h3>Network design and partitioning</h3><p>Max-cut, clustering and graph partitioning.</p></div>
+        <div class="app"><span class="st same">Same formulation</span><h3>Feature selection</h3><p>Choosing informative, non-redundant inputs for machine learning.</p></div>
+        <div class="app"><span class="st same">Next for genomics</span><h3>Outbreak and cancer genomics</h3><p>Faster assembly and many near-optimal candidates for variant analysis.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene track" id="contact" data-lane="nC" data-name="Get in touch" data-dur="9">
+    <div class="wrap">
+      <div class="lane" style="--lc:var(--nC)"><i></i>Get in touch</div>
+      <h2>Bring us a problem that doesn’t fit your QPU</h2>
+      <div class="links">
+        <div><span class="label">Email</span><span class="v" id="email">namasivayam.gomathisankar@ucdconnect.ie</span><button class="btn" id="copyEmail" type="button" style="justify-self:start;margin-top:6px">Copy email</button></div>
+        <div><span class="label">Website</span><a class="v" href="https://namasi-phd.github.io" target="_blank" rel="noopener">namasi-phd.github.io</a></div>
+        <div><span class="label">Code</span><a class="v" href="https://github.com/Namasi-PhD" target="_blank" rel="noopener">github.com/Namasi-PhD</a></div>
+        <div><span class="label">Full research presentation</span><a class="v" href="https://namasi-phd.github.io/presentation/#industry-20" target="_blank" rel="noopener">namasi-phd.github.io/presentation</a></div>
+      </div>
+      <ul class="pubs">
+        <li>Quantum genome assembly of a complete bacterial chromosome from real sequencing data on NISQ hardware<span>Sankar, Miliotis &amp; Caton · 2026</span></li>
+        <li>Towards High Performance Quantum computing (HPQ): parallelisation of HADOF<span>Sankar, Miliotis &amp; Caton · arXiv:2604.27836 (2026)</span></li>
+        <li>Scalable quantum optimisation using HADOF<span>Sankar, Miliotis &amp; Caton · AIQxQIA @ ECAI 2025, CEUR-WS vol. 4153</span></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="foot"><div class="wrap">Hardware time on ibm_aachen funded by the IBM Quantum Credits programme. PhD funded by a UCD School of Computer Science scholarship.</div></footer>
+
+<div class="kbar" id="kbar">
+  <span class="kname" id="kname">HADOF</span>
+  <div class="ideo" id="ideo"></div>
+  <button class="btn" id="kpause" type="button">Pause</button>
+  <button class="btn" id="kexit" type="button">Exit loop</button>
+</div>
+
+<script>
+(() => {
+const $ = (s, el=document) => el.querySelector(s);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function rng(seed){ let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+/* sequence band */
+(() => { const R = rng(7); let s = ''; for (let i = 0; i < 260; i++){ const c = 'ACGT'[Math.floor(R()*4)]; s += `<b class="n${c}" style="font-weight:500">${c}</b>`; } $('#seq').innerHTML = s + s; })();
+
+/* canvas helper */
+function fit(cv, aspect){
+  const w = cv.parentElement.clientWidth || 300, h = Math.round(w * aspect), d = Math.min(2, devicePixelRatio || 1);
+  cv.style.width = '100%'; cv.style.height = h + 'px';
+  if (cv.width !== Math.round(w*d) || cv.height !== Math.round(h*d)){ cv.width = Math.round(w*d); cv.height = Math.round(h*d); }
+  const g = cv.getContext('2d'); g.setTransform(d,0,0,d,0,0); return {g, w, h};
+}
+
+/* heavy-hex lattice: 8 rows of 16 plus 7 rows of 4 bridges = 156 qubits */
+const HEX = (() => {
+  const nodes = [], edges = [], id = {};
+  for (let r = 0; r < 8; r++) for (let c = 0; c < 16; c++){ id[r+','+c] = nodes.length; nodes.push({x:c, y:r*2}); if (c) edges.push([id[r+','+(c-1)], id[r+','+c]]); }
+  for (let r = 0; r < 7; r++) for (const c of (r % 2 ? [1,5,9,13] : [3,7,11,15])){ const k = nodes.length; nodes.push({x:c, y:r*2+1}); edges.push([id[r+','+c], k], [k, id[(r+1)+','+c]]); }
+  return {nodes, edges};
+})();
+function drawHex(g, x0, y0, w, h, lit, col, t){
+  const sx = w/15, sy = h/14, r = Math.max(1.6, Math.min(sx, sy)*0.24);
+  g.lineWidth = Math.max(1, r*0.5); g.strokeStyle = css('--line');
+  g.beginPath(); for (const [a,b] of HEX.edges){ const A = HEX.nodes[a], B = HEX.nodes[b]; g.moveTo(x0+A.x*sx, y0+A.y*sy); g.lineTo(x0+B.x*sx, y0+B.y*sy); } g.stroke();
+  HEX.nodes.forEach((n, i) => { g.beginPath(); g.arc(x0+n.x*sx, y0+n.y*sy, r, 0, 7); g.fillStyle = lit.has(i) ? col : css('--sunk'); g.fill(); g.strokeStyle = lit.has(i) ? col : css('--muted'); g.lineWidth = 1; g.stroke(); });
+}
+
+/* scene: the gap */
+const gap = (() => {
+  const cv = $('#gapCanvas'); let raf = 0, t0 = 0, base = null, baseKey = '';
+  const C = 300, R = 150, TX = 10, TY = 6; // 45,000 cells; tiles of 30x25 cells for display
+  function frame(ts){
+    if (!t0) t0 = ts; const t = (ts - t0) / 1000;
+    const {g, w, h} = fit(cv, .52);
+    const gw = w * .64, cell = gw / C, gh = cell * R, gy = (h - gh) / 2;
+    const key = w + css('--muted');
+    if (baseKey !== key){ base = document.createElement('canvas'); base.width = Math.ceil(gw*2); base.height = Math.ceil(gh*2); const b = base.getContext('2d'); b.scale(2,2);
+      b.fillStyle = css('--muted'); b.globalAlpha = .28; for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) if ((r*7 + c*13) % 5) b.fillRect(c*cell, r*cell, Math.max(.6, cell*.8), Math.max(.6, cell*.8)); baseKey = key; }
+    g.clearRect(0, 0, w, h); g.drawImage(base, 0, gy, gw, gh);
+    const cols = ['--nA','--nC','--nG','--nT'].map(css), n = TX*TY, step = .55, k = Math.floor(t/step) % (n + 6);
+    const tw = gw/TX, th = gh/TY;
+    for (let i = 0; i < Math.min(k, n); i++){ const tx = i % TX, ty = Math.floor(i/TX); g.globalAlpha = .38; g.fillStyle = cols[(tx+ty)%4]; g.fillRect(tx*tw, gy+ty*th, tw-1, th-1); }
+    g.globalAlpha = 1;
+    const cx0 = gw + w*.06, cw = w - cx0 - 4, ch = cw * 14/15, cy0 = (h - ch)/2;
+    const lit = new Set(); let col = css('--muted');
+    if (k < n){ const tx = k % TX, ty = Math.floor(k/TX); col = cols[(tx+ty)%4];
+      g.strokeStyle = col; g.lineWidth = 2; g.strokeRect(tx*tw, gy+ty*th, tw-1, th-1);
+      const p = (t % step) / step; g.setLineDash([4,4]); g.beginPath(); g.moveTo((tx+1)*tw, gy+(ty+.5)*th); g.bezierCurveTo(gw + w*.03, gy+(ty+.5)*th, cx0 - w*.03, h/2, cx0, h/2); g.stroke(); g.setLineDash([]);
+      for (let i = 0; i < HEX.nodes.length; i++) if (((i*37 + k*11) % 156) / 156 < .25 + .75*Math.sin(Math.PI*p)) lit.add(i); }
+    drawHex(g, cx0, cy0, cw, ch, lit, col);
+    g.fillStyle = css('--muted'); g.font = `500 ${Math.max(10, w/48)}px ${css('--mono')}`;
+    g.fillText('45,000 variables', 0, gy - 8); g.fillText('156 qubits', cx0, cy0 - 8);
+    raf = reduce ? 0 : requestAnimationFrame(frame);
+  }
+  return {start(){ if (!raf){ t0 = 0; raf = requestAnimationFrame(frame); } }, stop(){ cancelAnimationFrame(raf); raf = 0; }, draw(){ requestAnimationFrame(frame); }};
+})();
+
+/* scene: toy HADOF simulation */
+const sim = (() => {
+  const N = 24, K = 3, B = N/K, svg = $('#sim'), qs = $('#simq'), txt = $('#simtxt');
+  const R0 = rng(11), Q = Array.from({length:N}, () => new Array(N).fill(0));
+  for (let i = 0; i < N; i++){ Q[i][i] = -1 + 1.3*R0(); for (let j = i+1; j < N; j++) if (R0() < .3){ const v = 2*R0() - 1; Q[i][j] = Q[j][i] = v; } }
+  const E = x => { let e = 0; for (let i = 0; i < N; i++){ if (!x[i]) continue; e += Q[i][i]; for (let j = i+1; j < N; j++) if (x[j]) e += Q[i][j]; } return e; };
+  let ref = 0; { const R = rng(3); for (let rs = 0; rs < 12; rs++){ const x = Array.from({length:N}, () => R() < .5 ? 1 : 0); let e = E(x); for (let s = 0; s < 6000; s++){ const T = 2*(1 - s/6000) + .01, i = Math.floor(R()*N); x[i] ^= 1; const e2 = E(x); if (e2 <= e || R() < Math.exp((e - e2)/T)) e = e2; else x[i] ^= 1; } ref = Math.min(ref, e); } }
+  let p, tick, R, hist, timer = 0, probs = new Array(8).fill(1/8);
+  const NS = 'http://www.w3.org/2000/svg';
+  function reset(){ R = rng(99); p = new Array(N).fill(.5); tick = 0; hist = []; }
+  function stepOnce(){
+    const b = tick % B, sweep = Math.floor(tick / B), beta = 1.2 + 1.1*sweep, idx = [b*K, b*K+1, b*K+2];
+    const en = []; for (let s = 0; s < 8; s++){ const x = idx.map((_, a) => (s >> a) & 1); let e = 0;
+      idx.forEach((i, a) => { if (!x[a]) return; e += Q[i][i]; for (let j = 0; j < N; j++) if (!idx.includes(j)) e += Q[i][j]*p[j]; idx.forEach((j, c) => { if (c > a && x[c]) e += Q[i][j]; }); }); en.push(e); }
+    const m = Math.min(...en), wts = en.map(e => Math.exp(-beta*(e - m))), Z = wts.reduce((a, b) => a + b, 0);
+    const cnt = new Array(8).fill(0); for (let s = 0; s < 128; s++){ let u = R()*Z, k = 0; while (u > wts[k] && k < 7){ u -= wts[k]; k++; } cnt[k]++; }
+    probs = cnt.map(c => c/128);
+    idx.forEach((i, a) => { let q = 0; probs.forEach((pr, s) => { if ((s >> a) & 1) q += pr; }); p[i] = .45*p[i] + .55*q; });
+    tick++; if (tick % B === 0){ const x = p.map(v => v > .5 ? 1 : 0); hist.push(Math.max(0, Math.min(1, E(x)/ref))); }
+    draw(b);
+    if (hist.length >= 7){ timer && clearTimeout(timer); timer = setTimeout(() => { reset(); draw(-1); loop(); }, 2400); return false; }
+    return true;
+  }
+  function draw(active){
+    const acc = css('--nC'), fg = css('--fg'), mu = css('--muted'), line = css('--line'), sunk = css('--sunk'), warm = css('--nT'), green = css('--nA');
+    const cw = 54, ch = 40, gx = 30, gy = 22, gap = 12;
+    let s = '';
+    for (let b = 0; b < B; b++){ const x = gx + b*(cw + gap);
+      for (let a = 0; a < K; a++){ const i = b*K + a, y = gy + a*(ch + 6);
+        s += `<rect x="${x}" y="${y}" width="${cw}" height="${ch}" rx="6" fill="${sunk}" stroke="${line}"/><rect x="${x}" y="${y}" width="${cw}" height="${ch}" rx="6" fill="${acc}" fill-opacity="${(p[i]*.95).toFixed(3)}"/>`;
+        s += `<text x="${x + cw/2}" y="${y + ch/2 + 5}" text-anchor="middle" font-size="13" font-family="${css('--mono')}" fill="${p[i] > .55 ? css('--surface') : fg}">${p[i].toFixed(2)}</text>`; }
+      if (b === active) s += `<rect x="${x - 4}" y="${gy - 4}" width="${cw + 8}" height="${K*(ch + 6) + 2}" rx="9" fill="none" stroke="${warm}" stroke-width="3"/>`;
+    }
+    s += `<text x="${gx}" y="14" font-size="12" font-family="${css('--mono')}" fill="${mu}">8 GROUPS × 3 VARIABLES</text>`;
+    const py = 190, ph = 46, pw = 8*(cw + gap) - gap; s += `<rect x="${gx}" y="${py}" width="${pw}" height="${ph}" fill="none"/><line x1="${gx}" x2="${gx + pw}" y1="${py}" y2="${py}" stroke="${line}" stroke-dasharray="3 4"/><line x1="${gx}" x2="${gx + pw}" y1="${py + ph}" y2="${py + ph}" stroke="${line}"/>`;
+    s += `<text x="${gx - 6}" y="${py + 4}" text-anchor="end" font-size="11" font-family="${css('--mono')}" fill="${mu}">1.0</text><text x="${gx - 6}" y="${py + ph + 4}" text-anchor="end" font-size="11" font-family="${css('--mono')}" fill="${mu}">0</text>`;
+    if (hist.length){ const X = i => gx + i*(pw/6), Y = v => py + ph*(1 - v); s += `<polyline fill="none" stroke="${green}" stroke-width="3" points="${hist.map((v, i) => X(i) + ',' + Y(v)).join(' ')}"/>`; const L = hist.length - 1; s += `<circle cx="${X(L)}" cy="${Y(hist[L])}" r="5" fill="${green}"/>`; }
+    s += `<text x="${gx + pw}" y="${py - 8}" text-anchor="end" font-size="11" font-family="${css('--mono')}" fill="${mu}">QUALITY PER SWEEP</text>`;
+    svg.innerHTML = s;
+    let q = `<text x="0" y="14" font-size="12" font-family="${css('--mono')}" fill="${mu}">QPU SAMPLES</text>`;
+    probs.forEach((v, k) => { const y = 24 + k*27; q += `<text x="0" y="${y + 15}" font-size="12" font-family="${css('--mono')}" fill="${mu}">${k.toString(2).padStart(3,'0')}</text><rect x="36" y="${y + 3}" width="108" height="16" rx="3" fill="${sunk}"/><rect x="36" y="${y + 3}" width="${(108*v).toFixed(1)}" height="16" rx="3" fill="${active >= 0 ? acc : mu}"/>`; });
+    qs.innerHTML = q;
+    const sw = Math.floor(Math.max(0, tick - 1) / B) + 1;
+    txt.textContent = active < 0 ? 'Every variable starts at p = 0.5' : `Sweep ${sw} · circuit ${active + 1} of 8 · ${hist.length ? 'quality ' + hist[hist.length - 1].toFixed(2) + ' of best known' : 'first pass'}`;
+  }
+  function loop(){ clearTimeout(timer); timer = setTimeout(function go(){ if (stepOnce()) timer = setTimeout(go, 520); }, 520); }
+  reset(); draw(-1);
+  if (reduce){ for (let i = 0; i < B*7 && stepOnce(); i++); }
+  return {start(){ if (reduce) return; reset(); draw(-1); loop(); }, stop(){ clearTimeout(timer); timer = 0; }, redraw(){ draw(-1); }};
+})();
+
+/* chart: ibm_kingston best accuracy (QCE table) */
+function drawK(){
+  const svg = $('#kchart'), xs = [10,20,30,40,50], full = [1,.82,.76,.55,.49], had = [1,1,.97,.94,.92];
+  const L = 52, Rr = 24, T = 22, Bm = 48, W = 560, H = 300, X = v => L + (v - 10)/40*(W - L - Rr), Y = v => T + (1 - v/1)*(H - T - Bm)*1;
+  const mu = css('--muted'), line = css('--line'), mono = css('--mono'), A = css('--nA'), Tc = css('--nT');
+  let s = '';
+  [0, .25, .5, .75, 1].forEach(v => { s += `<line x1="${L}" x2="${W - Rr}" y1="${Y(v)}" y2="${Y(v)}" stroke="${line}"/><text x="${L - 8}" y="${Y(v) + 4}" text-anchor="end" font-size="12" font-family="${mono}" fill="${mu}">${v.toFixed(2)}</text>`; });
+  xs.forEach(v => { s += `<text x="${X(v)}" y="${H - Bm + 20}" text-anchor="middle" font-size="12" font-family="${mono}" fill="${mu}">${v}</text>`; });
+  s += `<text x="${(L + W - Rr)/2}" y="${H - 8}" text-anchor="middle" font-size="12" font-family="${mono}" fill="${mu}">problem size (variables)</text>`;
+  const ln = (d, c) => `<polyline fill="none" stroke="${c}" stroke-width="3.5" stroke-linejoin="round" points="${d.map((v, i) => X(xs[i]) + ',' + Y(v)).join(' ')}"/>` + d.map((v, i) => `<circle cx="${X(xs[i])}" cy="${Y(v)}" r="5" fill="${c}"/>`).join('');
+  s += ln(full, Tc) + ln(had, A);
+  s += `<text x="${X(50) - 6}" y="${Y(.92) - 12}" text-anchor="end" font-size="14" font-weight="600" font-family="${mono}" fill="${A}">HADOF, 5-qubit circuits · 0.92</text>`;
+  s += `<text x="${X(50) - 6}" y="${Y(.49) + 24}" text-anchor="end" font-size="14" font-weight="600" font-family="${mono}" fill="${Tc}">Full-circuit QAOA · 0.49</text>`;
+  svg.innerHTML = s;
+}
+
+/* scene: reads to genome */
+const reads = (() => {
+  const box = $('#reads'), cons = $('#cons'), lab = $('#readlab'), GL = 64, RL = 16, NR = 13, STEP = 4;
+  const R = rng(5); let gen = ''; for (let i = 0; i < GL; i++) gen += 'ACGT'[Math.floor(R()*4)];
+  const els = []; for (let k = 0; k < NR; k++){ const d = document.createElement('div'); d.className = 'read'; d.innerHTML = gen.substr(k*STEP, RL).split('').map(c => `<b class="n${c}">${c}</b>`).join(''); box.appendChild(d); els.push(d); }
+  cons.innerHTML = gen.split('').map(c => `<b class="n${c}">${c}</b>`).join('');
+  const scat = els.map(() => [R(), R(), (R() - .5)*30]);
+  let stage = 0, timer = 0;
+  function layout(){
+    const w = box.clientWidth, h = box.clientHeight, cell = Math.max(5, (w - 24)/GL), fs = cell >= 9 ? Math.min(14, cell*1.15) : 0;
+    box.querySelectorAll('.read b, .cons b').forEach(b => { b.style.width = cell + 'px'; b.style.fontSize = fs + 'px'; b.style.lineHeight = fs ? '20px' : '0'; b.style.height = fs ? '' : '10px'; b.style.background = fs ? '' : 'currentColor'; });
+    els.forEach((d, k) => {
+      let x, y, r = 0, o = 1;
+      if (stage === 0){ x = 12 + scat[k][0]*(w - 24 - RL*cell); y = 30 + scat[k][1]*(h - 70); r = scat[k][2]; }
+      else { x = 12 + k*STEP*cell; y = 34 + (k % 6)*24; o = stage === 2 ? .45 : 1; }
+      d.style.transform = `translate(${x}px,${y}px) rotate(${r}deg)`; d.style.opacity = o;
+    });
+    cons.style.left = '12px'; cons.classList.toggle('on', stage === 2);
+    lab.textContent = ['Scattered reads', 'Overlaps found, path chosen by HADOF', 'Assembled sequence'][stage];
+  }
+  function next(){ stage = (stage + 1) % 3; layout(); timer = setTimeout(next, stage === 2 ? 3600 : 2800); }
+  layout();
+  return {start(){ if (reduce){ stage = 2; layout(); return; } clearTimeout(timer); stage = 0; layout(); timer = setTimeout(next, 1800); }, stop(){ clearTimeout(timer); }, relayout: layout};
+})();
+
+/* scene: topology-aware */
+const hex = (() => {
+  const A = $('#hexA'), Bc = $('#hexB'); let raf = 0, t0 = 0;
+  const full = new Set(HEX.nodes.map((_, i) => i)); [5, 37, 70, 101, 140, 155].forEach(i => full.delete(i)); // 150 of 156
+  function frame(ts){
+    if (!t0) t0 = ts; const t = (ts - t0)/1000, ph = Math.floor(t/1.1);
+    const a = fit(A, .9), b = fit(Bc, .9);
+    a.g.clearRect(0, 0, a.w, a.h); b.g.clearRect(0, 0, b.w, b.h);
+    const s5 = new Set(); const start = (ph*17) % 120; for (let i = 0; i < 5; i++) s5.add((start + i) % 128);
+    drawHex(a.g, 8, 8, a.w - 16, a.h - 16, s5, css('--nC'));
+    drawHex(b.g, 8, 8, b.w - 16, b.h - 16, full, css('--nT'));
+    raf = reduce ? 0 : requestAnimationFrame(frame);
+  }
+  return {start(){ if (!raf){ t0 = 0; raf = requestAnimationFrame(frame); } }, stop(){ cancelAnimationFrame(raf); raf = 0; }, draw(){ requestAnimationFrame(frame); }};
+})();
+
+/* run animations only while visible */
+const anims = {gap, how: sim, genome: reads, scale: hex};
+const io = new IntersectionObserver(es => es.forEach(e => { const a = anims[e.target.id]; if (!a || document.documentElement.classList.contains('loop')) return; e.isIntersecting ? a.start() : a.stop(); }), {threshold: .15});
+Object.keys(anims).forEach(id => io.observe(document.getElementById(id)));
+drawK(); gap.draw(); hex.draw();
+let rT = 0; addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { drawK(); reads.relayout(); gap.draw(); hex.draw(); fitScene(); }, 120); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { drawK(); sim.redraw(); gap.draw(); hex.draw(); });
+new MutationObserver(() => { drawK(); sim.redraw(); gap.draw(); hex.draw(); }).observe(document.documentElement, {attributes: true, attributeFilter: ['data-theme']});
+
+/* copy email */
+$('#copyEmail').addEventListener('click', e => { const t = $('#email').textContent, btn = e.currentTarget;
+  const sel = () => { const r = document.createRange(); r.selectNodeContents($('#email')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selected, press copy'; };
+  try { navigator.clipboard.writeText(t).then(() => { btn.textContent = 'Copied'; setTimeout(() => btn.textContent = 'Copy email', 1800); }, sel); } catch (_) { sel(); } });
+
+/* kiosk loop */
+const scenes = [...document.querySelectorAll('.scene')], ideo = $('#ideo');
+scenes.forEach((s, i) => { const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', s.dataset.name); b.style.setProperty('--lc', `var(--${s.dataset.lane})`); b.addEventListener('click', () => go(i)); ideo.appendChild(b); });
+let cur = 0, paused = false, adv = 0, wake = null;
+function fitScene(){ if (!document.documentElement.classList.contains('loop')) return; const s = scenes[cur], w = s.firstElementChild; w.style.transform = ''; const avail = s.clientHeight - 24, need = w.scrollHeight; w.style.transform = need > avail ? `scale(${(avail/need).toFixed(3)})` : ''; }
+function go(i){
+  Object.values(anims).forEach(a => a.stop());
+  cur = (i + scenes.length) % scenes.length;
+  scenes.forEach((s, k) => s.classList.toggle('cur', k === cur));
+  [...ideo.children].forEach((b, k) => { b.classList.toggle('cur', k === cur); b.classList.toggle('done', k < cur); });
+  $('#kname').textContent = scenes[cur].dataset.name;
+  const a = anims[scenes[cur].id]; if (a){ if (a === reads) a.relayout(); a.start(); }
+  if (scenes[cur].id === 'proof') drawK();
+  requestAnimationFrame(fitScene);
+  clearTimeout(adv); if (!paused) adv = setTimeout(() => go(cur + 1), (+scenes[cur].dataset.dur || 10)*1000);
+}
+async function enterLoop(){
+  document.documentElement.classList.add('loop'); paused = false; $('#kpause').textContent = 'Pause'; go(0);
+  try { wake = await navigator.wakeLock?.request('screen'); } catch (_) {}
+}
+function exitLoop(){
+  document.documentElement.classList.remove('loop'); clearTimeout(adv); scenes.forEach(s => { s.classList.remove('cur'); s.firstElementChild.style.transform = ''; });
+  try { wake?.release(); } catch (_) {} wake = null;
+  Object.values(anims).forEach(a => a.stop()); io.disconnect(); Object.keys(anims).forEach(id => io.observe(document.getElementById(id)));
+  if (location.hash === '#loop') history.replaceState(null, '', location.pathname + location.search);
+}
+$('#playLoop').addEventListener('click', () => { location.hash = 'loop'; });
+$('#kexit').addEventListener('click', exitLoop);
+$('#kpause').addEventListener('click', () => { paused = !paused; $('#kpause').textContent = paused ? 'Play' : 'Pause'; if (paused) clearTimeout(adv); else go(cur); });
+$('#main').addEventListener('click', e => { if (!document.documentElement.classList.contains('loop') || e.target.closest('a,button')) return; paused = !paused; $('#kpause').textContent = paused ? 'Play' : 'Pause'; if (paused) clearTimeout(adv); else go(cur); });
+addEventListener('keydown', e => { if (!document.documentElement.classList.contains('loop')) return; if (e.key === 'ArrowRight') go(cur + 1); else if (e.key === 'ArrowLeft') go(cur - 1); else if (e.key === 'Escape') exitLoop(); });
+document.addEventListener('visibilitychange', async () => { if (document.visibilityState === 'visible' && document.documentElement.classList.contains('loop') && !wake){ try { wake = await navigator.wakeLock?.request('screen'); } catch (_) {} } });
+function route(){ if (location.hash === '#loop') enterLoop(); else if (document.documentElement.classList.contains('loop')) exitLoop(); }
+addEventListener('hashchange', route); route();
+})();
+</script>
+
+</body>
+</html>

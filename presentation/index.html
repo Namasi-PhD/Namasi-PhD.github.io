@@ -1,0 +1,1067 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>HADOF Research Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: control bar / 16:9 stage scaled to fit (1280x720 design space) / chromosome-ideogram progress track.
+   Slides read like genome-browser tracks: a coloured section lane, a headline, then one animated body. */
+:root{
+  --bg:#E9EEF1; --surface:#FFFFFF; --sunk:#F2F5F7; --fg:#132029; --muted:#5A6873; --line:#D2DBE0;
+  --accent:#2448B8; --accent-soft:#DDE5FA; --warm:#C9541F; --warm-soft:#FBE4D8;
+  --green:#1F7F55; --green-soft:#DAF0E4; --gold:#9C730A; --teal:#17707C; --red:#BF3A2B; --red-soft:#F8DEDA;
+  --nA:#1F7F55; --nC:#2448B8; --nG:#9C730A; --nT:#BF3A2B;
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --sans:"IBM Plex Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C1317; --surface:#141E24; --sunk:#1A262D; --fg:#E5ECEF; --muted:#93A4AE; --line:#2B3A43;
+  --accent:#86A2FF; --accent-soft:#22305A; --warm:#F0905E; --warm-soft:#4A2A1B;
+  --green:#55C68E; --green-soft:#183A2B; --gold:#E2B84A; --teal:#4FC0CD; --red:#F27767; --red-soft:#4A221E;
+  --nA:#55C68E; --nC:#86A2FF; --nG:#E2B84A; --nT:#F27767; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C1317; --surface:#141E24; --sunk:#1A262D; --fg:#E5ECEF; --muted:#93A4AE; --line:#2B3A43;
+  --accent:#86A2FF; --accent-soft:#22305A; --warm:#F0905E; --warm-soft:#4A2A1B;
+  --green:#55C68E; --green-soft:#183A2B; --gold:#E2B84A; --teal:#4FC0CD; --red:#F27767; --red-soft:#4A221E;
+  --nA:#55C68E; --nC:#86A2FF; --nG:#E2B84A; --nT:#F27767; color-scheme:dark}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 var(--sans);overflow:hidden}
+#app{height:100%;display:grid;grid-template-rows:auto 1fr auto}
+
+/* ---------- chrome ---------- */
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;gap:10px;margin-right:auto;min-width:0}
+.brand b{font:800 18px/1 var(--display);letter-spacing:-.01em}
+.brand span{font:500 12px/1 var(--mono);color:var(--muted);letter-spacing:.04em}
+.ctl{display:flex;align-items:center;gap:8px}
+.ctl > span{font:500 11px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--sunk)}
+.seg button{all:unset;cursor:pointer;padding:6px 11px;font:500 13px/1.2 var(--sans);color:var(--muted)}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--surface)}
+.btn{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border:1px solid var(--line);border-radius:8px;font:500 13px/1.2 var(--sans);color:var(--fg);background:var(--surface)}
+.btn:hover,.seg button:hover{color:var(--fg)}
+.btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--fg)}
+.seg button:focus-visible,.btn:focus-visible,.ideo button:focus-visible,.sbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn kbd{font:500 11px/1 var(--mono);color:var(--muted)}
+
+.main{display:grid;grid-template-columns:minmax(0,1fr) auto;min-height:0;position:relative}
+.vp{position:relative;min-height:0;min-width:0;display:grid;place-items:center;overflow:hidden;touch-action:pan-y}
+.wrap{position:relative;width:calc(1280px * var(--s,.5));height:calc(720px * var(--s,.5))}
+.stage{position:absolute;top:0;left:0;width:1280px;height:720px;transform:scale(var(--s,.5));transform-origin:0 0;background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;box-shadow:0 1px 2px rgba(0,0,0,.05),0 10px 30px -12px rgba(10,30,50,.18)}
+
+.notes{width:340px;border-left:1px solid var(--line);background:var(--surface);overflow:auto;padding:18px 18px 24px;display:flex;flex-direction:column;gap:12px}
+.notes h3{margin:0;font:700 18px/1.2 var(--display)}
+.notes .mid{font:500 12px/1.3 var(--mono);color:var(--muted)}
+.notes p{margin:0;line-height:1.6;max-width:62ch}
+.notes .next{border-top:1px solid var(--line);padding-top:10px;color:var(--muted);font-size:13px}
+@media (max-width:820px){.notes{position:absolute;left:0;right:0;bottom:0;width:auto;max-height:46%;border-left:0;border-top:1px solid var(--line);z-index:4}}
+
+.foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:8px 16px 10px;background:var(--surface);border-top:1px solid var(--line)}
+.count{font:500 13px/1 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.count b{color:var(--fg);font-weight:600}
+.ideo{flex:1 1 260px;display:flex;gap:3px;height:16px;min-width:0;align-items:center}
+.ideo button{all:unset;cursor:pointer;flex:1;height:10px;border-radius:5px;background:var(--seg);opacity:.32;transition:height .2s,opacity .2s}
+.ideo button.done{opacity:.6}
+.ideo button.cur{opacity:1;height:16px}
+.modid{font:500 12px/1 var(--mono);color:var(--muted);white-space:nowrap}
+.present .top{display:none}
+.present .notes{display:none}
+
+.sheet{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:16px;background:color-mix(in srgb,var(--fg) 35%,transparent)}
+.sheet-card{background:var(--surface);color:var(--fg);width:100%;max-width:820px;max-height:100%;overflow:auto;border-radius:12px;border:1px solid var(--line);padding:20px 20px 16px;display:flex;flex-direction:column;gap:14px}
+.sheet-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:space-between}
+.sheet-head h3{margin:0;font:700 22px/1.2 var(--display)}
+.sheet-card > p{margin:0;color:var(--muted);max-width:68ch}
+.modlist{display:flex;flex-direction:column;gap:2px}
+.modsec{font:500 11px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:12px 0 6px;display:flex;align-items:center;gap:8px}
+.modsec i{width:22px;height:6px;border-radius:3px;background:var(--seg)}
+.modrow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px 10px;border-radius:8px;cursor:pointer}
+.modrow:hover{background:var(--sunk)}
+.modrow input{width:18px;height:18px;accent-color:var(--accent)}
+.modrow .nm{font-weight:600}
+.modrow .ds{color:var(--muted);font-size:13px}
+.modrow .tags{font:500 11px/1.3 var(--mono);color:var(--muted);text-align:right;white-space:nowrap}
+.modrow .tags b{color:var(--fg);font-weight:600}
+
+/* ---------- slide primitives (1280x720 space) ---------- */
+.slide{position:absolute;inset:0;padding:44px 64px 46px;display:flex;flex-direction:column;gap:16px;color:var(--fg)}
+.kicker{display:flex;align-items:center;gap:12px;font:500 14px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.kicker i{width:30px;height:7px;border-radius:4px;background:var(--sec)}
+.kicker .pos{margin-left:auto;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.slide h2{margin:0;font:700 48px/1.06 var(--display);letter-spacing:-.015em;text-wrap:balance;max-width:24ch}
+.lede{margin:0;font:400 21px/1.42 var(--sans);color:var(--muted);max-width:66ch;text-wrap:pretty}
+.body{flex:1;min-height:0;display:grid;gap:26px;align-content:start}
+.cols2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.cols3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.label{font:500 13px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.mono{font-family:var(--mono)}
+.card{background:var(--sunk);border-radius:12px;padding:22px 24px;display:flex;flex-direction:column;gap:12px}
+.card h4{margin:0;font:700 24px/1.15 var(--display)}
+.card p{margin:0;font-size:18px;line-height:1.45;color:var(--muted)}
+.cite{font:400 14px/1.3 var(--mono);color:var(--muted)}
+.src{position:absolute;left:64px;bottom:16px;font:400 13px/1.2 var(--mono);color:var(--muted)}
+.note{font-size:17px;color:var(--muted);line-height:1.45;max-width:72ch}
+.f-accent{fill:var(--accent)} .f-warm{fill:var(--warm)} .f-green{fill:var(--green)} .f-muted{fill:var(--muted)} .f-fg{fill:var(--fg)} .f-surface{fill:var(--surface)} .f-sunk{fill:var(--sunk)} .f-line{fill:var(--line)} .f-red{fill:var(--red)}
+.s-line{stroke:var(--line)} .s-muted{stroke:var(--muted)} .s-accent{stroke:var(--accent)} .s-fg{stroke:var(--fg)} .s-green{stroke:var(--green)} .s-warm{stroke:var(--warm)} .s-red{stroke:var(--red)}
+svg text{font-family:var(--mono)}
+
+[data-s]{opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s ease}
+[data-s].on{opacity:1;transform:none}
+
+/* title */
+.title{position:absolute;inset:0;padding:64px 72px 0;display:flex;flex-direction:column;gap:22px}
+.title h1{margin:28px 0 0;font:800 72px/1.0 var(--display);letter-spacing:-.025em;max-width:17ch;text-wrap:balance}
+.title .lede{font-size:24px;max-width:56ch}
+.byline{display:flex;flex-direction:column;gap:4px;margin-top:8px;font-size:19px}
+.byline span{color:var(--muted)}
+.seq{position:absolute;left:0;right:0;bottom:0;height:86px;overflow:hidden;border-top:1px solid var(--line);background:var(--sunk);display:flex;align-items:center}
+.seq-in{display:flex;white-space:nowrap;font:500 22px/1 var(--mono);letter-spacing:.18em;animation:scroll 70s linear infinite}
+.seq-in b{font-weight:500}
+.nA{color:var(--nA)} .nC{color:var(--nC)} .nG{color:var(--nG)} .nT{color:var(--nT)}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* agenda */
+.agenda{list-style:none;margin:0;padding:0;display:grid;gap:4px;counter-reset:a}
+.agenda li{display:grid;grid-template-columns:70px minmax(0,1fr) auto;gap:20px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line)}
+.agenda li::before{counter-increment:a;content:counter(a,decimal-leading-zero);font:500 22px/1 var(--mono);color:var(--secc)}
+.agenda .nm{font:700 28px/1.1 var(--display)}
+.agenda .ds{display:block;font:400 18px/1.4 var(--sans);color:var(--muted);margin-top:4px}
+.agenda .n{font:500 14px/1 var(--mono);color:var(--muted);white-space:nowrap}
+
+/* bit / qubit */
+.bitbox{display:flex;gap:10px}
+.bitbox span{width:72px;height:72px;border-radius:10px;display:grid;place-items:center;font:600 34px/1 var(--mono);background:var(--surface);border:1px solid var(--line);color:var(--muted);animation:bit 2.4s steps(1) infinite}
+.bitbox span:last-child{animation-delay:-1.2s}
+@keyframes bit{0%{background:var(--fg);color:var(--surface)}50%{background:var(--surface);color:var(--muted)}}
+.spin{transform-origin:90px 90px;animation:spin 5s ease-in-out infinite alternate}
+@keyframes spin{0%{transform:rotate(-20deg)}100%{transform:rotate(200deg)}}
+.big-num{font:600 30px/1.15 var(--mono);color:var(--accent);word-break:break-all;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--accent)}
+
+/* bars */
+.bars{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px 20px;align-items:center}
+.bars .bl{font-size:18px;line-height:1.25}
+.bars .bl small{display:block;color:var(--muted);font-size:14px}
+.track{position:relative;height:30px;background:var(--sunk);border-radius:6px;overflow:hidden}
+.track > span{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--bc,var(--accent));border-radius:6px;transition:width 1.1s cubic-bezier(.2,.7,.2,1)}
+.on .track > span,.track.on > span{width:var(--w)}
+.bv{font:600 20px/1 var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.marker{position:absolute;top:-4px;bottom:-4px;width:0;border-left:2px dashed var(--fg);opacity:.55}
+
+/* landscape */
+.legend{display:flex;gap:28px;flex-wrap:wrap}
+.legend > div{display:flex;gap:10px;align-items:center;font-size:18px}
+.sw{width:16px;height:16px;border-radius:50%;flex:none}
+
+/* matrix */
+.qcell{transition:stroke-width .15s}
+.eq{font:500 26px/1.6 var(--mono);color:var(--fg)}
+.eq small{font-size:15px;color:var(--muted);display:block;line-height:1.4}
+.eq sub,.eq sup{font-size:.6em}
+
+/* steps list */
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;counter-reset:st}
+.steps li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;align-items:start;font-size:20px;line-height:1.4}
+.steps li::before{counter-increment:st;content:counter(st);width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:var(--surface);font:600 17px/1 var(--mono)}
+.steps li b{display:block;font:700 21px/1.2 var(--display)}
+.steps li span{color:var(--muted);font-size:18px}
+
+/* hadof anim */
+.hanim{display:grid;grid-template-columns:600px minmax(0,1fr);gap:28px;flex:1;min-height:0}
+.hpanel{display:flex;flex-direction:column;gap:8px;min-width:0}
+.hpanel svg{display:block;width:100%;height:auto}
+.cellfill{transition:fill-opacity .45s ease}
+.cellt{font-size:14px;font-weight:500;transition:fill .3s}
+.hlinks path{fill:none;stroke:var(--warm);stroke-dasharray:4 4;stroke-width:2}
+.colhl{fill:none;stroke:var(--accent);stroke-width:3;transition:x .35s ease,opacity .3s}
+.hbar{transition:height .35s ease,y .35s ease}
+.ctrls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.sbtn{all:unset;cursor:pointer;padding:7px 14px;border-radius:8px;border:1px solid var(--line);font:500 15px/1.2 var(--sans);background:var(--surface)}
+.sbtn.primary{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+.hcount{font:500 14px/1.3 var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.flash{animation:flash .5s ease}
+@keyframes flash{0%{opacity:.4}100%{opacity:1}}
+.tag{font:500 13px/1 var(--mono);color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}
+.tile{border-top:4px solid var(--sec);padding:18px 4px 0;display:flex;flex-direction:column;gap:10px}
+.tile .v{font:800 56px/1 var(--display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.tile .v small{font-size:28px;font-weight:700}
+.tile p{margin:0;font-size:17px;line-height:1.4;color:var(--muted)}
+
+/* timelines */
+.tl{display:flex;flex-direction:column;gap:6px}
+.tl h4{margin:0;font:700 22px/1.2 var(--display);display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.tl h4 span{font:400 16px/1.3 var(--sans);color:var(--muted)}
+.blk{transform-box:fill-box;transform-origin:left center;transform:scaleX(0)}
+.run .blk{animation:grow .26s ease-out forwards;animation-delay:var(--d)}
+.tick{opacity:0}
+.run .tick{animation:show .2s forwards;animation-delay:var(--d)}
+.endlab{opacity:0}
+.run .endlab{animation:show .3s forwards;animation-delay:var(--d)}
+@keyframes grow{to{transform:scaleX(1)}}
+@keyframes show{to{opacity:1}}
+
+/* reads */
+.reads{position:relative;height:300px;background:var(--sunk);border-radius:12px;overflow:hidden}
+.read{position:absolute;left:0;top:0;display:flex;border-radius:4px;background:var(--surface);box-shadow:0 0 0 1px var(--line);transition:transform 1s cubic-bezier(.2,.7,.2,1)}
+.read b{width:14px;text-align:center;font:600 16px/24px var(--mono)}
+.cons{position:absolute;left:20px;top:250px;display:flex;opacity:0;transition:opacity .6s}
+.cons.show{opacity:1}
+.cons b{width:14px;text-align:center;font:700 16px/26px var(--mono);border-top:3px solid var(--green)}
+.gpanel{position:relative;height:300px;background:var(--sunk);border-radius:12px}
+.gpanel svg{width:100%;height:100%}
+.edge{fill:none;stroke-width:2.2;transition:stroke .4s,opacity .4s,stroke-width .4s}
+.caption{font:500 17px/1.3 var(--mono);color:var(--fg);min-height:22px}
+.facts{display:flex;flex-wrap:wrap;gap:8px 26px;font-size:17px;padding-top:4px;border-top:1px solid var(--line)}
+.facts b{font-family:var(--mono);font-weight:600}
+
+/* pipeline */
+.pipe{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px;align-items:stretch}
+.pcol{display:flex;flex-direction:column;gap:12px;position:relative}
+.pcol:not(:last-child)::after{content:"";position:absolute;right:-18px;top:50%;width:14px;height:14px;border-top:3px solid var(--muted);border-right:3px solid var(--muted);transform:translateY(-50%) rotate(45deg)}
+.pbox{flex:1;border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px;background:var(--surface)}
+.pbox h5{margin:0;font:700 20px/1.2 var(--display)}
+.pbox p{margin:0;font-size:15.5px;line-height:1.4;color:var(--muted)}
+.pbox.q{border:2px solid var(--accent);background:var(--accent-soft)}
+.pbox.q p{color:var(--fg)}
+.pnum{font:500 13px/1 var(--mono);color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+/* results table */
+.rt{width:100%;border-collapse:collapse;font-size:18px}
+.rt th{font:500 13px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.07em;color:var(--muted);text-align:left;padding:0 12px 10px 0;border-bottom:1px solid var(--line)}
+.rt td{padding:13px 12px 13px 0;border-bottom:1px solid var(--line);vertical-align:middle}
+.rt td.num{font:500 17px/1 var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.rt tr.hl td:first-child{font-weight:700}
+.rt .track{height:18px}
+.rt .cellbar{display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:12px;align-items:center}
+.callout{border-left:4px solid var(--green);padding:6px 0 6px 16px;font-size:19px;line-height:1.45}
+.callout small{display:block;color:var(--muted);font-size:16px;margin-top:6px}
+
+/* misc */
+.chip{display:inline-block;padding:5px 11px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:16px;margin:0 6px 8px 0}
+.vs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
+.verdict{display:flex;align-items:center;gap:12px;font:700 22px/1.2 var(--display)}
+.verdict .ic{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font:700 22px/1 var(--mono);flex:none}
+.bad .ic{background:var(--red-soft);color:var(--red)}
+.good .ic{background:var(--green-soft);color:var(--green)}
+.flow{fill:none;stroke-width:2.5;stroke-dasharray:6 6;animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-24}}
+.road{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.road > div{border-top:3px solid var(--line);padding-top:12px}
+.road > div.now{border-top-color:var(--sec)}
+.road b{display:block;font:700 20px/1.2 var(--display);margin-bottom:4px}
+.road span{color:var(--muted);font-size:16.5px;line-height:1.4}
+.pubs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.pubs li{font-size:17.5px;line-height:1.4}
+.pubs li span{display:block;font:400 14px/1.35 var(--mono);color:var(--muted)}
+.links{display:flex;flex-direction:column;gap:10px;font:500 18px/1.3 var(--mono)}
+.links span{color:var(--muted);font:500 12px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:3px}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .seq-in{animation:none}
+}
+@media (max-width:640px){
+  .brand span,.kbdhint{display:none}
+  .top{gap:8px 10px}
+  .seg button{padding:6px 9px}
+}
+</style>
+
+<div id="app">
+  <header class="top">
+    <div class="brand"><b>HADOF Research Presentation</b><span id="brandsub">Namasi G. Sankar</span></div>
+    <div class="ctl"><span>Audience</span>
+      <div class="seg" id="segAud" role="group" aria-label="Audience">
+        <button type="button" data-v="general">General</button>
+        <button type="button" data-v="industry">Industry</button>
+        <button type="button" data-v="technical">Technical</button>
+      </div>
+    </div>
+    <div class="ctl"><span>Length</span>
+      <div class="seg" id="segLen" role="group" aria-label="Talk length">
+        <button type="button" data-v="10">10 min</button>
+        <button type="button" data-v="20">20 min</button>
+        <button type="button" data-v="45">45 min</button>
+      </div>
+    </div>
+    <button type="button" class="btn" id="bMods">Modules <kbd class="kbdhint">M</kbd></button>
+    <button type="button" class="btn" id="bNotes" aria-pressed="false">Speaker notes <kbd class="kbdhint">N</kbd></button>
+    <button type="button" class="btn" id="bFull">Present <kbd class="kbdhint">F</kbd></button>
+  </header>
+
+  <div class="main">
+    <div class="vp" id="vp">
+      <div class="wrap" id="wrap"><div class="stage" id="stage" aria-live="polite"></div></div>
+    </div>
+    <aside class="notes" id="notes" hidden aria-label="Speaker notes"></aside>
+  </div>
+
+  <footer class="foot">
+    <button type="button" class="btn" id="bPrev" aria-label="Previous">← Back</button>
+    <div class="count" id="count"></div>
+    <div class="ideo" id="ideo" aria-label="Slides"></div>
+    <div class="modid" id="modid"></div>
+    <button type="button" class="btn" id="bNext" aria-label="Next">Next →</button>
+  </footer>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-card" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet-head">
+      <h3 id="sheetTitle">Modules</h3>
+      <div class="ctrls"><button type="button" class="btn" id="bPreset">Reset to preset</button><button type="button" class="btn" id="bClose">Done</button></div>
+    </div>
+    <p id="sheetSub"></p>
+    <div class="modlist" id="modlist"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fmt = n => n.toLocaleString('en-IE');
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const by = (a, o) => (a in o ? o[a] : o.all);
+const S = n => ` data-s="${n}"`;
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+
+const SECTIONS = {
+  intro:{name:'Introduction', c:'var(--muted)'},
+  background:{name:'Why quantum', c:'var(--teal)'},
+  problem:{name:'The hardware gap', c:'var(--warm)'},
+  hadof:{name:'HADOF', c:'var(--accent)'},
+  genome:{name:'Genome assembly', c:'var(--green)'},
+  impact:{name:'Impact', c:'var(--gold)'},
+  close:{name:'Close', c:'var(--muted)'}
+};
+const SEC_DESC = {
+  background:{general:'What a quantum computer is, and the kind of problem it could help with', all:'Combinatorial explosion and the QUBO formulation'},
+  problem:{general:'Why today’s machines are too small for real problems', all:'Qubit count, noise and connectivity on NISQ hardware'},
+  hadof:{general:'Solving a big problem a few pieces at a time', industry:'A framework that scales past the qubit limit, in parallel', technical:'Hamiltonian auto-decomposition, marginals, and parallel HPQ'},
+  genome:{general:'Piecing together a real bacterial genome on a quantum computer', all:'Edge-based QUBO, the assembly pipeline, and results on ibm_torino'},
+  impact:{general:'Where this could matter next', all:'Applications, the HPQ vision, and open questions'}
+};
+
+/* ---------- shared maths ---------- */
+function makeQubo(n, seed){
+  const R = rng(seed), a = [], W = Array.from({length:n}, () => new Float64Array(n));
+  for (let i = 0; i < n; i++) a.push((R()*2 - 1) * 1.0);
+  for (let i = 0; i < n; i++) for (let t = 0; t < 3; t++){
+    const j = Math.floor(R()*n); if (j === i || W[i][j]) continue;
+    const w = (R()*2 - 1) * 1.6; W[i][j] = W[j][i] = w;
+  }
+  return {n, a, W};
+}
+function energy(q, x){let e = 0; for (let i = 0; i < q.n; i++){ if (!x[i]) continue; e += q.a[i]; for (let j = i+1; j < q.n; j++) if (x[j]) e += q.W[i][j]; } return e;}
+function anneal(q, seed){
+  const R = rng(seed); let best = Infinity;
+  for (let r = 0; r < 24; r++){
+    const x = Array.from({length:q.n}, () => R() < .5 ? 1 : 0); let e = energy(q, x);
+    for (let s = 0; s < 5000; s++){
+      const T = 2.2*(1 - s/5000) + .01, i = Math.floor(R()*q.n);
+      let f = q.a[i]; for (let j = 0; j < q.n; j++) if (j !== i && x[j]) f += q.W[i][j];
+      const dE = (x[i] ? -1 : 1) * f;
+      if (dE <= 0 || R() < Math.exp(-dE/T)){ x[i] ^= 1; e += dE; if (e < best) best = e; }
+    }
+  }
+  return best;
+}
+function subSolve(q, p, Sx, beta, R, shots = 64){
+  const k = Sx.length, st = 1 << k, inS = new Set(Sx);
+  const lin = Sx.map(i => { let v = q.a[i]; for (let j = 0; j < q.n; j++) if (!inS.has(j)) v += q.W[i][j]*p[j]; return v; });
+  const E = [];
+  for (let s = 0; s < st; s++){ let e = 0; for (let u = 0; u < k; u++) if (s>>u & 1){ e += lin[u]; for (let v = u+1; v < k; v++) if (s>>v & 1) e += q.W[Sx[u]][Sx[v]]; } E.push(e); }
+  const m = Math.min(...E), w = E.map(e => Math.exp(-beta*(e - m))), Z = w.reduce((x, y) => x + y, 0);
+  const counts = new Array(st).fill(0);
+  for (let t = 0; t < shots; t++){ let r = R()*Z, s = 0; while (s < st - 1 && r > w[s]){ r -= w[s]; s++; } counts[s]++; }
+  const marg = Sx.map((_, u) => counts.reduce((acc, c, s) => acc + ((s>>u & 1) ? c : 0), 0) / shots);
+  return {counts, marg};
+}
+function seqLetters(n, seed){const R = rng(seed); let s = ''; for (let i = 0; i < n; i++){ const c = 'ACGT'[Math.floor(R()*4)]; s += `<b class="n${c}">${c}</b>`; } return s;}
+
+/* ============================================================
+   MODULE LIBRARY
+   when: minimum talk length (10/20/45) at which a module appears
+         for each audience; 0 = never in the preset.
+   ============================================================ */
+const MODULES = [
+
+{ id:'title', sec:'intro', name:'Title', desc:'Talk title, framing line and authors',
+  when:{general:10, industry:10, technical:10}, bare:true,
+  render:a => `<div class="title">
+    <div class="label">University College Dublin · School of Computer Science</div>
+    <h1>${by(a,{general:'Solving problems too big for today’s quantum computers', industry:'Running large optimisation workloads on today’s quantum hardware', technical:'Scalable quantum optimisation with HADOF'})}</h1>
+    <p class="lede">${by(a,{general:'And using that to piece together a complete bacterial genome from real DNA data.', industry:'HADOF, a decomposition framework that runs past the qubit limit, and a complete bacterial genome assembled on IBM quantum hardware.', technical:'The Hamiltonian Auto-Decomposition Optimisation Framework, its parallel HPQ extension, and genome assembly from real sequencing data on NISQ hardware.'})}</p>
+    <div class="byline"><strong>Namasi G. Sankar</strong><span>Doctoral candidate · with Georgios Miliotis and Simon Caton</span></div>
+    <div class="seq" aria-hidden="true"><div class="seq-in">${(() => {const s = seqLetters(140, 42); return s + s;})()}</div></div>
+  </div>`,
+  notes:{general:'Open with the hook: quantum computers are promising but small. My work is about getting useful answers out of them anyway, and the test case is reading a real genome.', industry:'One-line pitch: a framework that lets today’s small quantum processors work on problems many times their size, demonstrated end to end on a real genome.', technical:'Two contributions: HADOF (decomposition with sampled marginals, plus its parallel HPQ variant) and its application to OLC genome assembly on real ONT data, run on ibm_torino.'} },
+
+{ id:'agenda', sec:'intro', name:'Agenda', desc:'Built automatically from the sections in this version',
+  when:{general:20, industry:20, technical:20},
+  render:(a, ctx) => {
+    const secs = []; ctx.deck.forEach(m => { if (m.sec !== 'intro' && m.sec !== 'close'){ const f = secs.find(s => s.k === m.sec); f ? f.n++ : secs.push({k:m.sec, n:1}); } });
+    return `<h2>Today</h2><div class="body"><ol class="agenda">${secs.map((s, i) => `<li style="--secc:${SECTIONS[s.k].c}"${S(i+1)}><div><span class="nm">${SECTIONS[s.k].name}</span><span class="ds">${by(a, SEC_DESC[s.k])}</span></div><span class="n">${s.n} slide${s.n > 1 ? 's' : ''}</span></li>`).join('')}</ol></div>`;
+  },
+  notes:{all:'This list is generated from whichever modules are in this version, so it always matches the deck.'} },
+
+{ id:'bits-qubits', sec:'background', name:'Bits and qubits', desc:'Interactive: superposition and the 2ⁿ state space',
+  when:{general:10, industry:45, technical:0},
+  render:a => `<h2>A bit is a switch. A qubit is a dial.</h2>
+    <p class="lede">Quantum computers store information in qubits, which can hold a blend of 0 and 1 until they are measured.</p>
+    <div class="body cols3">
+      <div class="card"><div class="label">Classical bit</div><div class="bitbox" aria-hidden="true"><span>0</span><span>1</span></div><p>Always exactly 0 or exactly 1. Every computer you own is built from these.</p></div>
+      <div class="card"${S(1)}><div class="label">Qubit</div>
+        <svg viewBox="0 0 180 180" width="150" height="150" aria-hidden="true">
+          <circle cx="90" cy="90" r="74" class="f-sunk s-line" stroke-width="2" style="fill:var(--surface)"/>
+          <ellipse cx="90" cy="90" rx="74" ry="20" fill="none" class="s-line" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <text x="90" y="10" text-anchor="middle" class="f-muted" font-size="13">|0⟩</text>
+          <text x="90" y="179" text-anchor="middle" class="f-muted" font-size="13">|1⟩</text>
+          <g class="spin"><line x1="90" y1="90" x2="90" y2="24" class="s-accent" stroke-width="4" stroke-linecap="round"/><circle cx="90" cy="24" r="7" class="f-accent"/></g>
+          <circle cx="90" cy="90" r="4" class="f-fg"/>
+        </svg>
+        <p>Any point on this sphere is a valid state: a superposition of 0 and 1. Entangled qubits share correlations no set of bits can copy.</p></div>
+      <div class="card"${S(2)}><div class="label">n qubits span 2ⁿ states</div>
+        <label for="qn" style="font-size:18px">Qubits: <b id="qlab">10</b></label>
+        <input type="range" id="qn" min="1" max="60" value="10">
+        <div class="big-num" id="qout"></div>
+        <p>Drag to 60: that is already about 1.15 quintillion combinations.</p></div>
+    </div>`,
+  mount:el => { const r = $('#qn', el), o = $('#qout', el), l = $('#qlab', el); const u = () => { const n = +r.value; l.textContent = n; o.textContent = (1n << BigInt(n)).toLocaleString('en-IE'); }; r.addEventListener('input', u); u(); },
+  notes:{all:'Keep this light. The only idea to land: n qubits can represent 2ⁿ combinations at once, which is why people hope they help with problems where the number of combinations explodes. Let someone in the room drag the slider if you can.'} },
+
+{ id:'hard-problems', sec:'background', name:'Combinatorial explosion', desc:'Animated log-scale bars from 10 to 2,313 decisions',
+  when:{general:10, industry:10, technical:20},
+  render:a => {
+    const rows = [[10,'1,024',3.01,'10 yes/no decisions',''],[100,'≈ 10³⁰',30.1,'100 decisions',''],[500,'≈ 10¹⁵⁰',150.5,'500 decisions','largest HADOF benchmark'],[2313,'≈ 10⁶⁹⁶',696.3,'2,313 decisions','our genome assembly problem']];
+    return `<h2>${by(a,{general:'Some problems grow faster than any computer', all:'Combinatorial explosion'})}</h2>
+    <p class="lede">${by(a,{general:'With n yes/no choices there are 2ⁿ possible answers. Checking them all stops being possible very quickly.', all:'n binary decisions give 2ⁿ candidate solutions. Routing, scheduling, partitioning and genome assembly all live here.'})}</p>
+    <div class="body"><div class="bars">
+      <div></div><div class="label" style="position:relative">possible answers (log scale) <span style="position:absolute;left:${(80/700*100).toFixed(1)}%;transform:translateX(-50%);top:0;white-space:nowrap;color:var(--fg)">┆ 10⁸⁰ ≈ atoms in the observable universe</span></div><div></div>
+      ${rows.map((r, i) => `<div class="bl"${S(i+1)}>${r[3]}${r[4] ? `<small>${r[4]}</small>` : ''}</div><div class="track${i === 3 ? '' : ''}"${S(i+1)} style="--w:${Math.max(.6, r[2]/700*100).toFixed(2)}%;--bc:${i === 3 ? 'var(--green)' : 'var(--teal)'}"><span></span><div class="marker" style="left:${(80/700*100).toFixed(1)}%"></div></div><div class="bv"${S(i+1)}>${r[1]}</div>`).join('')}
+    </div>
+    <p class="note"${S(4)}>${by(a,{general:'This is why classical software relies on clever shortcuts (heuristics). They work well, but give no guarantee of the best answer.', industry:'Classical tools fall back on problem-specific heuristics. They work, but don’t generalise and don’t guarantee optimality.', technical:'Exact solvers become intractable; specialised heuristics (e.g. Lin–Kernighan for TSP) are fast but problem-specific.'})}</p></div>`;
+  },
+  notes:{all:'Walk down the bars one at a time. The dashed line is the number of atoms in the observable universe, about 10⁸⁰; the genome problem is roughly 10⁶⁹⁶ candidate answers. Point: brute force is not an option, so everyone uses shortcuts.'} },
+
+{ id:'qubo', sec:'background', name:'QUBO', desc:'Energy landscape with tunnelling (general/industry) or Q-matrix brute force (technical)',
+  when:{general:20, industry:20, technical:10},
+  render:a => a === 'technical' ? `<h2>QUBO: one formulation for many NP-hard problems</h2>
+    <p class="lede">Binary variables, a quadratic objective, constraints folded in as penalties. It maps directly onto an Ising Hamiltonian.</p>
+    <div class="body cols2" style="grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div class="eq">min<sub>x ∈ {0,1}ⁿ</sub> &nbsp;xᵀ Q x<small>Q symmetric; diagonal = linear terms, off-diagonal = pairwise couplings</small></div>
+        <div class="eq"${S(1)}>x<sub>i</sub> = (1 − Z<sub>i</sub>) / 2 &nbsp;→&nbsp; H<sub>C</sub> = Σ h<sub>i</sub>Z<sub>i</sub> + Σ J<sub>ij</sub>Z<sub>i</sub>Z<sub>j</sub><small>The QUBO becomes a cost Hamiltonian for QAOA, annealing or SA</small></div>
+        <p class="note"${S(1)}>Constraints such as “visit each city once” enter as penalty terms. Penalties discourage invalid answers but do not forbid them, so λ needs tuning and outputs may need repair.</p>
+        <p class="note"${S(2)}>General solvers such as CPLEX struggle beyond roughly 100 binary variables.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+        <div class="label">Toy instance · n = 6</div>
+        <svg id="qm" viewBox="0 0 330 330" width="330" height="330" aria-label="Q matrix heatmap"></svg>
+        <div${S(2)} style="display:flex;flex-direction:column;gap:6px">
+          <div class="label">Exhaustive search over 2⁶ = 64 states</div>
+          <div class="mono" style="font-size:18px">x = <b id="qx">000000</b> &nbsp; E = <b id="qe">0.00</b></div>
+          <div class="mono" style="font-size:18px;color:var(--green)">best = <b id="qbx">—</b> &nbsp; E* = <b id="qbe">—</b></div>
+          <div class="cite">For our genome QUBO this would be 2²³¹³ states.</div>
+        </div>
+      </div>
+    </div>` : `<h2>${by(a,{general:'Turn the problem into a landscape. The best answer is the lowest valley.', industry:'One common format: QUBO. Solving it means finding the lowest valley.'})}</h2>
+    <p class="lede">${by(a,{general:'Many hard problems can be written in one shared form, called QUBO, where every possible answer has an “energy”. Lower is better.', industry:'QUBO (quadratic unconstrained binary optimisation) covers routing, scheduling, partitioning and genome assembly in a single format that quantum and classical solvers both accept.'})}</p>
+    <div class="body" style="gap:14px">
+      <svg id="land" viewBox="0 0 1150 330" style="width:100%;height:auto" aria-label="Energy landscape"></svg>
+      <div class="legend"><div${S(1)}><span class="sw" style="background:var(--warm)"></span>Classical hill-climbing settles into the nearest valley</div><div${S(2)}><span class="sw" style="background:var(--accent)"></span>Quantum tunnelling can pass through a barrier to a deeper valley</div></div>
+    </div>`,
+  mount:(el, ctx) => ctx.a === 'technical' ? mountMatrix(el) : mountLandscape(el),
+  notes:{general:'Every possible answer gets a score, like height on a map. The best answer is the lowest point. Classical searches can get stuck in a nearby dip; quantum effects such as tunnelling can, in principle, cross the hills.', industry:'QUBO is the interface: if your problem can be written this way, any QUBO solver can attack it, quantum or classical. That generality is what HADOF builds on.', technical:'Standard material, keep it brisk. Emphasise the penalty point: it comes back in the genome section, where relaxed solutions need DFS post-processing.'} },
+
+{ id:'nisq-gap', sec:'problem', name:'The hardware gap', desc:'Qubits available vs variables needed; noise compounding',
+  when:{general:10, industry:10, technical:10},
+  render:a => `<h2>${by(a,{general:'Today’s quantum computers are small and noisy', industry:'Real problems need far more qubits than exist', technical:'NISQ constraints: qubit count, noise, connectivity'})}</h2>
+    <p class="lede">${by(a,{general:'Standard quantum methods need one qubit for every yes/no choice in the problem.', all:'Standard QAOA needs one qubit per binary variable, in an ideal, noise-free setting.'})}</p>
+    <div class="body cols2" style="grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)">
+      <div class="bars" style="grid-template-columns:minmax(0,190px) minmax(0,1fr) auto">
+        <div class="bl"${S(1)}>Qubits on IBM ibm_torino</div><div class="track"${S(1)} style="--w:${(133/2400*100).toFixed(2)}%;--bc:var(--muted)"><span></span></div><div class="bv"${S(1)}>133</div>
+        <div class="bl"${S(2)}>HADOF benchmark<small>largest QUBO tested</small></div><div class="track"${S(2)} style="--w:${(500/2400*100).toFixed(2)}%;--bc:var(--warm)"><span></span></div><div class="bv"${S(2)}>500</div>
+        <div class="bl"${S(3)}>Genome assembly<small>QUBO variables</small></div><div class="track"${S(3)} style="--w:${(2313/2400*100).toFixed(2)}%;--bc:var(--warm)"><span></span></div><div class="bv"${S(3)}>2,313</div>
+      </div>
+      ${a === 'technical' ? `<div${S(4)} style="display:flex;flex-direction:column;gap:8px">
+        <div class="label">Errors compound with circuit depth</div>
+        <svg viewBox="0 0 440 260" style="width:100%;height:auto" aria-label="Success probability against number of two-qubit gates">
+          ${[0,.25,.5,.75,1].map(v => `<line x1="50" x2="430" y1="${20+200*(1-v)}" y2="${20+200*(1-v)}" class="s-line"/><text x="42" y="${25+200*(1-v)}" text-anchor="end" font-size="12" class="f-muted">${v}</text>`).join('')}
+          ${[0,50,100,150,200].map(g => `<text x="${50+g*1.9}" y="240" text-anchor="middle" font-size="12" class="f-muted">${g}</text>`).join('')}
+          <text x="240" y="258" text-anchor="middle" font-size="12" class="f-muted">two-qubit gates</text>
+          <polyline fill="none" class="s-accent" stroke-width="3" points="${Array.from({length:41},(_,i)=>{const g=i*5;return `${50+g*1.9},${20+200*(1-Math.pow(.99,g))}`}).join(' ')}"/>
+          <polyline fill="none" class="s-warm" stroke-width="3" points="${Array.from({length:41},(_,i)=>{const g=i*5;return `${50+g*1.9},${20+200*(1-Math.pow(.95,g))}`}).join(' ')}"/>
+          <circle cx="${50+100*1.9}" cy="${20+200*(1-Math.pow(.99,100))}" r="5" class="f-accent"/>
+          <text x="${58+100*1.9}" y="${14+200*(1-Math.pow(.99,100))}" font-size="13" class="f-fg">0.99¹⁰⁰ ≈ 0.37</text>
+          <text x="330" y="60" font-size="13" class="f-accent">fidelity 99%</text>
+          <text x="120" y="200" font-size="13" class="f-warm">fidelity 95%</text>
+        </svg>
+        <div class="cite">Two-qubit gate fidelity ≈ 95–99%; single-qubit ≈ 99–99.5%</div>
+      </div>` : `<div style="display:flex;flex-direction:column;gap:14px">
+        ${[['Qubit count','Not enough “memory” for large problems.'],['Noise','Interference makes qubits lose their state (decoherence), so long calculations fill with errors.'],['Connectivity','Each qubit can only talk directly to a few neighbours.']].map((t, i) => `<div class="card" style="padding:16px 20px"${S(4+i)}><h4 style="font-size:21px">${t[0]}</h4><p style="font-size:17px">${t[1]}</p></div>`).join('')}
+      </div>`}
+    </div>`,
+  notes:{general:'The gap is the whole motivation. The machine has about 133 qubits; our real problem needs 2,313. And even if it had enough, noise grows with every operation.', industry:'This is the blocker for practical use today: problem sizes in industry are thousands of variables; devices are around 150 qubits and noisy.', technical:'Two separate walls: width (qubits) and depth (fidelity). Decomposition attacks both, because small subcircuits are also shallow. 0.99¹⁰⁰ ≈ 0.37 is the back-of-envelope number.'} },
+
+{ id:'hadof-idea', sec:'hadof', name:'HADOF: the idea', desc:'Five-step algorithm with an animated decomposition of Q',
+  when:{general:10, industry:10, technical:10},
+  render:a => `<h2>${by(a,{general:'The idea: solve a big problem a few pieces at a time', all:'HADOF: decompose the Hamiltonian, keep the global picture'})}</h2>
+    <p class="lede">${by(a,{general:'Like a jigsaw solved in small patches, where each patch is guided by what the rest of the puzzle currently looks like.', industry:'Hamiltonian Auto-Decomposition Optimisation Framework: run only small subproblems on the quantum chip, and share what each one learns with the rest.', technical:'Solve small sub-Hamiltonians with any sampler; couple each subproblem to the rest through sampled marginal probabilities.'})}</p>
+    <div class="body cols2" style="grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr)">
+      <ol class="steps">
+        ${[
+          [{general:'Encode', all:'Encode'}, {general:'Write the whole problem as one energy function.', all:'Encode the full QUBO as a Hamiltonian.'}],
+          [{all:'Solve small pieces'}, {general:'Pick a few variables and solve just that piece on the quantum computer.', industry:'Solve small sub-Hamiltonians on a few qubits with a sampling optimiser.', technical:'Solve small sub-Hamiltonians with a sampling optimiser (QAOA, SA, QA, FALQON).'}],
+          [{all:'Estimate'}, {general:'From many measurements, estimate how likely each variable is to be 0 or 1.', all:'Estimate marginal probabilities p<sub>i</sub> for each variable from the samples.'}],
+          [{all:'Update'}, {general:'Feed those likelihoods into the next pieces, so each piece “sees” the rest.', all:'Update the remaining sub-Hamiltonians with this global information.'}],
+          [{all:'Aggregate'}, {general:'Combine the pieces into complete answers, and keep several good ones.', all:'Aggregate sampled sub-solutions into multiple global candidate solutions.'}]
+        ].map((s, i) => `<li${S(i+1)}><div><b>${by(a, s[0])}</b><span>${by(a, s[1])}</span></div></li>`).join('')}
+      </ol>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <svg id="dec" viewBox="0 0 360 360" style="width:100%;max-width:380px;height:auto" aria-label="Q matrix with a moving 3 by 3 subproblem"></svg>
+        <p class="note" style="font-size:16px">${by(a,{general:'Only the small dark square runs on the quantum chip at any moment. The shaded band is the rest of the puzzle, passed in as probabilities.', all:'Only the 3×3 block runs on the QPU at a time. Its couplings to the rest (shaded band) enter as expected values under the current marginals.'})}</p>
+      </div>
+    </div>`,
+  mount:el => {
+    const svg = $('#dec', el), R = rng(5), n = 12, c = 28, o = 12;
+    let h = '';
+    for (let i = 0; i < n; i++) for (let j = 0; j < n; j++){
+      const near = Math.abs(i - j) <= 4 || R() < .2; const v = i === j ? .55 : (near ? R()*.45 : 0);
+      h += `<rect x="${o+j*c}" y="${o+i*c}" width="${c-2}" height="${c-2}" rx="3" class="f-accent" style="fill-opacity:${(v*.55+.04).toFixed(2)}"/>`;
+    }
+    h += `<g id="dmv" style="transition:transform .6s cubic-bezier(.3,.7,.3,1)"><rect x="${o-2}" y="${o-2}" width="${n*c+2}" height="${3*c+2}" class="f-warm" style="fill-opacity:.14"/><rect x="${o-2}" y="${o-2}" width="${3*c+2}" height="${n*c+2}" class="f-warm" style="fill-opacity:.14"/></g>
+          <rect id="dblk" x="${o-3}" y="${o-3}" width="${3*c+4}" height="${3*c+4}" rx="5" fill="none" class="s-fg" stroke-width="4" style="transition:transform .6s cubic-bezier(.3,.7,.3,1)"/>`;
+    svg.innerHTML = h;
+    const mv = $('#dmv', svg), bl = $('#dblk', svg); let k = 0;
+    const move = () => { const d = k*3*c; mv.style.transform = `translate(0px,0px)`; mv.firstElementChild.style.transform = `translate(0px,${d}px)`; mv.lastElementChild.style.transform = `translate(${d}px,0px)`; bl.style.transform = `translate(${d}px,${d}px)`; };
+    move();
+    const t = RM ? null : setInterval(() => { k = (k + 1) % 4; move(); }, 1400);
+    return {stop:() => clearInterval(t)};
+  },
+  notes:{general:'Analogy: a jigsaw solved in patches, where each patch is told what colours its neighbours are likely to be. The quantum computer only ever handles a tiny patch.', industry:'Key selling point: subproblem size is fixed by the hardware, independent of the problem size. Bigger problem means more subproblems, not more qubits.', technical:'The inactive variables are replaced by their marginal expectations, so each sub-Hamiltonian carries mean-field information from the rest. Any optimiser that returns a sampleable, solution-biased distribution plugs in.'} },
+
+{ id:'hadof-anim', sec:'hadof', name:'HADOF in motion', desc:'Live simulation: 24 variables, 3-qubit subproblems, marginals converging',
+  when:{general:10, industry:10, technical:10},
+  render:a => `<h2>${by(a,{general:'Watch it work', all:'HADOF in motion'})}</h2>
+    <div class="hanim">
+      <div class="hpanel">
+        <div class="tag">Illustrative simulation · 24 variables · 3-qubit subproblems</div>
+        <svg id="hg" viewBox="0 0 600 300" aria-label="Variables shaded by probability of being 1"></svg>
+        <div class="hcount" id="hcount">Ready</div>
+        <div class="ctrls"><button type="button" class="sbtn primary" id="hplay">Play</button><button type="button" class="sbtn" id="hstep">Step</button><button type="button" class="sbtn" id="hreset">Reset</button>
+          <span class="hcount" style="margin-left:6px">${by(a,{general:'Shade = how likely each choice is to be “yes”', all:'Shade = marginal p(xᵢ = 1); dashed = couplings to the rest'})}</span></div>
+      </div>
+      <div class="hpanel">
+        <div class="tag">${by(a,{general:'Small quantum solve', all:'Subproblem circuit · QAOA, 3 qubits'})}</div>
+        <svg id="hq" viewBox="0 0 460 112" aria-hidden="true"></svg>
+        <div class="tag">${by(a,{general:'Measured answers (64 shots)', all:'Sampled bitstrings · 64 shots'})}</div>
+        <svg id="hh" viewBox="0 0 460 112" aria-label="Histogram of sampled bitstrings"></svg>
+        <div class="tag">${by(a,{general:'Quality vs best known answer', all:'Objective ÷ best known (SA)'})} · <span id="hratio" style="color:var(--fg)">—</span></div>
+        <svg id="hc" viewBox="0 0 460 104" aria-label="Solution quality over time"></svg>
+      </div>
+    </div>`,
+  mount:(el, ctx) => mountHadof(el, ctx.a),
+  notes:{general:'Let it play. Each column is a small piece solved on three qubits; the bars on the right are what the quantum computer measured; the shading spreads as information flows between pieces, and the quality line climbs toward the best known answer.', industry:'This is a toy run computed live in the page, not a benchmark. Point out that the circuit never grows: three qubits, whatever the problem size.', technical:'Toy: 24-variable sparse QUBO, ordered 3-variable blocks, Boltzmann sampler standing in for QAOA with β increasing per sweep (mirroring one layer added per sweep). Inactive variables enter via p_j; marginals are smoothed. Global candidate = round(p). Not your benchmark data.'} },
+
+{ id:'hadof-results', sec:'hadof', name:'HADOF results', desc:'Headline numbers from the ECAI 2025 paper and site',
+  when:{general:20, industry:10, technical:10},
+  render:a => {
+    const t = [
+      ['500', 'binary variables optimised with 5-qubit circuits. Standard QAOA would need 500 qubits.', ['general','industry','technical']],
+      ['>95<small>%</small>', 'of classical simulated annealing’s solution quality at 500 variables.', ['general','industry']],
+      ['0.98', 'objective ratio for HADOF-SA at large sizes; HADOF-QAOA ≈ 0.975, with 5-qubit circuits beating 10-qubit ones.', ['technical']],
+      ['12<small>×</small>', 'beyond the native qubit capacity of current devices.', ['general','industry','technical']],
+      ['40<small>×</small>', 'higher accuracy than standard QAOA on NISQ devices.', ['industry','technical']],
+      ['0.84', 'of the CPLEX objective on IBM hardware: 20-variable QUBO, 5-qubit circuits, 10 layers, 6 min 42 s including queue.', ['technical']]
+    ].filter(r => r[2].includes(a));
+    return `<h2>${by(a,{general:'It works: big problems, tiny circuits', industry:'Beyond the hardware limit, near-classical quality', technical:'Benchmark results'})}</h2>
+      <p class="lede">${by(a,{general:'Tested against the best classical method on hundreds of random problems.', industry:'Benchmarked against leading classical and quantum solvers, and run on real IBM quantum hardware.', technical:'100 random QUBO instances per size vs PennyLane QAOA, D-Wave Ocean SA and IBM CPLEX. Objectives scaled to CPLEX (n ≤ 80) or global SA (larger).'})}</p>
+      <div class="body"><div class="tiles">${t.map((r, i) => `<div class="tile"${S(i+1)}><div class="v">${r[0]}</div><p>${r[1]}</p></div>`).join('')}</div>
+      <p class="note"${S(t.length+1)}>${by(a,{general:'And it already runs on real IBM quantum hardware today.', industry:'Solver-agnostic: works with any optimiser that returns samples (SA, QAOA, quantum annealing, FALQON).', technical:'CPLEX runtime grows exponentially; SA and HADOF scale far better. HADOF remains practical to n = 500 and returns multiple high-quality candidates.'})}</p></div>
+      <div class="src">Sankar, Miliotis &amp; Caton · AIQxQIA @ ECAI 2025 · CEUR-WS vol. 4153</div>`;
+  },
+  notes:{general:'Three numbers: 500 variables on 5-qubit circuits; above 95% of the classical answer; twelve times past what the chip could hold directly.', industry:'The 40× is relative to standard QAOA on noisy devices. Stress that it runs on real hardware now, which is rare for optimisation work.', technical:'Be ready for: why 5-qubit beats 10-qubit (shallower, better-converged subcircuits); what “accuracy” means (objective ratio to CPLEX/SA); the 0.84 on hardware includes noise and queueing.'} },
+
+{ id:'hpq', sec:'hadof', name:'Parallel HADOF (HPQ)', desc:'Animated race: sequential vs parallel scheduling across 4 QPUs',
+  when:{general:20, industry:20, technical:20},
+  render:a => {
+    const U = 38, X0 = 112, LH = 28, LG = 7, ut = .22;
+    const lanes = (top) => [0,1,2,3].map(l => `<text x="${X0-14}" y="${top+l*(LH+LG)+19}" text-anchor="end" font-size="13" class="f-muted">QPU ${l+1}</text><rect x="${X0}" y="${top+l*(LH+LG)}" width="${16*U}" height="${LH}" rx="4" class="f-sunk"/>`).join('');
+    let seq = '', par = '';
+    for (let it = 0; it < 2; it++) for (let k = 0; k < 8; k++){
+      const t = it*8 + k, l = k % 4;
+      seq += `<rect class="blk f-accent" x="${X0+t*U+1}" y="${20+l*(LH+LG)}" width="${U-3}" height="${LH}" rx="3" style="--d:${(t*ut).toFixed(2)}s;fill-opacity:${it ? 1 : .7}"/>`;
+      const pt = it*2 + Math.floor(k/4);
+      par += `<rect class="blk f-accent" x="${X0+pt*U+1}" y="${20+l*(LH+LG)}" width="${U-3}" height="${LH}" rx="3" style="--d:${(pt*ut).toFixed(2)}s;fill-opacity:${it ? 1 : .7}"/>`;
+    }
+    const lab = (t) => `<g class="endlab" style="--d:${(t*ut).toFixed(2)}s"><line x1="${X0+t*U}" x2="${X0+t*U}" y1="12" y2="${20+4*(LH+LG)}" class="s-green" stroke-width="2.5"/><text x="${X0+t*U+8}" y="${20+4*(LH+LG)-6}" font-size="14" class="f-green">done · ${t} units</text></g>`;
+    return `<h2>${by(a,{general:'Faster: run the pieces at the same time', industry:'High Performance Quantum: many QPUs in parallel', technical:'Parallel HADOF (HPQ): Jacobi-style updates'})}</h2>
+      <p class="lede">${by(a,{general:'The first version solved one piece after another. The parallel version hands pieces to several quantum computers at once.', industry:'Subproblems in an iteration become independent jobs, so they can be spread across many CPU cores and quantum processors.', technical:'Sequential HADOF updates marginals after each subproblem (Gauss–Seidel). Parallel HADOF uses the previous iteration’s marginals (Jacobi), so all subproblems in an iteration run asynchronously.'})}</p>
+      <div class="body" id="race" style="gap:14px">
+        <div class="tl"><h4>${by(a,{general:'One after another', all:'Sequential'})} <span>${by(a,{general:'each piece waits for the one before', all:'each subproblem waits for the latest marginals'})}</span></h4>
+          <svg viewBox="0 0 760 170" style="width:100%;max-width:760px;height:auto" aria-label="Sequential schedule">${lanes(20)}${seq}${lab(16)}</svg></div>
+        <div class="tl"><h4>${by(a,{general:'All at once', all:'Parallel'})} <span>${by(a,{general:'pieces share what was learned last round', all:'all subproblems use last iteration’s marginals'})}</span></h4>
+          <svg viewBox="0 0 760 170" style="width:100%;max-width:760px;height:auto" aria-label="Parallel schedule">${lanes(20)}${par}${lab(4)}</svg></div>
+        <div class="callout"${S(2)}>Measured on IBM QPUs: <b>3–5× lower wall-clock time</b>, with no loss in the quality of the best solutions.<small>Schedule above is illustrative: 2 iterations of 8 subproblems on 4 QPUs. Sankar, Miliotis &amp; Caton · arXiv:2604.27836 (2026)</small></div>
+      </div>`;
+  },
+  mount:el => ({step:s => { const r = $('#race', el); if (s >= 1){ r.classList.remove('run'); void r.offsetWidth; r.classList.add('run'); } else r.classList.remove('run'); }}),
+  notes:{general:'Press once to start the race. Same work, but the bottom version spreads it across machines. The trade-off: each piece uses slightly older information, and in practice that costs nothing in quality.', industry:'This is the HPQ framing: the QPU becomes an accelerator you can scale horizontally, like GPUs.', technical:'Jacobi vs Gauss–Seidel. Results: 3–5× wall-clock reduction on IBM QPUs, best-solution quality preserved; the high-quality regions of the landscape are retained. The 4× in the animation is schematic.'} },
+
+{ id:'assembly-problem', sec:'genome', name:'Genome assembly', desc:'Animated: scattered reads → alignment → overlap graph → path',
+  when:{general:10, industry:10, technical:10},
+  render:a => `<h2>${by(a,{general:'Reading a genome means solving a DNA jigsaw', all:'Genome assembly is a path-finding problem'})}</h2>
+    <p class="lede">${by(a,{general:'Sequencers return thousands of overlapping DNA fragments, called reads, in random order. Assembly puts them back together.', industry:'Sequencers return overlapping fragments (reads). Ordering them is an NP-hard routing problem, the same family as the travelling salesman.', technical:'Overlap–Layout–Consensus: reads are nodes, suffix–prefix overlaps are edges, and the genome is a path visiting every read: a Hamiltonian path / TSP.'})}</p>
+    <div class="body cols2" style="grid-template-columns:minmax(0,600px) minmax(0,1fr);gap:22px">
+      <div class="reads" id="rd"></div>
+      <div class="gpanel"${S(2)}><svg id="rg" viewBox="0 0 480 300" aria-label="Overlap graph"></svg></div>
+    </div>
+    <div class="caption" id="rcap"></div>
+    <div class="facts"${S(3)}><span><i>Pseudomonas aeruginosa</i></span><span><b>7.14 Mbp</b> circular chromosome</span><span><b>21,969</b> nanopore reads</span><span>graph: <b>524</b> reads, <b>2,313</b> overlaps</span>${a === 'general' ? '<span>classical pipelines on supercomputers can take days</span>' : ''}</div>`,
+  mount:(el, ctx) => mountReads(el, ctx.a),
+  notes:{general:'Press through the four stages: scattered fragments, lined up by matching ends, turned into a map of who-overlaps-whom, and finally the one route through every fragment. Repeated DNA adds false links, which is what makes it hard. In an outbreak, days of compute matters.', industry:'Same mathematical shape as vehicle routing: find one tour through all nodes. Real data adds noise and repeats, which create misleading edges.', technical:'OLC vs de Bruijn: de Bruijn reduces to Eulerian paths (linear time) but is sensitive to errors and long repeats; OLC keeps long-read information but the layout step is NP-hard. Classical assemblers use heuristics (transitive reduction, tip cutting, bubble popping).'} },
+
+{ id:'assembly-qubo', sec:'genome', name:'Edge-based QUBO', desc:'Penalty formulation on a 6-node toy graph; 2,313 vs 274,576 variables',
+  when:{general:45, industry:20, technical:10},
+  render:a => `<h2>${by(a,{general:'Writing the jigsaw as an energy problem', industry:'Encoding assembly for a quantum solver', technical:'An edge-based QUBO keeps the problem small'})}</h2>
+    <p class="lede">${by(a,{general:'Each possible link between fragments becomes a yes/no choice. Choosing links scores points; a fragment with two “next” links costs a penalty.', industry:'One binary variable per overlap. Reward choosing overlaps; penalise any read that ends up with two successors or two predecessors.', technical:'One binary variable per directed edge: reward edge inclusion, penalise pairs of chosen edges sharing a tail (out) or head (in).'})}</p>
+    <div class="body cols2" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        ${a !== 'general' ? `<div class="eq" style="font-size:20px">H<sub>edge</sub> = −Σ<sub>e</sub> x<sub>e</sub> + λ Σ<sub>v</sub> [ Σ<sub>e&lt;e′ ∈ out(v)</sub> x<sub>e</sub>x<sub>e′</sub> + Σ<sub>e&lt;e′ ∈ in(v)</sub> x<sub>e</sub>x<sub>e′</sub> ]<small>Schematic form; exact weights as in the paper (Eq. 3)</small></div>` : ''}
+        <svg id="eg" viewBox="0 0 520 190" style="width:100%;height:auto" aria-label="Toy overlap graph"></svg>
+        <div class="mono" style="font-size:18px" id="egE">8 candidate edges = 8 variables</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px"${S(3)}>
+        <div class="label">Variables needed for our genome (524 reads)</div>
+        <div class="bars" style="grid-template-columns:minmax(0,170px) minmax(0,1fr)">
+          <div class="bl">Edge encoding<small>|E|</small></div><div><div class="track on" style="--w:${(2313/274576*100).toFixed(3)}%;--bc:var(--green)"><span style="min-width:4px"></span></div><div class="bv" style="margin-top:6px">2,313</div></div>
+          <div class="bl">Permutation (TSP) encoding<small>N²</small></div><div><div class="track on" style="--w:100%;--bc:var(--muted)"><span></span></div><div class="bv" style="margin-top:6px">274,576</div></div>
+        </div>
+        <p class="note">${by(a,{general:'About 120 times fewer choices, which is what makes a quantum attempt realistic at all.', all:'≈119× fewer variables. HADOF then splits the 2,313 variables into 771 three-qubit circuits per sweep, on a 133-qubit device.'})}</p>
+      </div>
+    </div>`,
+  mount:(el, ctx) => mountEdgeQubo(el, ctx.a),
+  notes:{general:'Show the conflict: one fragment trying to point to two others. The penalty pushes the answer towards a single clean chain.', industry:'The encoding choice is a big lever: a smarter formulation cut the problem by about 119×.', technical:'Contrast with the N² permutation encoding. The relaxed QUBO solution is not guaranteed to be a single path, hence the DFS post-processing in the pipeline. Groups for decomposition can follow shared nodes; headline runs used ordered contiguous blocks of 3.'} },
+
+{ id:'pipeline', sec:'genome', name:'Assembly pipeline', desc:'Five stages; classical and quantum branches differ only at assembly',
+  when:{general:20, industry:20, technical:20},
+  render:a => {
+    const T = a === 'technical';
+    const cols = [
+      ['Raw reads', T ? 'Oxford Nanopore long reads (FASTQ), ENA run ERR13577262' : 'DNA fragments straight from the sequencer'],
+      ['Pre-processing', T ? 'minimap all-vs-all overlaps → miniasm string graph (GFA)' : 'Find overlaps and build the graph'],
+      null,
+      ['Post-processing', T ? 'DFS resolves degree violations, reconnects, circularises' : 'Clean up branches and close the circular chromosome'],
+      ['Result', T ? 'Unitig → Racon polishing ×4 → trim terminal overlap → QUAST vs Unicycler' : 'Polish the sequence and check it against the reference']
+    ];
+    return `<h2>From raw reads to a finished genome</h2>
+      <p class="lede">${by(a,{general:'We keep a standard pipeline and swap out one step: the hard ordering step goes to the quantum solver.', all:'The classical and quantum branches share every stage except assembly, so the comparison is like for like.'})}</p>
+      <div class="body"><div class="pipe">
+        ${cols.map((c, i) => c ? `<div class="pcol"${S(i+1)}><div class="pnum">Stage ${i+1}</div><div class="pbox"><h5>${c[0]}</h5><p>${c[1]}</p></div></div>` :
+          `<div class="pcol"${S(3)}><div class="pnum">Stage 3 · assembly</div>
+            <div class="pbox"><h5>Classical</h5><p>${T ? 'Miniasm heuristics: transitive reduction, tip cutting, bubble popping' : 'Rule-of-thumb graph clean-up'}</p></div>
+            <div class="pbox q"><h5>Quantum</h5><p>${T ? 'Edge QUBO → SA · HADOF-QAOA (ideal) · HADOF-QAOA on ibm_torino' : 'Energy problem solved with HADOF on IBM quantum hardware'}</p></div></div>`).join('')}
+      </div></div>`;
+  },
+  notes:{all:'Reveal stage by stage. The design point: everything except the assembly step is identical, so differences in the final genome come from the solver.', technical:'Reveal stage by stage. Post-processing matters: the relaxed solution is a subgraph with degree violations; DFS keeps the longest upstream/downstream paths, reconnects, and the reference-free trim removes the circular overlap (≥10 kb, ≥99% identity).'} },
+
+{ id:'assembly-results', sec:'genome', name:'Assembly results', desc:'Genome fraction and retained nodes per solver; first on quantum hardware',
+  when:{general:10, industry:10, technical:10},
+  render:a => {
+    const rows = [['Unicycler (classical)', 100, '100%', 7139404, 509, false], ['Simulated annealing', 100, '100%', 7139412, 245, false], ['HADOF-QAOA, ideal simulation', 100, '100%', 7139426, 263, false], ['HADOF-QAOA, IBM ibm_torino', 99.348, '99.348%', 7094589, 206, true]];
+    const G = a === 'general';
+    return `<h2>${by(a,{general:'A real genome, assembled on a real quantum computer', industry:'99.3% of a bacterial genome recovered on IBM quantum hardware', technical:'Assembly results · P. aeruginosa, 7.14 Mbp'})}</h2>
+      <div class="body" style="gap:18px"><table class="rt">
+        <thead><tr><th>${G ? 'Method' : 'Solver (best sample)'}</th><th style="width:34%">Genome recovered</th>${G ? '' : '<th>Length (bp)</th><th style="width:22%">Reads kept after cleanup</th>'}</tr></thead>
+        <tbody>${rows.map((r, i) => `<tr class="${r[5] ? 'hl' : ''}"${S(i+1)}><td>${r[0]}</td><td><div class="cellbar"><div class="track on" style="--w:${r[1]}%;--bc:${r[5] ? 'var(--green)' : 'var(--muted)'}"><span></span></div><span class="num mono" style="font-weight:600">${r[2]}</span></div></td>${G ? '' : `<td class="num">${fmt(r[3])}</td><td><div class="cellbar" style="grid-template-columns:minmax(0,1fr) 44px"><div class="track on" style="--w:${(r[4]/524*100).toFixed(1)}%;--bc:var(--accent)"><span></span></div><span class="num mono">${r[4]}</span></div></td>`}</tr>`).join('')}</tbody>
+      </table>
+      <div class="callout"${S(5)}>${by(a,{general:'To our knowledge, the first complete genome assembled from real sequencing data on a quantum computer, and over 100 times longer than anything assembled on quantum hardware before.', all:'To our knowledge, the first complete genome assembled from real sequencing data on quantum hardware, over 100× longer than sequences in previous quantum-hardware studies.'})}
+      ${a === 'technical' ? '<small>Of 5,000 samples per solver, 398 (SA), 48 (ideal HADOF) and 2 (hardware) reached &gt;95% genome fraction at duplication ratio &lt;1.05; 106 SA and 3 ideal-HADOF samples reproduced the reference exactly. All best samples: duplication ratio 1.0.</small>' : ''}</div></div>
+      <div class="src">Sankar, Miliotis &amp; Caton · Quantum Genome Assembly of a Complete Bacterial Chromosome from Real Sequencing Data on NISQ Hardware</div>`;
+  },
+  notes:{general:'Pause on the last row: a real, noisy quantum computer recovered over 99% of the genome. Previous quantum demonstrations were around a few thousand letters; this is over seven million.', industry:'The proof point: an end-to-end real-world workload, real data, real hardware, standard pipeline. 99.348% genome fraction with no duplication.', technical:'Note the retained-node column: all QUBO routes keep fewer nodes than Unicycler yet recover the full genome after polishing. Hardware sample yield is low (2 of 5,000 above threshold), which is the honest caveat; ideal simulation gets 48.'} },
+
+{ id:'insight', sec:'genome', name:'Score vs quality', desc:'Finding: QUBO objective is a poor proxy; retained nodes track genome fraction',
+  when:{general:45, industry:45, technical:20},
+  render:a => `<h2>The QUBO score is a poor guide to assembly quality</h2>
+    <p class="lede">${by(a,{general:'The “energy” the solver minimises does not reliably tell you how good the final genome is. A simpler structural count does.', all:'Across thousands of sampled solutions, the raw objective barely tracks genome fraction. The number of nodes retained after post-processing tracks it strongly.'})}</p>
+    <div class="body"><div class="vs">
+      <div class="card bad"${S(1)}><div class="verdict"><span class="ic">✕</span>Raw QUBO objective</div><p>${by(a,{general:'A lower score didn’t reliably mean a better genome.', all:'Weak relationship with QUAST genome fraction and duplication ratio.'})}</p></div>
+      <div class="card good"${S(2)}><div class="verdict"><span class="ic">✓</span>Reads retained after cleanup</div><p>${by(a,{general:'How many fragments survive the clean-up step predicts quality far better.', all:'Correlates strongly with genome fraction.'})}</p></div>
+    </div>
+    <p class="note"${S(3)}>${by(a,{general:'This is one reason it helps that quantum solvers return many candidate answers, not just one.', all:'Implication: sample many candidates and rank them on structural metrics, not on the objective alone. Sampling-based solvers make this cheap.'})}</p></div>`,
+  notes:{all:'This is a methodological finding people remember. For a technical audience, link it back to penalties: the objective rewards relaxed structures that post-processing then has to repair, so structure after repair is the better signal.'} },
+
+{ id:'applications', sec:'impact', name:'Applications', desc:'Outbreak and cancer genomics, any QUBO workload, solver-agnostic',
+  when:{general:10, industry:10, technical:20},
+  render:a => {
+    const c = [
+      ['Outbreak genomics', {general:'Assembly on supercomputers can take days. Faster assembly helps when a virus is spreading.', all:'Time-to-genome matters in viral outbreaks, where HPC assembly can still take days.'}],
+      ['Cancer genomics', {general:'Quantum solvers return many good answers at once, which helps when there are several plausible versions of a sequence.', all:'Sampling returns many near-optimal solutions in parallel, useful where alternative variants must be identified.'}],
+      ['Any QUBO problem', {general:'Delivery routes, schedules, network design and finance share the same mathematical form.', all:'Routing (TSP), scheduling, graph partitioning, finance and machine learning share the formulation.'}]
+    ];
+    if (a !== 'general') c.push(['Solver-agnostic', {all:'Any optimiser with a solution-biased, sampleable distribution: SA, QAOA, quantum annealing, FALQON.'}]);
+    return `<h2>${by(a,{general:'Where this could matter', industry:'Where HADOF applies', technical:'Applications and generality'})}</h2>
+      <div class="body"><div style="display:grid;grid-template-columns:repeat(${c.length},minmax(0,1fr));gap:18px">${c.map((x, i) => `<div class="card"${S(i+1)}><h4>${x[0]}</h4><p>${by(a, x[1])}</p></div>`).join('')}</div></div>`;
+  },
+  notes:{general:'Bring it back to people: outbreaks and cancer. Then widen: the same maths shows up in logistics and finance.', industry:'Pitch the generality: if it is a QUBO, HADOF can run it on hardware that is too small for it, with any sampling solver.', technical:'Mention multiple-solution output for variant analysis; it ties to the sampling-based design.'} },
+
+{ id:'vision', sec:'impact', name:'Quantum supercomputing', desc:'HPC host orchestrating QPUs; roadmap from NISQ to fault-tolerant',
+  when:{general:20, industry:20, technical:20},
+  render:a => `<h2>${by(a,{general:'Toward a quantum supercomputer', all:'High Performance Quantum: the QPU as an accelerator'})}</h2>
+    <p class="lede">${by(a,{general:'Instead of one giant quantum computer, many small ones working inside a classical supercomputer, the way graphics chips power AI today.', all:'Treat QPUs like GPUs: specialised accelerators inside an HPC system, with HADOF handling decomposition, scheduling and aggregation.'})}</p>
+    <div class="body" style="gap:20px">
+      <svg viewBox="0 0 1150 220" style="width:100%;height:auto" aria-label="Classical host orchestrating four QPUs">
+        <rect x="20" y="20" width="360" height="180" rx="14" class="f-sunk"/>
+        <text x="44" y="56" font-size="15" class="f-muted">CLASSICAL HPC HOST</text>
+        ${['decompose the Hamiltonian','schedule subproblems','update marginals','aggregate candidates'].map((t, i) => `<text x="44" y="${92+i*28}" font-size="17" class="f-fg">· ${t}</text>`).join('')}
+        ${[0,1,2,3].map(i => `<path class="flow s-accent" d="M380 ${70+i*27} C 560 ${70+i*27}, 600 ${30+i*50}, 760 ${30+i*50}"/>`).join('')}
+        ${[0,1,2,3].map(i => `<rect x="760" y="${12+i*50}" width="200" height="38" rx="8" class="f-accent" style="fill-opacity:.15"/><rect x="760" y="${12+i*50}" width="200" height="38" rx="8" fill="none" class="s-accent" stroke-width="2"/><text x="860" y="${37+i*50}" text-anchor="middle" font-size="15" class="f-fg">QPU ${i+1} · k qubits</text>`).join('')}
+        <text x="990" y="115" font-size="15" class="f-muted">samples</text><text x="990" y="135" font-size="15" class="f-muted">flow back</text>
+      </svg>
+      <div class="road">
+        <div class="now"${S(1)}><b>Today · NISQ</b><span>HADOF scales optimisation past the qubit limit on current devices.</span></div>
+        <div${S(2)}><b>More QPUs</b><span>Parallel HADOF spreads subproblems across processors (3–5× faster).</span></div>
+        <div${S(3)}><b>Fault-tolerant hardware</b><span>The same algorithms run larger, cleaner subproblems as hardware improves.</span></div>
+      </div>
+    </div>`,
+  notes:{general:'The big picture: we don’t have to wait for perfect quantum computers. Get value now, and the same method scales up as hardware improves.', all:'Frame as pulling quantum advantage into the present: algorithmic efficiency under today’s constraints, with a path to fault tolerance.'} },
+
+{ id:'skills', sec:'impact', name:'What I bring', desc:'Tooling and skills from the HADOF and assembly code bases',
+  when:{general:0, industry:10, technical:0},
+  render:a => {
+    const g = [
+      ['Quantum software', ['Qiskit & Qiskit Runtime','IBM quantum hardware','PennyLane','OpenQAOA','D-Wave Ocean']],
+      ['Optimisation', ['QUBO modelling','QAOA & FALQON','Simulated annealing','CPLEX benchmarking','Decomposition methods']],
+      ['Bioinformatics', ['Nanopore long reads','Unicycler','minimap2 & Racon','QUAST','gfatools']],
+      ['Engineering', ['Python','Parallel / HPC execution','Reproducible pipelines','Open-source code on GitHub']]
+    ];
+    return `<h2>What I bring</h2>
+      <p class="lede">Everything in this talk is built, run and released as open-source code.</p>
+      <div class="body"><div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px">${g.map((x, i) => `<div${S(i+1)}><div class="label" style="margin-bottom:12px">${x[0]}</div>${x[1].map(t => `<span class="chip">${t}</span>`).join('')}</div>`).join('')}</div>
+      <p class="note"${S(5)}>Also: quantum reinforcement learning with causal inference, and causal analysis in finance.</p></div>`;
+  },
+  notes:{industry:'Translate research into capability: I can model a business problem as a QUBO, run it on real hardware or classical solvers, benchmark honestly, and ship reproducible code.'} },
+
+{ id:'other-work', sec:'impact', name:'Other work', desc:'Quantum RL (COMSNETS 2024) and carbon premium (Energy Economics 2024)',
+  when:{general:45, industry:20, technical:45},
+  render:a => `<h2>Other work</h2>
+    <p class="lede">${by(a,{general:'Earlier research in quantum machine learning and in economics.', all:'Earlier work spans quantum machine learning and causal analysis in finance.'})}</p>
+    <div class="body cols2">
+      <div class="card"${S(1)}><div class="label">Quantum machine learning</div><h4>Quantum-Enhanced Resilient Reinforcement Learning Using Causal Inference</h4><p class="cite">Sankar, Khandelwal, Chandra · COMSNETS 2024, Bengaluru · pp. 1058–1063</p></div>
+      <div class="card"${S(2)}><div class="label">Causal analysis</div><h4>The carbon premium: Correlation or causality? Evidence from S&amp;P 500 companies</h4><p class="cite">Sankar, Nag, Chakrabarty, Basu · Energy Economics 134 (2024) 107635</p></div>
+    </div>`,
+  notes:{all:'One sentence each on what the paper asked and found. Fill in your own summaries here; the slide only states titles and venues.'} },
+
+{ id:'limits', sec:'impact', name:'Open challenges', desc:'Penalties, hardware yield, accuracy trade-off, next steps',
+  when:{general:45, industry:45, technical:20},
+  render:a => `<h2>Open challenges and next steps</h2>
+    <div class="body cols2" style="gap:36px">
+      <ol class="steps" style="counter-reset:st">
+        ${[
+          ['Penalties are soft', 'QUBO penalties encourage valid solutions but don’t enforce them; relaxed solutions need classical repair.'],
+          ['Hardware noise', 'On ibm_torino, 2 of 5,000 samples met the quality bar, vs 48 in ideal simulation.'],
+          ['Accuracy vs size', 'Decomposition gives up a little accuracy as problems grow (≈0.975–0.98 at the largest sizes).']
+        ].map((x, i) => `<li${S(i+1)}><div><b>${x[0]}</b><span>${x[1]}</span></div></li>`).join('')}
+      </ol>
+      <div class="card"${S(4)}><div class="label">Next</div><h4>Viral outbreak and cancer genomics</h4><p>Establish quantum optimisation as a practical tool for real workloads on current hardware, scaling across more QPUs and onto fault-tolerant devices.</p></div>
+    </div>`,
+  notes:{all:'Being upfront about the hardware yield builds credibility. The ideal-vs-hardware gap is exactly what better devices and more samples close.'} },
+
+{ id:'thanks', sec:'close', name:'Thanks and links', desc:'Publications, website, code and contact',
+  when:{general:10, industry:10, technical:10},
+  render:a => `<h2>Thank you. Questions?</h2>
+    <div class="body cols2" style="grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr);gap:40px">
+      <ul class="pubs">
+        <li>Quantum Genome Assembly of a Complete Bacterial Chromosome from Real Sequencing Data on NISQ Hardware<span>Sankar, Miliotis, Caton</span></li>
+        <li>Towards High Performance Quantum Computing (HPQ): Parallelisation of HADOF<span>Sankar, Miliotis, Caton · arXiv:2604.27836 (2026)</span></li>
+        <li>Scalable quantum optimisation using HADOF<span>Sankar, Miliotis, Caton · AIQxQIA @ ECAI 2025, CEUR-WS 4153</span></li>
+        ${a === 'general' ? '' : `<li>Quantum-Enhanced Resilient RL Using Causal Inference<span>Sankar, Khandelwal, Chandra · COMSNETS 2024</span></li>
+        <li>The carbon premium: Correlation or causality?<span>Sankar, Nag, Chakrabarty, Basu · Energy Economics 2024</span></li>`}
+      </ul>
+      <div class="links">
+        <div><span>Website</span>namasi-phd.github.io</div>
+        <div><span>Code</span>github.com/Namasi-PhD</div>
+        <div><span>Email</span>namasivayam.gomathisankar<br>@ucdconnect.ie</div>
+        <div><span>Affiliation</span>University College Dublin</div>
+      </div>
+    </div>`,
+  notes:{all:'Leave this up during questions. Code for HADOF and the full assembly pipeline is public.'} }
+];
+
+/* ---------- slide-specific animation code ---------- */
+function mountLandscape(el){
+  const svg = $('#land', el), W = 1150, H = 330, pad = 24;
+  const g = (x, m, s) => Math.exp(-(((x - m)/s)**2));
+  const f = x => .62 - .30*g(x,.24,.09) - .52*g(x,.74,.10) + .14*g(x,.49,.07) + .30*g(x,0,.10) + .30*g(x,1,.10) + .02*Math.sin(x*29);
+  const N = 400, vals = Array.from({length:N+1}, (_, i) => f(i/N)), lo = Math.min(...vals), hi = Math.max(...vals);
+  const X = x => 30 + x*(W - 60), Y = v => pad + (hi - v)/(hi - lo)*(H - 2*pad - 20) + 10;
+  const argmin = (a0, a1) => { let b = a0, bv = Infinity; for (let i = 0; i <= 200; i++){ const x = a0 + (a1 - a0)*i/200, v = f(x); if (v < bv){ bv = v; b = x; } } return b; };
+  const xl = argmin(.08,.42), xg = argmin(.56,.94), x0 = .035;
+  const d = 'M' + vals.map((v, i) => `${X(i/N).toFixed(1)},${Y(v).toFixed(1)}`).join(' L');
+  svg.innerHTML = `<path d="${d} L${X(1)},${H} L${X(0)},${H} Z" class="f-sunk"/><path d="${d}" fill="none" class="s-fg" stroke-width="3"/>
+    <line id="tun" x1="${X(xl)}" y1="${Y(f(xl))-14}" x2="${X(xl)}" y2="${Y(f(xl))-14}" class="s-accent" stroke-width="3" stroke-dasharray="7 6"/>
+    <text x="${X(xl)}" y="${Y(f(xl))+38}" text-anchor="middle" font-size="15" class="f-muted">local minimum</text>
+    <text x="${X(xg)}" y="${Y(f(xg))+38}" text-anchor="middle" font-size="15" class="f-green">best answer</text>
+    <circle id="ball" r="13" class="f-warm"/>`;
+  const ball = $('#ball', svg), tun = $('#tun', svg); let raf = null;
+  const place = (x, y, c) => { ball.setAttribute('cx', x); ball.setAttribute('cy', y); ball.setAttribute('class', c); };
+  const at = x => [X(x), Y(f(x)) - 14];
+  const anim = (dur, fn) => { cancelAnimationFrame(raf); if (RM){ fn(1); return; } const t0 = performance.now(); const tick = t => { const k = Math.min(1, (t - t0)/dur); fn(k); if (k < 1) raf = requestAnimationFrame(tick); }; raf = requestAnimationFrame(tick); };
+  const ease = k => 1 - Math.pow(1 - k, 3);
+  const set = s => {
+    if (s <= 0){ cancelAnimationFrame(raf); place(...at(x0), 'f-warm'); tun.setAttribute('x2', X(xl)); tun.setAttribute('y2', Y(f(xl)) - 14); }
+    else if (s === 1){ tun.setAttribute('x2', X(xl)); tun.setAttribute('y2', Y(f(xl)) - 14); anim(1300, k => { const x = x0 + (xl - x0)*ease(k); place(...at(x), 'f-warm'); }); }
+    else { const [ax, ay] = at(xl), [bx, by2] = at(xg); anim(1500, k => { const e = ease(k); place(ax + (bx - ax)*e, ay + (by2 - ay)*e, 'f-accent'); tun.setAttribute('x2', ax + (bx - ax)*e); tun.setAttribute('y2', ay + (by2 - ay)*e); }); }
+  };
+  set(0);
+  return {step:set, stop:() => cancelAnimationFrame(raf)};
+}
+
+function mountMatrix(el){
+  const svg = $('#qm', el), R = rng(17), n = 6, c = 48, o = 24, Q = Array.from({length:n}, () => new Array(n).fill(0));
+  for (let i = 0; i < n; i++){ Q[i][i] = +(R()*2.4 - 1.9).toFixed(1); for (let j = i+1; j < n; j++) if (R() < .6){ const v = +(R()*2.6 - 1.1).toFixed(1); Q[i][j] = Q[j][i] = v; } }
+  const E = x => { let e = 0; for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) e += Q[i][j]*x[i]*x[j]; return e; };
+  let h = '';
+  for (let i = 0; i < n; i++){
+    h += `<text x="${o-8}" y="${o+i*c+c/2+5}" text-anchor="end" font-size="12" class="f-muted">x${i+1}</text><text x="${o+i*c+c/2}" y="${o-8}" text-anchor="middle" font-size="12" class="f-muted">x${i+1}</text>`;
+    for (let j = 0; j < n; j++){ const v = Q[i][j]; h += `<rect id="q${i}_${j}" class="qcell ${v < 0 ? 'f-accent' : 'f-warm'}" x="${o+j*c}" y="${o+i*c}" width="${c-3}" height="${c-3}" rx="4" style="fill-opacity:${v ? (.12 + Math.min(1, Math.abs(v)/2)*.6).toFixed(2) : .04};stroke:var(--fg);stroke-width:0"/><text x="${o+j*c+c/2-1}" y="${o+i*c+c/2+4}" text-anchor="middle" font-size="12" class="f-fg">${v ? v.toFixed(1) : ''}</text>`; }
+  }
+  svg.innerHTML = h;
+  const qx = $('#qx', el), qe = $('#qe', el), qbx = $('#qbx', el), qbe = $('#qbe', el); let timer = null;
+  const show = x => { for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) $(`#q${i}_${j}`, svg).style.strokeWidth = (x[i] && x[j]) ? 2.5 : 0; };
+  const bits = s => Array.from({length:n}, (_, i) => s>>(n-1-i) & 1);
+  const run = () => { clearInterval(timer); let s = 0, best = Infinity, bs = null;
+    const tick = () => { const x = bits(s), e = E(x); qx.textContent = x.join(''); qe.textContent = e.toFixed(2); show(x); if (e < best){ best = e; bs = x.join(''); qbx.textContent = bs; qbe.textContent = best.toFixed(2); } s++; if (s >= 64){ clearInterval(timer); show(bits(parseInt(bs, 2))); qx.textContent = bs; qe.textContent = best.toFixed(2); } };
+    if (RM){ while (s < 64) tick(); } else timer = setInterval(tick, 55); };
+  return {step:s => { if (s >= 2) run(); else { clearInterval(timer); show(new Array(n).fill(0)); } }, stop:() => clearInterval(timer)};
+}
+
+function mountHadof(el, a){
+  const q = makeQubo(24, 7), best = anneal(q, 11); let R = rng(99);
+  const N = 24, G = 8, SW = 6, cw = 56, gx = 70, gy = 70, X0 = 27, Y0 = 34;
+  const gsv = $('#hg', el), hq = $('#hq', el), hh = $('#hh', el), hc = $('#hc', el), cnt = $('#hcount', el), rat = $('#hratio', el), bP = $('#hplay', el);
+  const cx = i => X0 + Math.floor(i/3)*gx + cw/2, cy = i => Y0 + (i%3)*gy + cw/2;
+  let h = '';
+  for (let gI = 0; gI < G; gI++) h += `<text x="${X0+gI*gx+cw/2}" y="${Y0-12}" text-anchor="middle" font-size="12" class="f-muted">G${gI+1}</text>`;
+  h += `<g class="hlinks" id="hl"></g>`;
+  for (let i = 0; i < N; i++){ const x = X0 + Math.floor(i/3)*gx, y = Y0 + (i%3)*gy;
+    h += `<rect x="${x}" y="${y}" width="${cw}" height="${cw}" rx="8" class="f-sunk s-line" stroke-width="1"/><rect id="hf${i}" class="cellfill f-accent" x="${x}" y="${y}" width="${cw}" height="${cw}" rx="8" style="fill-opacity:.45"/><text id="ht${i}" class="cellt f-fg" x="${x+cw/2}" y="${y+cw/2+5}" text-anchor="middle">.50</text>`; }
+  h += `<rect id="hcol" class="colhl" x="${X0-5}" y="${Y0-5}" width="${cw+10}" height="${3*gy-gy+cw+10}" rx="11" style="opacity:0"/>`;
+  gsv.innerHTML = h;
+  const lab = a === 'general' ? ['prepare','cost','mix','measure'] : ['H','U_C(γ)','U_M(β)','×L'];
+  hq.innerHTML = `${[0,1,2].map(k => `<text x="4" y="${24+k*32}" font-size="13" class="f-muted">q${k}</text><line x1="30" x2="440" y1="${20+k*32}" y2="${20+k*32}" class="s-muted" stroke-width="1.5"/><rect x="48" y="${8+k*32}" width="${a==='general'?62:26}" height="24" rx="4" class="f-surface s-fg"/><text x="${a==='general'?79:61}" y="${25+k*32}" text-anchor="middle" font-size="12" class="f-fg">${a==='general'?lab[0]:'H'}</text><rect x="282" y="${8+k*32}" width="64" height="24" rx="4" class="f-surface s-fg"/><text x="314" y="${25+k*32}" text-anchor="middle" font-size="12" class="f-fg">${a==='general'?lab[2]:'U_M(β)'}</text><rect x="404" y="${8+k*32}" width="30" height="24" rx="4" class="f-fg"/><path d="M410 ${27+k*32} q9 -12 18 0" class="s-line" fill="none" stroke-width="1.5"/>`).join('')}
+    <rect id="hqc" x="148" y="6" width="104" height="92" rx="6" class="f-accent" style="fill-opacity:.18;stroke:var(--accent);stroke-width:2"/><text x="200" y="57" text-anchor="middle" font-size="13" class="f-fg">${a==='general'?lab[1]:'U_C(γ)'}</text>
+    ${a==='general' ? '' : '<text x="364" y="108" text-anchor="middle" font-size="12" class="f-muted">× L layers</text>'}`;
+  hc.innerHTML = `${[0,.5,1].map(v => `<line x1="34" x2="452" y1="${8+86*(1-v)}" y2="${8+86*(1-v)}" class="s-line"/><text x="28" y="${12+86*(1-v)}" text-anchor="end" font-size="11" class="f-muted">${v}</text>`).join('')}<polyline id="hpl" fill="none" class="s-accent" stroke-width="2.5" points=""/><circle id="hpd" r="4" class="f-accent" cx="-10" cy="-10"/>`;
+  let p, tick, ratios, timer = null;
+  const drawHist = (counts, Sx) => {
+    if (!counts){ hh.innerHTML = `<text x="230" y="60" text-anchor="middle" font-size="13" class="f-muted">Press Play or Step</text>`; return; }
+    const mx = Math.max(...counts), bw = 46;
+    hh.innerHTML = counts.map((c, s) => { const ht = c/64*170, x = 18 + s*(bw+8.5); const lbl = [0,1,2].map(u => s>>u & 1).join('');
+      return `<rect class="hbar ${c === mx ? 'f-accent' : 'f-muted'}" style="fill-opacity:${c === mx ? 1 : .35}" x="${x}" y="${88-Math.min(80, ht)}" width="${bw}" height="${Math.min(80, ht)}" rx="3"/><text x="${x+bw/2}" y="106" text-anchor="middle" font-size="12" class="f-muted">${lbl}</text>`; }).join('');
+  };
+  const draw = (Sx, r) => {
+    for (let i = 0; i < N; i++){ $(`#hf${i}`, gsv).style.fillOpacity = (p[i]*.92).toFixed(2); const t = $(`#ht${i}`, gsv); t.textContent = p[i].toFixed(2).replace(/^0/, ''); t.setAttribute('class', 'cellt ' + (p[i] > .55 ? 'f-surface' : 'f-fg')); }
+    const col = $('#hcol', gsv), hl = $('#hl', gsv);
+    if (Sx){ col.style.opacity = 1; col.setAttribute('x', X0 - 5 + Math.floor(Sx[0]/3)*gx);
+      const inS = new Set(Sx); let lp = '';
+      Sx.forEach(i => { for (let j = 0; j < N; j++) if (!inS.has(j) && q.W[i][j]){ const x1 = cx(i), y1 = cy(i), x2 = cx(j), y2 = cy(j), mx = (x1+x2)/2, my = Math.min(y1, y2) - 26 - Math.abs(x2 - x1)*.12; lp += `<path d="M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}" style="opacity:${(.35 + Math.min(1, Math.abs(q.W[i][j]))*.5).toFixed(2)}"/>`; } });
+      hl.innerHTML = lp; const c = $('#hqc', hq); c.classList.remove('flash'); void c.getBBox(); c.classList.add('flash');
+    } else { col.style.opacity = 0; hl.innerHTML = ''; }
+    drawHist(r ? r.counts : null, Sx);
+    const pts = ratios.map((v, k) => `${(34 + (k + 1)/(G*SW)*418).toFixed(1)},${(8 + 86*(1 - v)).toFixed(1)}`);
+    $('#hpl', hc).setAttribute('points', pts.join(' '));
+    const dot = $('#hpd', hc); if (pts.length){ const [x, y] = pts[pts.length-1].split(','); dot.setAttribute('cx', x); dot.setAttribute('cy', y); } else { dot.setAttribute('cx', -10); }
+    rat.textContent = ratios.length ? ratios[ratios.length-1].toFixed(3) : '—';
+  };
+  const reset = () => { stop(); R = rng(99); p = new Array(N).fill(.5); tick = 0; ratios = []; cnt.textContent = a === 'general' ? 'Every choice starts at 50/50' : 'All marginals start at p = 0.5'; draw(null, null); };
+  const stepOnce = () => {
+    if (tick >= G*SW){ stop(); return; }
+    const sweep = Math.floor(tick/G), gI = tick % G, Sx = [3*gI, 3*gI+1, 3*gI+2], beta = .6 + sweep*.9;
+    const r = subSolve(q, p, Sx, beta, R);
+    Sx.forEach((i, u) => { p[i] = clamp(.85*r.marg[u] + .15*p[i], .03, .97); });
+    const x = p.map(v => v > .5 ? 1 : 0), e = energy(q, x); ratios.push(best < 0 ? clamp(e/best, 0, 1) : 1); tick++;
+    cnt.textContent = tick >= G*SW ? `Done · ${SW} sweeps · final quality ${ratios[ratios.length-1].toFixed(3)}` : `Sweep ${sweep+1}/${SW} · subproblem ${gI+1}/${G} · x${Sx[0]+1}–x${Sx[2]+1}`;
+    draw(Sx, r);
+    if (tick >= G*SW) stop();
+  };
+  const stop = () => { clearInterval(timer); timer = null; bP.textContent = 'Play'; };
+  const play = () => { if (timer){ stop(); return; } if (tick >= G*SW) reset(); bP.textContent = 'Pause'; stepOnce(); timer = setInterval(stepOnce, 620); };
+  bP.addEventListener('click', play);
+  $('#hstep', el).addEventListener('click', () => { stop(); stepOnce(); });
+  $('#hreset', el).addEventListener('click', reset);
+  reset();
+  let auto = RM ? null : setTimeout(play, 700);
+  return {stop:() => { clearTimeout(auto); stop(); }};
+}
+
+function mountReads(el, a){
+  const R = rng(3), L = 40, len = 10, offs = [0,5,10,15,20,25,30], cw = 14;
+  let gen = ''; for (let i = 0; i < L; i++) gen += 'ACGT'[Math.floor(R()*4)];
+  const box = $('#rd', el);
+  const scat = offs.map(() => [20 + R()*400, 14 + R()*210, (R()*24 - 12)]);
+  box.innerHTML = offs.map((o, k) => `<div class="read" id="rr${k}">${[...gen.slice(o, o+len)].map(ch => `<b class="n${ch}">${ch}</b>`).join('')}</div>`).join('') + `<div class="cons" id="rcons">${[...gen].map(ch => `<b class="n${ch}">${ch}</b>`).join('')}</div>`;
+  const nodes = [[44,236],[112,120],[212,58],[316,96],[384,196],[318,262],[436,262]];
+  const edges = [[0,1,1],[1,2,1],[2,3,1],[3,4,1],[4,5,1],[5,6,1],[1,3,0],[4,2,0],[3,5,0]];
+  const gs = $('#rg', el);
+  const ep = (i, j) => { const [x1, y1] = nodes[i], [x2, y2] = nodes[j], dx = x2 - x1, dy = y2 - y1, d = Math.hypot(dx, dy), ux = dx/d, uy = dy/d; return [x1 + ux*20, y1 + uy*20, x2 - ux*24, y2 - uy*24]; };
+  gs.innerHTML = `<defs><marker id="am" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--muted)"/></marker><marker id="ag" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--green)"/></marker></defs>` +
+    edges.map((e, k) => { const [x1, y1, x2, y2] = ep(e[0], e[1]); const curve = e[2] ? '' : ` Q${(x1+x2)/2 + (y2-y1)*.25} ${(y1+y2)/2 - (x2-x1)*.25}`; return `<path id="re${k}" class="edge" d="M${x1} ${y1}${curve} ${x2} ${y2}" style="stroke:var(--muted)" marker-end="url(#am)"/>`; }).join('') +
+    nodes.map((n, k) => `<circle cx="${n[0]}" cy="${n[1]}" r="18" class="f-surface s-fg" stroke-width="2"/><text x="${n[0]}" y="${n[1]+5}" text-anchor="middle" font-size="13" class="f-fg">r${k+1}</text>`).join('') +
+    `<text x="470" y="22" text-anchor="end" font-size="13" class="f-muted" id="rgl">${a === 'general' ? 'curved links come from repeated DNA' : 'curved edges: repeat-induced overlaps'}</text>`;
+  const cap = $('#rcap', el), cons = $('#rcons', el);
+  const caps = a === 'general' ? ['1 · Fragments arrive in random order', '2 · Matching ends show which fragments overlap', '3 · Overlaps become a map; repeats add false links', '4 · The genome is the one route through every fragment'] : ['1 · Reads arrive unordered', '2 · Suffix–prefix overlaps define the layout', '3 · Overlap graph: repeats add spurious edges', '4 · Hamiltonian path → consensus sequence'];
+  const set = s => {
+    offs.forEach((o, k) => { const r = $('#rr' + k, box); if (s >= 1) r.style.transform = `translate(${20 + o*cw}px, ${14 + k*30}px)`; else { const [x, y, rot] = scat[k]; r.style.transform = `translate(${x}px, ${y}px) rotate(${rot}deg)`; } });
+    cons.classList.toggle('show', s >= 3);
+    edges.forEach((e, k) => { const p = $('#re' + k, gs); const on = s >= 3; p.style.stroke = on ? (e[2] ? 'var(--green)' : 'var(--muted)') : 'var(--muted)'; p.style.opacity = on && !e[2] ? .25 : 1; p.style.strokeWidth = on && e[2] ? 4 : 2.2; p.setAttribute('marker-end', on && e[2] ? 'url(#ag)' : 'url(#am)'); });
+    cap.textContent = caps[Math.min(s, 3)];
+  };
+  set(0);
+  return {step:set};
+}
+
+function mountEdgeQubo(el, a){
+  const svg = $('#eg', el), out = $('#egE', el);
+  const N = {A:[36,120],B:[134,120],C:[232,48],D:[330,120],E:[428,48],F:[496,120]};
+  const E = [['A','B'],['B','C'],['B','D'],['C','D'],['C','E'],['D','E'],['E','F'],['D','F']];
+  const sh = (p, q) => { const [x1, y1] = N[p], [x2, y2] = N[q], dx = x2 - x1, dy = y2 - y1, d = Math.hypot(dx, dy); return [x1 + dx/d*19, y1 + dy/d*19, x2 - dx/d*23, y2 - dy/d*23]; };
+  svg.innerHTML = `<defs>${['m','a','r'].map((k, i) => `<marker id="eg${k}" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:${['var(--muted)','var(--accent)','var(--red)'][i]}"/></marker>`).join('')}</defs>` +
+    E.map((e, k) => { const [x1, y1, x2, y2] = sh(e[0], e[1]); const bend = (e[0]+e[1] === 'BD' || e[0]+e[1] === 'DF') ? ` Q${(x1+x2)/2} ${y1+46}` : (e[0]+e[1] === 'CE' ? ` Q${(x1+x2)/2} ${y1-30}` : ''); const lx = (x1+x2)/2, ly = bend ? (e[0]+e[1] === 'CE' ? y1-22 : y1+34) : (y1+y2)/2 - 8; return `<path id="ee${k}" class="edge" d="M${x1} ${y1}${bend} ${x2} ${y2}" style="stroke:var(--muted)" marker-end="url(#egm)"/><text x="${lx}" y="${ly}" text-anchor="middle" font-size="12" class="f-muted">x${k+1}</text>`; }).join('') +
+    Object.entries(N).map(([k, [x, y]]) => `<circle id="en${k}" cx="${x}" cy="${y}" r="17" class="f-surface s-fg" stroke-width="2"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="14" class="f-fg">${k}</text>`).join('');
+  const sol1 = new Set(['AB','BC','BD','DE','EF']), sol2 = new Set(['AB','BC','CD','DE','EF']);
+  const set = s => {
+    const sol = s === 1 ? sol1 : s >= 2 ? sol2 : null;
+    E.forEach((e, k) => { const p = $('#ee' + k, svg), id = e[0] + e[1], on = sol && sol.has(id), bad = s === 1 && (id === 'BC' || id === 'BD');
+      p.style.stroke = bad ? 'var(--red)' : on ? 'var(--accent)' : 'var(--muted)'; p.style.strokeWidth = on ? 4 : 2; p.style.opacity = sol && !on ? .3 : 1; p.setAttribute('marker-end', bad ? 'url(#egr)' : on ? 'url(#ega)' : 'url(#egm)'); });
+    $('#enB', svg).style.stroke = s === 1 ? 'var(--red)' : ''; $('#enB', svg).style.strokeWidth = s === 1 ? 4 : '';
+    out.innerHTML = s === 0 ? `8 candidate edges = 8 binary variables` : s === 1 ? `<span style="color:var(--red)">B has two successors</span> · H = −5 + λ·1 = <b>−3</b> (λ = 2)` : `One clean path A→F · H = −5 + 0 = <b style="color:var(--green)">−5</b>`;
+  };
+  set(0);
+  return {step:s => set(Math.min(s, 2))};
+}
+
+/* ============================================================ SHELL */
+const AUDS = ['general', 'industry', 'technical'], LENS = [10, 20, 45];
+const KEY = 'hadof-talk-v1';
+const st = {aud:'technical', len:20, custom:{}, i:0, step:0, notes:false};
+try { const v = JSON.parse(localStorage.getItem(KEY) || '{}'); if (AUDS.includes(v.aud)) st.aud = v.aud; if (LENS.includes(v.len)) st.len = v.len; if (v.custom && typeof v.custom === 'object') st.custom = v.custom; } catch(e){}
+const hm = /^#(general|industry|technical)-(10|20|45)$/.exec(location.hash || ''); if (hm){ st.aud = hm[1]; st.len = +hm[2]; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify({aud:st.aud, len:st.len, custom:st.custom})); } catch(e){} try { history.replaceState(null, '', `#${st.aud}-${st.len}`); } catch(e){} };
+const ckey = () => `${st.aud}-${st.len}`;
+const inPreset = m => m.when[st.aud] && m.when[st.aud] <= st.len;
+const deck = () => { const c = st.custom[ckey()]; return c ? MODULES.filter(m => c.includes(m.id)) : MODULES.filter(inPreset); };
+
+const stage = $('#stage'), vp = $('#vp'), wrap = $('#wrap'), notesEl = $('#notes');
+let cur = {}, slideEl = null, maxStep = 0;
+function fit(){ const r = vp.getBoundingClientRect(); const s = Math.max(.1, Math.min((r.width - 24)/1280, (r.height - 24)/720)); wrap.style.setProperty('--s', s.toFixed(4)); }
+new ResizeObserver(fit).observe(vp); fit();
+
+function render(atEnd){
+  const d = deck(); if (!d.length){ stage.innerHTML = `<div class="slide"><h2>No modules selected</h2><p class="lede">Open Modules and pick at least one.</p></div>`; updateChrome(); return; }
+  st.i = clamp(st.i, 0, d.length - 1);
+  try { cur.stop && cur.stop(); } catch(e){}
+  const m = d[st.i], ctx = {a:st.aud, deck:d, idx:st.i};
+  const sec = SECTIONS[m.sec];
+  stage.innerHTML = `<section class="slide" style="--sec:${sec.c}">${m.bare ? '' : `<div class="kicker"><i></i>${sec.name}<span class="pos">${String(st.i+1).padStart(2,'0')} / ${String(d.length).padStart(2,'0')}</span></div>`}${m.render(st.aud, ctx)}</section>`;
+  slideEl = stage.firstElementChild;
+  cur = (m.mount && m.mount(slideEl, ctx)) || {};
+  maxStep = Math.max(0, ...$$('[data-s]', slideEl).map(n => +n.dataset.s));
+  st.step = atEnd ? maxStep : 0;
+  applyStep(); updateChrome();
+}
+function applyStep(){ if (!slideEl) return; $$('[data-s]', slideEl).forEach(n => n.classList.toggle('on', +n.dataset.s <= st.step)); try { cur.step && cur.step(st.step); } catch(e){ console.error(e); } updateCount(); }
+function next(){ const d = deck(); if (st.step < maxStep){ st.step++; applyStep(); } else if (st.i < d.length - 1){ st.i++; render(false); } }
+function prev(){ if (st.step > 0){ st.step--; applyStep(); } else if (st.i > 0){ st.i--; render(true); } }
+function go(i){ st.i = i; render(false); }
+
+function updateCount(){
+  const d = deck(), m = d[st.i];
+  $('#count').innerHTML = d.length ? `<b>${st.i+1}</b> / ${d.length}${maxStep ? ` · build ${st.step}/${maxStep}` : ''}` : '';
+  $('#modid').textContent = m ? `module: ${m.id}` : '';
+}
+function updateChrome(){
+  $$('#segAud button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === st.aud));
+  $$('#segLen button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.v === st.len));
+  const d = deck(), custom = !!st.custom[ckey()];
+  $('#bMods').firstChild.textContent = custom ? 'Modules (custom) ' : 'Modules ';
+  $('#ideo').innerHTML = d.map((m, k) => `<button type="button" style="--seg:${SECTIONS[m.sec].c}" class="${k === st.i ? 'cur' : k < st.i ? 'done' : ''}" aria-label="Slide ${k+1}: ${m.name}" title="${k+1}. ${m.name}"></button>`).join('');
+  $$('#ideo button').forEach((b, k) => b.addEventListener('click', () => go(k)));
+  updateCount(); renderNotes();
+}
+function renderNotes(){
+  notesEl.hidden = !st.notes; $('#bNotes').setAttribute('aria-pressed', st.notes);
+  if (!st.notes) { requestAnimationFrame(fit); return; }
+  const d = deck(), m = d[st.i]; if (!m) return; const nx = d[st.i+1];
+  notesEl.innerHTML = `<div class="mid">${SECTIONS[m.sec].name} · module ${m.id}</div><h3>${m.name}</h3><p>${by(st.aud, m.notes || {all:''}) || ''}</p><div class="next">${nx ? `Next: <b>${nx.name}</b>` : 'Last slide'}</div>`;
+  requestAnimationFrame(fit);
+}
+
+/* modules sheet */
+function renderSheet(){
+  const sel = new Set(deck().map(m => m.id)), custom = !!st.custom[ckey()];
+  $('#sheetTitle').textContent = `Modules · ${st.aud[0].toUpperCase() + st.aud.slice(1)} · ${st.len} min`;
+  $('#sheetSub').textContent = `${sel.size} of ${MODULES.length} modules selected${custom ? ' (custom)' : ' (preset)'}. Tick modules to add or remove them; changes are kept for this audience and length in this browser.`;
+  let h = '', last = '';
+  MODULES.forEach(m => {
+    if (m.sec !== last){ last = m.sec; h += `<div class="modsec" style="--seg:${SECTIONS[m.sec].c}"><i></i>${SECTIONS[m.sec].name}</div>`; }
+    const tags = AUDS.map(a => `${a[0].toUpperCase()}${m.when[a] ? `<b>${m.when[a]}</b>` : '–'}`).join(' · ');
+    h += `<label class="modrow" for="mod-${m.id}"><input type="checkbox" id="mod-${m.id}" data-id="${m.id}" ${sel.has(m.id) ? 'checked' : ''}><div><div class="nm">${m.name}</div><div class="ds">${m.desc}</div></div><div class="tags" title="Shortest preset that includes it, per audience">${tags}</div></label>`;
+  });
+  const ml = $('#modlist'); ml.innerHTML = h;
+  $$('input', ml).forEach(inp => inp.addEventListener('change', () => {
+    const ids = $$('input', ml).filter(x => x.checked).map(x => x.dataset.id);
+    const preset = MODULES.filter(inPreset).map(m => m.id);
+    if (ids.length === preset.length && ids.every((x, k) => x === preset[k])) delete st.custom[ckey()]; else st.custom[ckey()] = ids;
+    save(); const curId = deck()[st.i] ? deck()[st.i].id : null; render(false); renderSheet();
+  }));
+}
+const openSheet = () => { renderSheet(); $('#sheet').hidden = false; $('#bClose').focus(); };
+const closeSheet = () => { $('#sheet').hidden = true; $('#bMods').focus(); };
+$('#bMods').addEventListener('click', openSheet);
+$('#bClose').addEventListener('click', closeSheet);
+$('#sheet').addEventListener('click', e => { if (e.target.id === 'sheet') closeSheet(); });
+$('#bPreset').addEventListener('click', () => { delete st.custom[ckey()]; save(); st.i = 0; render(false); renderSheet(); });
+
+/* controls */
+$$('#segAud button').forEach(b => b.addEventListener('click', () => { st.aud = b.dataset.v; st.i = 0; save(); render(false); }));
+$$('#segLen button').forEach(b => b.addEventListener('click', () => { st.len = +b.dataset.v; st.i = 0; save(); render(false); }));
+$('#bNotes').addEventListener('click', () => { st.notes = !st.notes; renderNotes(); });
+$('#bPrev').addEventListener('click', prev);
+$('#bNext').addEventListener('click', next);
+const toggleFull = () => { const app = $('#app'); if (document.fullscreenElement){ document.exitFullscreen().catch(() => {}); } else if (document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen().catch(() => app.classList.toggle('present')); } else app.classList.toggle('present'); };
+$('#bFull').addEventListener('click', toggleFull);
+document.addEventListener('fullscreenchange', () => { $('#app').classList.toggle('present', !!document.fullscreenElement); requestAnimationFrame(fit); });
+document.addEventListener('keydown', e => {
+  if (!$('#sheet').hidden){ if (e.key === 'Escape') closeSheet(); return; }
+  const t = e.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key;
+  if (k === 'ArrowRight' || k === 'PageDown' || k === ' '){ e.preventDefault(); next(); }
+  else if (k === 'ArrowLeft' || k === 'PageUp'){ e.preventDefault(); prev(); }
+  else if (k === 'Home'){ go(0); } else if (k === 'End'){ go(deck().length - 1); }
+  else if (k === 'n' || k === 'N'){ st.notes = !st.notes; renderNotes(); }
+  else if (k === 'm' || k === 'M'){ openSheet(); }
+  else if (k === 'f' || k === 'F'){ toggleFull(); }
+  else if (k === 'Escape' && $('#app').classList.contains('present') && !document.fullscreenElement){ $('#app').classList.remove('present'); requestAnimationFrame(fit); }
+});
+let sx = null;
+vp.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') sx = e.clientX; });
+vp.addEventListener('pointerup', e => { if (sx === null) return; const dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 50) (dx < 0 ? next : prev)(); });
+
+render(false);
+})();
+</script>
+
+</body></html>
