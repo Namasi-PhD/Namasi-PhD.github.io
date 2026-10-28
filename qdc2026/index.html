@@ -236,7 +236,7 @@ html.loop .kbar{display:flex;position:fixed;inset:auto 0 0;z-index:6;height:54px
         <div class="panel">
           <div class="label">Best solution quality vs simulated annealing · ibm_kingston</div>
           <svg id="kchart" viewBox="0 0 560 300" aria-label="Line chart: HADOF with 5-qubit circuits stays between 0.92 and 1.0 from 10 to 50 variables, while full-circuit QAOA falls from 1.0 to 0.49"></svg>
-          <div class="cap">Same random QUBOs, same 156-qubit device. Full QAOA uses one qubit per variable; HADOF uses 5-qubit circuits. Sankar, Miliotis &amp; Caton, HPQ paper (QCE).</div>
+          <div class="cap">Same random QUBOs, same 156-qubit device. Full QAOA uses one qubit per variable; HADOF uses 5-qubit circuits. Sankar, Miliotis &amp; Caton, HPQ paper (arXiv preprint).</div>
         </div>
         <div class="stats">
           <div class="stat" style="--lc:var(--nA)"><div class="v num">0.92<small> vs 0.49</small></div><p>best quality at 50 variables on ibm_kingston: HADOF vs full-circuit QAOA</p></div>
@@ -461,7 +461,7 @@ const sim = (() => {
   return {start(){ if (reduce) return; reset(); draw(-1); loop(); }, stop(){ clearTimeout(timer); timer = 0; }, redraw(){ draw(-1); }};
 })();
 
-/* chart: ibm_kingston best accuracy (QCE table) */
+/* chart: ibm_kingston best accuracy (results table) */
 function drawK(){
   const svg = $('#kchart'), xs = [10,20,30,40,50], full = [1,.82,.76,.55,.49], had = [1,1,.97,.94,.92];
   const L = 52, Rr = 24, T = 22, Bm = 48, W = 560, H = 300, X = v => L + (v - 10)/40*(W - L - Rr), Y = v => T + (1 - v/1)*(H - T - Bm)*1;
