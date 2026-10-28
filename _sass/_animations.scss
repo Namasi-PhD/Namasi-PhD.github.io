@@ -18,8 +18,8 @@
 @media (prefers-reduced-motion: no-preference) {
   .reveal {
     opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
   }
 
   .reveal.is-visible {
@@ -120,6 +120,7 @@
 
 html[data-theme="dark"] {
   --global-bg-color: #05070a;
+  --global-footer-bg-color: #05070a;
 
   body {
     background-color: #05070a;
@@ -141,7 +142,20 @@ html[data-theme="dark"] {
       repeating-linear-gradient(90deg, rgba(45, 212, 191, 0.045) 0, rgba(45, 212, 191, 0.045) 1px, transparent 1px, transparent 256px);
   }
 
-  /* Masthead becomes a glass panel floating over the circuit grid */
+  /* Slow drifting aurora glow, layered above the circuit grid for a less flat backdrop */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: -10%;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      radial-gradient(640px circle at 20% 25%, rgba(156, 140, 255, 0.12), transparent 60%),
+      radial-gradient(560px circle at 80% 75%, rgba(45, 212, 191, 0.11), transparent 60%);
+    filter: blur(10px);
+  }
+
+  /* Masthead matches the page's solid black backdrop */
   .masthead {
     background: #05070a;
     border-bottom: 1px solid rgba(156, 140, 255, 0.22);
@@ -195,9 +209,9 @@ html[data-theme="dark"] {
     box-shadow: 0 0 18px rgba(156, 140, 255, 0.45), 0 0 36px rgba(45, 212, 191, 0.25);
   }
 
-  /* Avatar gets a soft neon ring */
+  /* Avatar gets a soft neon ring (kept tight so it doesn't clip against the page edge) */
   .author__avatar img {
-    box-shadow: 0 0 0 3px #0a0e14, 0 0 0 5px rgba(156, 140, 255, 0.4), 0 0 24px rgba(45, 212, 191, 0.25);
+    box-shadow: 0 0 0 3px #0a0e14, 0 0 0 5px rgba(156, 140, 255, 0.4), 0 0 10px rgba(45, 212, 191, 0.3);
     border-radius: 50%;
   }
 }
@@ -206,11 +220,27 @@ html[data-theme="dark"] {
   html[data-theme="dark"] body::before {
     animation: circuitDrift 100s linear infinite;
   }
+
+  html[data-theme="dark"] body::after {
+    animation: aurora 34s ease-in-out infinite alternate;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="dark"] body::after {
+    animation: none;
+  }
 }
 
 @keyframes circuitDrift {
   0%   { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
   100% { background-position: -5% 4%, 5% -4%, 64px 64px, -64px -64px, 256px -128px, -256px 128px; }
+}
+
+@keyframes aurora {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(4%, -5%) scale(1.12); }
+  100% { transform: translate(-4%, 5%) scale(1); }
 }
 
 /* ==========================================================================
@@ -315,5 +345,5 @@ html[data-theme="dark"] .explainer-teaser__card:hover {
 
 @keyframes miniFade {
   0%, 100% { opacity: .25; }
-  50% { opacity: .9; }   
+  50% { opacity: .9; }
 }
