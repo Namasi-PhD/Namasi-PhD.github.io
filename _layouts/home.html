@@ -23,27 +23,13 @@ layout: default
       <div class="portrait-frame">
         <img src="{{ '/images/' | append: site.author.avatar | relative_url }}" alt="Portrait of {{ site.author.name }}" width="900" height="900">
       </div>
-      <div class="portrait-badge"><b>7.3 Mbp genome</b>assembled with HADOF on IBM quantum hardware</div>
     </div>
   </section>
 
-  <section class="stats" aria-label="Highlights">
-    <div class="card stat-card"><div class="num">500</div><div class="lbl">QUBO variables solved with 5-qubit circuits</div></div>
-    <div class="card stat-card"><div class="num">45,000</div><div class="lbl">variables on a 156-qubit IBM Heron (preliminary)</div></div>
-    <div class="card stat-card"><div class="num">2,313</div><div class="lbl">overlap-graph edges from real sequencing data</div></div>
-    <div class="card stat-card"><div class="num">8.6&times;</div><div class="lbl">faster than full simulated annealing (preliminary)</div></div>
-  </section>
-
-  <section class="home-section">
-    <span class="kicker">{{ page.title }}</span>
-    <h2>{{ page.headline }}</h2>
-  </section>
 </div>
 
-<div class="wrap-narrow">
-  <article class="prose">
+<div class="wrap">
 {{ content }}
-  </article>
 </div>
 
 <div class="wrap">
