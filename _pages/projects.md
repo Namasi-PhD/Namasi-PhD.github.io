@@ -3,86 +3,76 @@ layout: single
 title: "Research Journey"
 permalink: /projects/
 ---
-
 My research journey has been shaped by a persistent question:  
 **how can abstract computational theories be translated into systems that solve real-world, large-scale problems?**  
 
 This question did not emerge suddenly during my PhD. It is the natural culmination of a series of projects across physics, computation, biology, and machine learning, each contributing a layer of perspective that now defines my work in quantum optimisation.
 
+<div class="bleed">
+<section class="story"><div class="copy"><div class="tag">01 · Physics</div><h3>Early Foundations: Computation Through Physical Systems</h3><p>My first exposure to computation as a <em>physical process</em> came during my time at IISER Pune, where I explored stochastic systems and statistical physics.</p>
+<p>Working on space-dependent diffusion in Brownian motion, I simulated molecular dynamics systems to understand how stochastic integration frameworks like Ito and Stratonovich influence macroscopic behavior. This was more than a physics exercise, it introduced me to the idea that the choice of mathematical formalism directly impacts computational outcomes.</p>
+<p>In parallel, my work on stochastic processes in financial systems involved simulating Ornstein–Uhlenbeck processes and validating theoretical models in option pricing. These projects collectively trained me to think rigorously about dynamical systems, numerical simulation, and the translation of theory into computational pipelines.</p></div><div class="panel viz"><svg class="viz-svg a-brown" viewBox="0 0 320 200" role="img" aria-label="Particles performing random walks whose step size grows from left to right"><defs><linearGradient id="dgrad" x1="0" x2="1"><stop offset="0" stop-color="#9C8CFF" stop-opacity=".03"/><stop offset="1" stop-color="#2DD4BF" stop-opacity=".16"/></linearGradient></defs><rect x="10" y="10" width="300" height="160" rx="12" fill="url(#dgrad)" class="box"/><g id="brown"></g><text x="16" y="188">D(x) low</text><text class="end" x="304" y="188">D(x) high: bigger random steps</text></svg></div></section>
+<section class="story"><div class="copy"><div class="tag">02 · Game theory</div><h3>Game Theory and the Shift Toward Strategic Computation</h3><p>This foundation naturally extended into game theory, where I began exploring how agents interact under constraints.</p>
+<p>At IIT Bombay, I worked on quantum game theory, demonstrating how entanglement-enabled strategies could outperform classical Nash equilibria in team decision problems. This was my first concrete encounter with quantum advantage in structured optimisation settings.</p>
+<p>I later expanded this perspective through mean-field game theory, where I generalized quantum mechanical formulations to large-scale agent-based systems. These experiences were pivotal—they reframed computation not just as simulation, but as optimisation under competing objectives, a theme that now sits at the core of my PhD.</p></div><div class="panel viz"><svg class="viz-svg a-game" viewBox="0 0 320 200" role="img" aria-label="A two-player payoff table where the highlighted outcome moves from the classical equilibrium to a better one once the players are entangled"><text class="mid ttl" x="196" y="22">Bob</text><text class="mid ttl" x="52" y="104">Alice</text><text class="mid" x="158.0" y="44">cooperate</text><text class="mid" x="234.0" y="44">defect</text><text class="end" x="112" y="78.0">C</text><text class="end" x="112" y="124.0">D</text><rect class="cell" x="120" y="52" width="72" height="42" rx="6"/><text class="mid pay" x="156.0" y="78.0">3, 3</text><rect class="cell" x="196" y="52" width="72" height="42" rx="6"/><text class="mid pay" x="232.0" y="78.0">0, 5</text><rect class="cell" x="120" y="98" width="72" height="42" rx="6"/><text class="mid pay" x="156.0" y="124.0">5, 0</text><rect class="cell" x="196" y="98" width="72" height="42" rx="6"/><text class="mid pay" x="232.0" y="124.0">1, 1</text><rect class="hl hl-c" x="194" y="96" width="76" height="46" rx="8"/><rect class="hl hl-q" x="118" y="50" width="76" height="46" rx="8"/><path class="ent-link" d="M52,90 C52,40 120,22 180,20"/><text class="mid cap c-cl" x="196" y="172">classical Nash equilibrium: 1, 1</text><text class="mid cap c-qu teal" x="196" y="172">entangled strategies: 3, 3</text></svg></div></section>
+<section class="story"><div class="copy"><div class="tag">03 · Synthetic biology</div><h3>Biology, Systems Thinking, and Real-World Constraints</h3><p>A major turning point in my journey was my involvement in iGEM (International Genetically Engineered Machine):
+Our team developed a negative carbon footprint fuel generation method using synthetic bacterial co-cultures to convert CO₂ into biofuel.<br />
+We <strong>won a Gold Medal</strong> with nominations for Best Manufacturing and Education. The following year, I <strong>mentored a team to Gold Medal</strong> again.</p>
+<p>Project links:</p>
+<ul>
+<li>[<a href="https://2021.igem.org/Team:IISER-Pune-India">Synbactory</a>]  [<a href="https://video.igem.org/w/aJJZzf5xw9EMSf7T31dwYJ">Project promotion video</a>]  [<a href="https://www.youtube.com/@iGEMIISERPune">Outreach and Science Communication</a>]  [<a href="https://github.com/iGEM-IISERP/Dry-Lab-2021/tree/main/Setting%20up%20for%20SteadyCom">SteadyCom Tutorial</a>]</li>
+<li><a href="https://2022.igem.wiki/iiser-pune-india/">Hydrazome</a></li>
+</ul>
+<p>This experience fundamentally changed how I approached research. Biology introduced: high-dimensional systems, real data constraints and the necessity of scalable computational methods. It was here that I began to see a clear gap: classical methods often struggle to scale efficiently for complex biological optimisation problems.</p></div><div class="panel viz"><svg class="viz-svg a-igem" viewBox="0 0 320 200" role="img" aria-label="Carbon dioxide molecules drifting into two bacteria while fuel droplets flow out"><g class="bact" transform="rotate(-10 160 82)"><rect x="112" y="64" width="96" height="36" rx="18"/><circle cx="134" cy="82" r="3"/><circle cx="160" cy="76" r="3"/><circle cx="182" cy="86" r="3"/></g><g class="bact b2" transform="rotate(8 166 124)"><rect x="118" y="106" width="96" height="36" rx="18"/><circle cx="142" cy="122" r="3"/><circle cx="168" cy="128" r="3"/><circle cx="190" cy="118" r="3"/></g><g transform="translate(18 60)"><g class="co2" style="animation-delay:0.0s"><circle class="o" cx="-8" cy="0" r="4"/><circle class="c" cx="0" cy="0" r="4.5"/><circle class="o" cx="8" cy="0" r="4"/></g></g><g transform="translate(18 96)"><g class="co2" style="animation-delay:1.1s"><circle class="o" cx="-8" cy="0" r="4"/><circle class="c" cx="0" cy="0" r="4.5"/><circle class="o" cx="8" cy="0" r="4"/></g></g><g transform="translate(18 132)"><g class="co2" style="animation-delay:2.2s"><circle class="o" cx="-8" cy="0" r="4"/><circle class="c" cx="0" cy="0" r="4.5"/><circle class="o" cx="8" cy="0" r="4"/></g></g><g transform="translate(18 80)"><g class="co2" style="animation-delay:3.3s"><circle class="o" cx="-8" cy="0" r="4"/><circle class="c" cx="0" cy="0" r="4.5"/><circle class="o" cx="8" cy="0" r="4"/></g></g><g transform="translate(232 70)"><path class="fuel" style="animation-delay:0.6s" d="M0,-8 C5,-1 6,3 0,6 C-6,3 -5,-1 0,-8 Z"/></g><g transform="translate(232 104)"><path class="fuel" style="animation-delay:1.9s" d="M0,-8 C5,-1 6,3 0,6 C-6,3 -5,-1 0,-8 Z"/></g><g transform="translate(232 136)"><path class="fuel" style="animation-delay:3.2s" d="M0,-8 C5,-1 6,3 0,6 C-6,3 -5,-1 0,-8 Z"/></g><text x="14" y="30">CO₂ in</text><text class="end" x="306" y="30">biofuel out</text><text class="mid cap" x="160" y="184">synthetic bacterial co-culture</text></svg></div></section>
+<section class="story"><div class="copy"><div class="tag">04 · Machine learning</div><h3>Formalising Machine Learning and Causality</h3><p>To address these challenges, I moved deeper into machine learning and causal inference. During my Master’s thesis at TCS Research, I worked on quantum-enhanced reinforcement learning integrating causal inference into deep RL systems</p>
+<p>This work sharpened two key insights:</p>
+<ol>
+<li>Learning systems must be robust to distributional shifts</li>
+<li>Incorporating causal structure improves both interpretability and performance</li>
+</ol>
+<p>In parallel, my work on carbon premium in financial markets applied causal inference at scale using econometric techniques.</p>
+<p>These projects solidified my ability to handle real-world datasets, design statistically rigorous models and connect theory with empirical validation</p></div><div class="panel viz"><svg class="viz-svg a-causal" viewBox="0 0 320 200" role="img" aria-label="A three-node causal graph; an intervention removes the confounding edge"><defs><marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 Z" fill="#9C8CFF"/></marker></defs><line class="ce zx" x1="147.0" y1="59.7" x2="102.2" y2="120.7" marker-end="url(#arrP)"/><line class="ce zy" x1="173.0" y1="59.7" x2="217.8" y2="120.7" marker-end="url(#arrP)"/><line class="ce xy" x1="110.0" y1="140.0" x2="208.0" y2="140.0" marker-end="url(#arrP)"/><circle class="cp zx" r="3.5" style="offset-path:path('M147.0,59.7 L102.2,120.7');animation-delay:0s"/><circle class="cp zy" r="3.5" style="offset-path:path('M173.0,59.7 L217.8,120.7');animation-delay:0.6s"/><circle class="cp xy" r="3.5" style="offset-path:path('M110.0,140.0 L208.0,140.0');animation-delay:1.2s"/><circle class="cn" cx="160" cy="42" r="20"/><text class="mid big" x="160" y="47">Z</text><circle class="cn xnode" cx="88" cy="140" r="20"/><text class="mid big" x="88" y="145">X</text><circle class="cn" cx="232" cy="140" r="20"/><text class="mid big" x="232" y="145">Y</text><text class="mid c-obs" x="160" y="190">observe: Z confounds X → Y</text><text class="mid c-do gold" x="160" y="190">intervene: do(X) cuts Z → X</text></svg></div></section>
+<section class="story"><div class="copy"><div class="tag">05 · Convergence</div><h3>The Transition to Quantum Optimisation</h3><p>By the end of my undergraduate and Master’s work, a clear convergence had emerged:</p>
+<ul>
+<li>optimisation problems in biology are inherently combinatorial and NP-hard</li>
+<li>classical approaches face scalability bottlenecks</li>
+<li>quantum computing offers a natural framework via QUBO formulations</li>
+</ul>
+<p>This led me directly into my PhD at University College Dublin.</p></div><div class="panel viz"><svg class="viz-svg a-conv" viewBox="0 0 320 200" role="img" aria-label="Three research threads flowing together into quantum optimisation"><path class="stream" d="M24,40 C120,40 170,96 236,100"/><text x="24" y="26">Biology: NP-hard problems</text><circle class="flow" r="3.5" style="offset-path:path('M24,40 C120,40 170,96 236,100');animation-delay:0.0s"/><circle class="flow" r="3.5" style="offset-path:path('M24,40 C120,40 170,96 236,100');animation-delay:1.2s"/><circle class="flow" r="3.5" style="offset-path:path('M24,40 C120,40 170,96 236,100');animation-delay:2.4s"/><path class="stream" d="M24,100 C120,100 170,100 236,100"/><text x="24" y="86">Classical methods hit limits</text><circle class="flow" r="3.5" style="offset-path:path('M24,100 C120,100 170,100 236,100');animation-delay:0.5s"/><circle class="flow" r="3.5" style="offset-path:path('M24,100 C120,100 170,100 236,100');animation-delay:1.7s"/><circle class="flow" r="3.5" style="offset-path:path('M24,100 C120,100 170,100 236,100');animation-delay:2.9s"/><path class="stream" d="M24,160 C120,160 170,104 236,100"/><text x="24" y="146">QUBO: a quantum-ready language</text><circle class="flow" r="3.5" style="offset-path:path('M24,160 C120,160 170,104 236,100');animation-delay:1.0s"/><circle class="flow" r="3.5" style="offset-path:path('M24,160 C120,160 170,104 236,100');animation-delay:2.2s"/><circle class="flow" r="3.5" style="offset-path:path('M24,160 C120,160 170,104 236,100');animation-delay:3.4s"/><circle class="goal" cx="262" cy="100" r="24"/><text class="mid" x="262" y="97">PhD</text><text class="mid" x="262" y="109">UCD</text><text class="mid cap" x="262" y="142">quantum</text><text class="mid cap" x="262" y="155">optimisation</text></svg></div></section>
+<section class="story"><div class="copy"><div class="tag">06 · Community</div><h3>Leadership and Community Building</h3><p>Alongside research, I have taken on leadership roles that shape the research environment:</p>
+<ul>
+<li>PhD School Representative (UCD School of Computer Science)</li>
+<li>Founded the Dry Run Club to improve research communication</li>
+<li>Mentored iGEM teams to international success</li>
+</ul>
+<p>These roles reflect an important aspect of my approach:<br />
+<strong>research is not just individual output—it is a collaborative ecosystem.</strong></p></div><div class="panel viz"><svg class="viz-svg a-net" viewBox="0 0 320 200" role="img" aria-label="A community network growing outward from a central node"><line class="nl" style="--n:0" x1="160.0" y1="96.0" x2="243.6" y2="90.4" pathLength="1"/><line class="nl" style="--n:1" x1="160.0" y1="96.0" x2="240.2" y2="135.5" pathLength="1"/><line class="nl" style="--n:2" x1="160.0" y1="96.0" x2="205.1" y2="141.0" pathLength="1"/><line class="nl" style="--n:3" x1="160.0" y1="96.0" x2="165.9" y2="171.3" pathLength="1"/><line class="nl" style="--n:4" x1="160.0" y1="96.0" x2="95.1" y2="129.9" pathLength="1"/><line class="nl" style="--n:5" x1="160.0" y1="96.0" x2="50.3" y2="125.2" pathLength="1"/><line class="nl" style="--n:6" x1="160.0" y1="96.0" x2="78.1" y2="83.9" pathLength="1"/><line class="nl" style="--n:7" x1="160.0" y1="96.0" x2="104.1" y2="42.2" pathLength="1"/><line class="nl" style="--n:8" x1="160.0" y1="96.0" x2="138.6" y2="44.4" pathLength="1"/><line class="nl" style="--n:9" x1="160.0" y1="96.0" x2="213.9" y2="41.4" pathLength="1"/><line class="nl" style="--n:10" x1="160.0" y1="96.0" x2="235.7" y2="72.7" pathLength="1"/><line class="nl" style="--n:11" x1="243.6" y1="90.4" x2="240.2" y2="135.5" pathLength="1"/><line class="nl" style="--n:12" x1="205.1" y1="141.0" x2="165.9" y2="171.3" pathLength="1"/><line class="nl" style="--n:13" x1="95.1" y1="129.9" x2="50.3" y2="125.2" pathLength="1"/><line class="nl" style="--n:14" x1="78.1" y1="83.9" x2="104.1" y2="42.2" pathLength="1"/><line class="nl" style="--n:15" x1="138.6" y1="44.4" x2="213.9" y2="41.4" pathLength="1"/><line class="nl" style="--n:16" x1="235.7" y1="72.7" x2="243.6" y2="90.4" pathLength="1"/><line class="nl" style="--n:17" x1="240.2" y1="135.5" x2="95.1" y2="129.9" pathLength="1"/><line class="nl" style="--n:18" x1="78.1" y1="83.9" x2="213.9" y2="41.4" pathLength="1"/><circle class="nn" style="--n:0" cx="243.6" cy="90.4" r="6"/><circle class="nn" style="--n:1" cx="240.2" cy="135.5" r="6"/><circle class="nn" style="--n:2" cx="205.1" cy="141.0" r="6"/><circle class="nn" style="--n:3" cx="165.9" cy="171.3" r="6"/><circle class="nn" style="--n:4" cx="95.1" cy="129.9" r="6"/><circle class="nn" style="--n:5" cx="50.3" cy="125.2" r="6"/><circle class="nn" style="--n:6" cx="78.1" cy="83.9" r="6"/><circle class="nn" style="--n:7" cx="104.1" cy="42.2" r="6"/><circle class="nn" style="--n:8" cx="138.6" cy="44.4" r="6"/><circle class="nn" style="--n:9" cx="213.9" cy="41.4" r="6"/><circle class="nn" style="--n:10" cx="235.7" cy="72.7" r="6"/><circle class="nc" cx="160" cy="96" r="12"/><text x="12" y="20">Dry Run Club</text><text class="end" x="308" y="20">School of CS reps</text><text class="mid cap" x="160" y="194">iGEM teams mentored</text></svg></div></section>
+</div>
 
-
-## Early Foundations: Computation Through Physical Systems
-
-My first exposure to computation as a *physical process* came during my time at IISER Pune, where I explored stochastic systems and statistical physics.  
-
-Working on space-dependent diffusion in Brownian motion, I simulated molecular dynamics systems to understand how stochastic integration frameworks like Ito and Stratonovich influence macroscopic behavior. This was more than a physics exercise, it introduced me to the idea that the choice of mathematical formalism directly impacts computational outcomes.
-
-In parallel, my work on stochastic processes in financial systems involved simulating Ornstein–Uhlenbeck processes and validating theoretical models in option pricing. These projects collectively trained me to think rigorously about dynamical systems, numerical simulation, and the translation of theory into computational pipelines.
-
-
-
-## Game Theory and the Shift Toward Strategic Computation
-
-This foundation naturally extended into game theory, where I began exploring how agents interact under constraints.
-
-At IIT Bombay, I worked on quantum game theory, demonstrating how entanglement-enabled strategies could outperform classical Nash equilibria in team decision problems. This was my first concrete encounter with quantum advantage in structured optimisation settings.
-
-I later expanded this perspective through mean-field game theory, where I generalized quantum mechanical formulations to large-scale agent-based systems. These experiences were pivotal—they reframed computation not just as simulation, but as optimisation under competing objectives, a theme that now sits at the core of my PhD.
-
-
-
-## Biology, Systems Thinking, and Real-World Constraints
-
-A major turning point in my journey was my involvement in iGEM (International Genetically Engineered Machine):
-Our team developed a negative carbon footprint fuel generation method using synthetic bacterial co-cultures to convert CO₂ into biofuel.  
-We **won a Gold Medal** with nominations for Best Manufacturing and Education. The following year, I **mentored a team to Gold Medal** again. 
-
-Project links:  
-- [[Synbactory](https://2021.igem.org/Team:IISER-Pune-India)]  [[Project promotion video](https://video.igem.org/w/aJJZzf5xw9EMSf7T31dwYJ)]  [[Outreach and Science Communication](https://www.youtube.com/@iGEMIISERPune)]  [[SteadyCom Tutorial](https://github.com/iGEM-IISERP/Dry-Lab-2021/tree/main/Setting%20up%20for%20SteadyCom)]
-- [Hydrazome](https://2022.igem.wiki/iiser-pune-india/)
-
-This experience fundamentally changed how I approached research. Biology introduced: high-dimensional systems, real data constraints and the necessity of scalable computational methods. It was here that I began to see a clear gap: classical methods often struggle to scale efficiently for complex biological optimisation problems.
-
-
-
-## Formalising Machine Learning and Causality
-
-To address these challenges, I moved deeper into machine learning and causal inference. During my Master’s thesis at TCS Research, I worked on quantum-enhanced reinforcement learning integrating causal inference into deep RL systems
-
-This work sharpened two key insights:
-1. Learning systems must be robust to distributional shifts
-2. Incorporating causal structure improves both interpretability and performance  
-
-In parallel, my work on carbon premium in financial markets applied causal inference at scale using econometric techniques.
-
-These projects solidified my ability to handle real-world datasets, design statistically rigorous models and connect theory with empirical validation  
-
-
-
-## The Transition to Quantum Optimisation
-
-By the end of my undergraduate and Master’s work, a clear convergence had emerged:
-
-- optimisation problems in biology are inherently combinatorial and NP-hard
-- classical approaches face scalability bottlenecks
-- quantum computing offers a natural framework via QUBO formulations
-
-This led me directly into my PhD at University College Dublin.
-
-
-
-## Leadership and Community Building
-
-Alongside research, I have taken on leadership roles that shape the research environment:
-
-- PhD School Representative (UCD School of Computer Science)  
-- Founded the Dry Run Club to improve research communication  
-- Mentored iGEM teams to international success  
-
-These roles reflect an important aspect of my approach:  
-**research is not just individual output—it is a collaborative ecosystem.**
-
-
-
-
-
+<script>
+(function(){
+  var g = document.getElementById('brown'); if (!g) return;
+  var NS = 'http://www.w3.org/2000/svg', cols = ['#9C8CFF','#2DD4BF','#E2B84A','#55C68E'], P = [];
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var seed = 7; function rnd(){ seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+  function gauss(){ return Math.sqrt(-2 * Math.log(rnd() + 1e-9)) * Math.cos(2 * Math.PI * rnd()); }
+  for (var k = 0; k < 4; k++) {
+    var pl = document.createElementNS(NS, 'polyline'); pl.setAttribute('stroke', cols[k]);
+    var c = document.createElementNS(NS, 'circle'); c.setAttribute('r', 4); c.setAttribute('fill', cols[k]);
+    g.appendChild(pl); g.appendChild(c);
+    P.push({x: 40 + k * 70, y: 50 + (k % 2) * 70, t: [], pl: pl, c: c});
+  }
+  function step(){
+    P.forEach(function(p){
+      var s = 0.5 + 3.2 * (p.x - 10) / 300;           // diffusion grows left to right
+      p.x = Math.min(306, Math.max(14, p.x + s * gauss()));
+      p.y = Math.min(166, Math.max(14, p.y + s * gauss()));
+      p.t.push(p.x.toFixed(1) + ',' + p.y.toFixed(1)); if (p.t.length > 90) p.t.shift();
+      p.pl.setAttribute('points', p.t.join(' ')); p.c.setAttribute('cx', p.x); p.c.setAttribute('cy', p.y);
+    });
+  }
+  if (still) { for (var i = 0; i < 90; i++) step(); return; }
+  var last = 0;
+  (function loop(t){ if (t - last > 33) { step(); last = t; } requestAnimationFrame(loop); })(0);
+})();
+</script>
