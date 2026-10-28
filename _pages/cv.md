@@ -44,7 +44,7 @@ lede: "Read it here, or grab the PDF."
           c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
           c.setAttribute('role', 'img'); c.setAttribute('aria-label', 'CV page ' + n);
           canvases.push(c);
-          return page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+          return page.render({ canvasContext: c.getContext('2d'), viewport: vp, intent: 'print' }).promise;
         });
       })(i);
     }
