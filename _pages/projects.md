@@ -35,7 +35,7 @@ I later expanded this perspective through mean-field game theory, where I genera
 
 A major turning point in my journey was my involvement in iGEM (International Genetically Engineered Machine):
 Our team developed a negative carbon footprint fuel generation method using synthetic bacterial co-cultures to convert CO₂ into biofuel.  
-We **won a Gold Medal** with nominations for Best Manufacturing and Education. Te following year, I **mentored a team to Gold Medal** again. 
+We **won a Gold Medal** with nominations for Best Manufacturing and Education. The following year, I **mentored a team to Gold Medal** again. 
 
 Project links:  
 - [[Synbactory](https://2021.igem.org/Team:IISER-Pune-India)]  [[Project promotion video](https://video.igem.org/w/aJJZzf5xw9EMSf7T31dwYJ)]  [[Outreach and Science Communication](https://www.youtube.com/@iGEMIISERPune)]  [[SteadyCom Tutorial](https://github.com/iGEM-IISERP/Dry-Lab-2021/tree/main/Setting%20up%20for%20SteadyCom)]
