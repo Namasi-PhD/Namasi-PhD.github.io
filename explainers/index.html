@@ -1,6 +1,7 @@
 <!doctype html><html><head><meta charset="utf8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>How HADOF Works — Animated Mechanics</title>
 <meta name="description" content="Animated walkthroughs of QUBO decomposition, the HADOF loop, quantum genome assembly, and the optimisation results behind them.">
+<style>@view-transition{navigation:auto}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
@@ -39,16 +40,32 @@ body::before{
   0%{background-position:0 0,0 0,0 0,0 0,0 0,0 0}
   100%{background-position:-5% 4%,5% -4%,64px 64px,-64px -64px,256px -128px,-256px 128px}
 }
+body::after{
+  content:"";position:fixed;inset:-10%;z-index:-1;pointer-events:none;
+  background-image:
+    radial-gradient(640px circle at 22% 28%, rgba(156,140,255,.14), transparent 60%),
+    radial-gradient(560px circle at 78% 72%, rgba(45,212,191,.13), transparent 60%);
+  filter:blur(10px);
+}
+@media (prefers-reduced-motion: no-preference){
+  body::after{animation:aurora 34s ease-in-out infinite alternate}
+}
+@keyframes aurora{
+  0%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(4%,-5%) scale(1.12)}
+  100%{transform:translate(-4%,5%) scale(1)}
+}
 
 /* ---------- chrome ---------- */
-.topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:14px;padding:14px 24px;
-  background:rgba(10,14,20,.7);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);
-  border-bottom:1px solid rgba(156,140,255,.22)}
-.topbar b{font:800 18px/1 var(--display);letter-spacing:-.01em}
-.topbar span{font:500 12px/1 var(--mono);color:var(--muted)}
-.topbar .back{margin-left:auto;font:500 13px/1 var(--sans);color:var(--fg);text-decoration:none;
-  border:1px solid var(--line);border-radius:8px;padding:8px 14px;transition:border-color .25s,box-shadow .25s}
-.topbar .back:hover{border-color:var(--teal);box-shadow:0 0 16px rgba(45,212,191,.25)}
+.topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:24px;padding:14px 24px;flex-wrap:wrap;
+  background:#05070a;border-bottom:1px solid rgba(156,140,255,.22)}
+.topbar .brand{font:800 17px/1 var(--display);letter-spacing:-.01em;color:var(--fg);text-decoration:none;white-space:nowrap}
+.topnav{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-left:auto}
+.topnav a{font:500 14px/1 var(--sans);color:var(--muted);text-decoration:none;position:relative;padding:4px 0;transition:color .25s}
+.topnav a:hover{color:var(--fg)}
+.topnav a.current{color:var(--violet)}
+.topnav a.current::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:linear-gradient(90deg,var(--violet),var(--teal))}
+@media (max-width:640px){ .topnav{gap:14px} .topnav a{font-size:13px} }
 
 main{max-width:1080px;margin:0 auto;padding:0 24px 80px}
 
@@ -86,16 +103,10 @@ main{max-width:1080px;margin:0 auto;padding:0 24px 80px}
 svg text{font-family:var(--mono)}
 .glow-dot{filter:drop-shadow(0 0 6px currentColor)}
 
-/* ===== 1. QUBO decomposition ===== */
-.qubo-grid rect.cell{fill:var(--sunk)}
-.qubo-grid rect.hot{fill:var(--violet);opacity:.55}
-.qubo-grid rect.block{fill:none;stroke:var(--teal);stroke-width:2;rx:4;opacity:0}
-@media (prefers-reduced-motion: no-preference){
-  .qubo-grid rect.block{animation:blockSweep 9s ease-in-out infinite}
-  .qubo-grid rect.block.b2{animation-delay:1.2s}
-  .qubo-grid rect.block.b3{animation-delay:2.4s}
-}
-@keyframes blockSweep{0%,8%{opacity:0;transform:scale(.9)}16%,70%{opacity:1;transform:scale(1)}82%,100%{opacity:0;transform:scale(.9)}}
+/* ===== 1. QUBO decomposition (matches the /presentation/ Q-matrix module) ===== */
+.qubo-grid rect.cell{fill:var(--violet)}
+.qubo-grid .dec-band{fill:var(--teal);fill-opacity:.14;transition:transform .6s cubic-bezier(.3,.7,.3,1)}
+.qubo-grid .dec-block{fill:none;stroke:var(--teal);stroke-width:3;transition:transform .6s cubic-bezier(.3,.7,.3,1)}
 
 /* ===== 2. HADOF loop ===== */
 .loop-node circle{fill:var(--sunk);stroke:var(--line);stroke-width:2}
@@ -103,7 +114,7 @@ svg text{font-family:var(--mono)}
 .loop-path{fill:none;stroke:rgba(156,140,255,.35);stroke-width:2}
 .loop-pulse{fill:var(--teal)}
 @media (prefers-reduced-motion: no-preference){
-  .loop-pulse{animation:pulseMove 6s linear infinite;offset-path:path("M160,24 A136,136 0 1 1 159.9,24");offset-rotate:0deg}
+  .loop-pulse{animation:pulseMove 6s linear infinite;offset-path:path("M160,46 A104,104 0 1 1 159.9,46");offset-rotate:0deg}
   .loop-node circle{animation:nodeLight 6s linear infinite}
   .ln2 circle{animation-delay:1.2s}.ln3 circle{animation-delay:2.4s}.ln4 circle{animation-delay:3.6s}.ln5 circle{animation-delay:4.8s}
 }
@@ -111,7 +122,12 @@ svg text{font-family:var(--mono)}
 @keyframes nodeLight{0%,8%{stroke:var(--teal);filter:drop-shadow(0 0 10px rgba(45,212,191,.8))}20%,100%{stroke:var(--line);filter:none}}
 
 /* ===== 3. Genome assembly ===== */
-.read-bar{opacity:0}
+.dna tspan{font-family:var(--mono)}
+.nA{fill:var(--nA)}
+.nC{fill:var(--nC)}
+.nG{fill:var(--nG)}
+.nT{fill:var(--nT)}
+.read-bar{opacity:0;font-size:12px;letter-spacing:1px}
 @media (prefers-reduced-motion: no-preference){
   .read-bar{animation:readIn 7s ease-in-out infinite}
   .read-bar.r2{animation-delay:.5s}.read-bar.r3{animation-delay:1s}.read-bar.r4{animation-delay:1.5s}.read-bar.r5{animation-delay:2s}
@@ -124,6 +140,12 @@ svg text{font-family:var(--mono)}
 }
 @keyframes pathTrace{0%,55%{stroke-dashoffset:300;opacity:0}70%{opacity:1}100%{stroke-dashoffset:0;opacity:1}}
 .graph-node circle{fill:var(--sunk);stroke:var(--line);stroke-width:1.5}
+.consensus{opacity:0;font-size:11px;letter-spacing:1.2px}
+.consensus-label{fill:var(--muted);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+@media (prefers-reduced-motion: no-preference){
+  .consensus,.consensus-label{animation:consensusIn 7s ease-in-out infinite}
+}
+@keyframes consensusIn{0%,58%{opacity:0;transform:translateY(6px)}78%,100%{opacity:1;transform:translateY(0)}}
 
 /* ===== 4. Results / convergence ===== */
 .conv-line{fill:none;stroke:var(--teal);stroke-width:3;stroke-linecap:round;stroke-dasharray:420;stroke-dashoffset:420}
@@ -146,22 +168,31 @@ footer.site a{color:var(--fg);margin:0 10px;text-decoration:none}
 footer.site a:hover{color:var(--teal)}
 
 @media (prefers-reduced-motion: reduce){
-  .qubo-grid rect.block{opacity:1}
   .loop-pulse{display:none}
   .loop-node circle{stroke:var(--teal)}
   .read-bar{opacity:1;transform:none}
   .graph-path{stroke-dashoffset:0;opacity:1}
+  .consensus,.consensus-label{opacity:1;transform:none}
   .conv-line{stroke-dashoffset:0}
   .bars rect{transform:none}
   body::before{animation:none}
+  body::after{animation:none}
 }
 </style>
 </head><body>
 
 <div class="topbar">
-  <b>How HADOF Works</b>
-  <span>animated mechanics</span>
-  <a class="back" href="/research/">← Back to Research</a>
+  <a class="brand" href="/">Namasi G. Sankar</a>
+  <nav class="topnav">
+    <a href="/">Home</a>
+    <a href="/research/">Research</a>
+    <a href="/explainers/" class="current">Animations</a>
+    <a href="/projects/">Projects</a>
+    <a href="/publications/">Publications</a>
+    <a href="/talks/">Talks</a>
+    <a href="/awards/">Awards</a>
+    <a href="/cv/">CV</a>
+  </nav>
 </div>
 
 <main>
@@ -175,23 +206,13 @@ footer.site a:hover{color:var(--teal)}
   <!-- 1. QUBO DECOMPOSITION -->
   <section class="explainer" id="qubo">
     <div class="panel">
-      <svg class="qubo-grid" viewBox="0 0 320 240" width="100%">
-        <!-- background cell grid, 10x8 -->
-        <g>
-          <!-- generated grid -->
-          <!-- rows -->
-        </g>
-        <g id="grid-cells"></g>
-        <rect class="block b1" x="8" y="8" width="96" height="80" rx="6"></rect>
-        <rect class="block b2" x="120" y="60" width="96" height="80" rx="6"></rect>
-        <rect class="block b3" x="60" y="152" width="96" height="80" rx="6"></rect>
-      </svg>
+      <svg id="dec" class="qubo-grid" viewBox="0 0 320 320" width="100%" aria-label="Q matrix with a moving 3 by 3 subproblem"></svg>
     </div>
     <div class="copy">
       <div class="tag">01 · Decomposition</div>
       <h2>One big problem, many small ones</h2>
       <p>A QUBO over hundreds or thousands of variables is a dense matrix of pairwise couplings — far more than any current QPU can hold at once.</p>
-      <p>HADOF repeatedly carves out small, overlapping sub-blocks of that matrix, each one small enough to fit on a handful of physical qubits.</p>
+      <p>HADOF repeatedly carves out small, overlapping sub-blocks of that matrix, each one small enough to fit on a handful of physical qubits. Only the highlighted 3×3 block runs on the QPU at any moment — its couplings to the rest enter as expected values under the current marginals.</p>
       <div class="stat-row">
         <div class="stat">500<small>variables, one problem</small></div>
         <div class="stat">5<small>qubits per sub-circuit</small></div>
@@ -209,14 +230,14 @@ footer.site a:hover{color:var(--teal)}
       <a class="more" href="/research/#scalable-quantum-optimisation-using-hadof">Read the full method →</a>
     </div>
     <div class="panel">
-      <svg viewBox="0 0 320 240" width="100%">
-        <path class="loop-path" d="M160,24 A136,136 0 1 1 159.9,24"></path>
+      <svg viewBox="0 0 320 300" width="100%">
+        <path class="loop-path" d="M160,46 A104,104 0 1 1 159.9,46"></path>
         <circle class="loop-pulse glow-dot" r="6"></circle>
-        <g class="loop-node ln1" transform="translate(160,24)"><circle r="26"></circle><text y="4">Encode</text></g>
-        <g class="loop-node ln2" transform="translate(272,96)"><circle r="26"></circle><text y="4">Solve</text></g>
-        <g class="loop-node ln3" transform="translate(232,206)"><circle r="26"></circle><text y="4">Estimate</text></g>
-        <g class="loop-node ln4" transform="translate(88,206)"><circle r="26"></circle><text y="4">Update</text></g>
-        <g class="loop-node ln5" transform="translate(48,96)"><circle r="26"></circle><text y="4">Aggregate</text></g>
+        <g class="loop-node ln1" transform="translate(160,46)"><circle r="26"></circle><text y="4">Encode</text></g>
+        <g class="loop-node ln2" transform="translate(259,118)"><circle r="26"></circle><text y="4">Solve</text></g>
+        <g class="loop-node ln3" transform="translate(221,234)"><circle r="26"></circle><text y="4">Estimate</text></g>
+        <g class="loop-node ln4" transform="translate(99,234)"><circle r="26"></circle><text y="4">Update</text></g>
+        <g class="loop-node ln5" transform="translate(61,118)"><circle r="26"></circle><text y="4">Aggregate</text></g>
       </svg>
     </div>
   </section>
@@ -224,13 +245,13 @@ footer.site a:hover{color:var(--teal)}
   <!-- 3. GENOME ASSEMBLY -->
   <section class="explainer" id="genome">
     <div class="panel">
-      <svg viewBox="0 0 320 240" width="100%">
-        <g transform="translate(8,10)">
-          <rect class="read-bar r1" x="0" y="0" width="70" height="10" rx="4" fill="var(--nA)"></rect>
-          <rect class="read-bar r2" x="0" y="16" width="90" height="10" rx="4" fill="var(--nC)"></rect>
-          <rect class="read-bar r3" x="0" y="32" width="60" height="10" rx="4" fill="var(--nG)"></rect>
-          <rect class="read-bar r4" x="0" y="48" width="80" height="10" rx="4" fill="var(--nT)"></rect>
-          <rect class="read-bar r5" x="0" y="64" width="54" height="10" rx="4" fill="var(--nA)"></rect>
+      <svg viewBox="0 0 320 290" width="100%">
+        <g class="dna" transform="translate(8,0)">
+          <text class="read-bar r1" x="0" y="14"><tspan class="nT">T</tspan><tspan class="nT">T</tspan><tspan class="nT">T</tspan><tspan class="nC">C</tspan><tspan class="nC">C</tspan><tspan class="nT">T</tspan><tspan class="nC">C</tspan><tspan class="nA">A</tspan><tspan class="nT">T</tspan><tspan class="nG">G</tspan></text>
+          <text class="read-bar r2" x="0" y="30"><tspan class="nT">T</tspan><tspan class="nC">C</tspan><tspan class="nA">A</tspan><tspan class="nT">T</tspan><tspan class="nG">G</tspan><tspan class="nC">C</tspan><tspan class="nA">A</tspan><tspan class="nA">A</tspan><tspan class="nT">T</tspan><tspan class="nT">T</tspan></text>
+          <text class="read-bar r3" x="0" y="46"><tspan class="nC">C</tspan><tspan class="nA">A</tspan><tspan class="nA">A</tspan><tspan class="nT">T</tspan><tspan class="nT">T</tspan><tspan class="nC">C</tspan><tspan class="nA">A</tspan><tspan class="nA">A</tspan><tspan class="nA">A</tspan><tspan class="nA">A</tspan></text>
+          <text class="read-bar r4" x="0" y="62"><tspan class="nC">C</tspan><tspan class="nA">A</tspan><tspan class="nA">A</tspan><tspan class="nA">A</tspan><tspan class="nA">A</tspan><tspan class="nC">C</tspan><tspan class="nC">C</tspan><tspan class="nA">A</tspan><tspan class="nT">T</tspan><tspan class="nG">G</tspan></text>
+          <text class="read-bar r5" x="0" y="78"><tspan class="nC">C</tspan><tspan class="nC">C</tspan><tspan class="nA">A</tspan><tspan class="nT">T</tspan><tspan class="nG">G</tspan><tspan class="nT">T</tspan><tspan class="nC">C</tspan><tspan class="nC">C</tspan><tspan class="nG">G</tspan><tspan class="nT">T</tspan></text>
         </g>
         <g transform="translate(40,130)">
           <path class="graph-edge" d="M0,40 L70,0"></path>
@@ -246,6 +267,10 @@ footer.site a:hover{color:var(--teal)}
           <g class="graph-node"><circle cx="220" cy="0" r="7"></circle></g>
           <g class="graph-node"><circle cx="90" cy="70" r="7"></circle></g>
           <g class="graph-node"><circle cx="180" cy="60" r="7"></circle></g>
+        </g>
+        <g class="dna" transform="translate(8,0)">
+          <text class="consensus-label" x="0" y="252">Assembled sequence</text>
+          <text class="consensus" x="0" y="270"><tspan class="nT">T</tspan><tspan class="nT">T</tspan><tspan class="nT">T</tspan><tspan class="nC">C</tspan><tspan class="nC">C</tspan><tspan class="nT">T</tspan><tspan class="nC">C</tspan><tspan class="nA">A</tspan><tspan class="nT">T</tspan><tspan class="nG">G</tspan><tspan class="nC">C</tspan><tspan class="nA">A</tspan><tspan class="nA">A</tspan><tspan class="nT">T</tspan><tspan class="nT">T</tspan><tspan class="nC">C</tspan><tspan class="nA">A</tspan><tspan class="nA">A</tspan><tspan class="nA">A</tspan><tspan class="nA">A</tspan><tspan class="nC">C</tspan><tspan class="nC">C</tspan><tspan class="nA">A</tspan><tspan class="nT">T</tspan><tspan class="nG">G</tspan><tspan class="nT">T</tspan><tspan class="nC">C</tspan><tspan class="nC">C</tspan><tspan class="nG">G</tspan><tspan class="nT">T</tspan></text>
         </g>
       </svg>
     </div>
@@ -298,24 +323,37 @@ footer.site a:hover{color:var(--teal)}
 
 <script>
 (function(){
-  // Fill the QUBO grid with a 10x8 lattice of small cells, a handful marked "hot".
-  var svg = document.querySelector('.qubo-grid');
+  // Q-matrix with a moving 3x3 subproblem block, ported from the /presentation/ "HADOF: the idea" module.
+  var svg = document.getElementById('dec');
   if (!svg) return;
-  var g = document.getElementById('grid-cells');
-  var cols = 16, rows = 12, w = 320/cols, h = 240/rows;
-  var hot = {};
-  var seed = 7;
-  function R(){ seed = (seed*9301+49297)%233280; return seed/233280; }
-  for (var r=0;r<rows;r++){
-    for (var c=0;c<cols;c++){
-      var el = document.createElementNS('http://www.w3.org/2000/svg','rect');
-      var isHot = R() < 0.18;
-      el.setAttribute('x', c*w); el.setAttribute('y', r*h);
-      el.setAttribute('width', Math.max(w-1,1)); el.setAttribute('height', Math.max(h-1,1));
-      el.setAttribute('class', 'cell' + (isHot ? ' hot' : ''));
-      g.appendChild(el);
+  var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var n = 12, c = 24, o = 8;
+  var seed = 5;
+  function R(){ seed = (seed + 0x6D2B79F5) | 0; var t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }
+  var html = '';
+  for (var i = 0; i < n; i++){
+    for (var j = 0; j < n; j++){
+      var near = Math.abs(i - j) <= 4 || R() < 0.2;
+      var v = i === j ? 0.55 : (near ? R() * 0.45 : 0);
+      html += '<rect class="cell" x="' + (o+j*c) + '" y="' + (o+i*c) + '" width="' + (c-2) + '" height="' + (c-2) + '" rx="3" style="fill-opacity:' + (v*0.55+0.04).toFixed(2) + '"></rect>';
     }
   }
+  html += '<g id="dmv"><rect class="dec-band" x="' + (o-2) + '" y="' + (o-2) + '" width="' + (n*c+2) + '" height="' + (3*c+2) + '"></rect>' +
+          '<rect class="dec-band" x="' + (o-2) + '" y="' + (o-2) + '" width="' + (3*c+2) + '" height="' + (n*c+2) + '"></rect></g>' +
+          '<rect id="dblk" class="dec-block" x="' + (o-3) + '" y="' + (o-3) + '" width="' + (3*c+4) + '" height="' + (3*c+4) + '" rx="5"></rect>';
+  svg.innerHTML = html;
+  var bands = svg.querySelectorAll('#dmv rect');
+  var bandRow = bands[0], bandCol = bands[1];
+  var blk = document.getElementById('dblk');
+  var k = 0;
+  function move(){
+    var d = k * 3 * c;
+    bandRow.style.transform = 'translate(0px,' + d + 'px)';
+    bandCol.style.transform = 'translate(' + d + 'px,0px)';
+    blk.style.transform = 'translate(' + d + 'px,' + d + 'px)';
+  }
+  move();
+  if (!RM) setInterval(function(){ k = (k + 1) % 4; move(); }, 1400);
 })();
 </script>
 </body></html>
