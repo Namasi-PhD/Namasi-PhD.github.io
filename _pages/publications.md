@@ -4,6 +4,10 @@ title: "Publications"
 permalink: /publications/
 ---
 
+## Quantum Genome Assembly on Real Hardware
+
+Namasi G. Sankar, Georgios Miliotis, and Simon Caton. (2026). Scaling Quantum Optimisation Beyond Hardware Limits for Real-World Scientific Workloads: Genome Assembly on Current Quantum Hardware. [bioRxiv preprint](https://www.biorxiv.org/content/10.64898/2026.09.04.749434v1)
+
 ## High Performance Quantum Computing
 
 Namasi G Sankar, Georgios Miliotis, & Simon Caton. (2026). Towards High Performance Quantum Computing (HPQ): Parallelisation of the Hamiltonian Auto Decomposition Optimisation Framework (HADOF). [Arxiv Pre-print](https://doi.org/10.48550/arXiv.2604.27836)
