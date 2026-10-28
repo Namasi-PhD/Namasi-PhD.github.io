@@ -12,7 +12,7 @@ lede: "Posters, conference talks and the interactive material built around them.
   <h3>IBM Quantum Developer Conference 2026</h3>
   <p><strong>HADOF: Industrial Scale Applications on Today’s QPUs</strong></p>
   <div class="links">
-    <a href="https://claude.ai/artifact/W5hKawr6TAMTava7DpGo9A">QDC 2026 poster</a>
+    <a href="/qdc2026/poster/">QDC 2026 poster</a>
     <a href="/qdc2026/">Live demo: animated poster companion</a>
     <a href="/presentation/">HADOF research presentation (animated)</a>
     <a href="/explainers/">How HADOF works: animated explainers</a>
