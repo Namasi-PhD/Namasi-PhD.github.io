@@ -21,7 +21,6 @@ defaults:
       type: pages
     values:
       layout: single
-      author_profile: true
 
 email: "namasivayam.gomathisankar@ucdconnect.ie"
 github_username: "Namasi-PhD"
@@ -33,7 +32,6 @@ description: >
 url: "https://Namasi-PhD.github.io"
 baseurl: ""
 
-remote_theme: mmistakes/minimal-mistakes
 markdown: kramdown
 
 plugins:
@@ -42,3 +40,39 @@ plugins:
 
 include:
   - _pages
+
+# Old academicpages / minimal-mistakes leftovers — kept in the repo for reference,
+# but no longer built. The site now uses _layouts/default.html + assets/css/site.css.
+exclude:
+  - _pages/about.md
+  - _pages/archive-layout-with-content.md
+  - _pages/category-archive.html
+  - _pages/collection-archive.html
+  - _pages/cv-json.md
+  - _pages/markdown.md
+  - _pages/non-menu-page.md
+  - _pages/page-archive.html
+  - _pages/portfolio.html
+  - _pages/publications.html
+  - _pages/sitemap.md
+  - _pages/tag-archive.html
+  - _pages/talkmap.html
+  - _pages/teaching.html
+  - _pages/terms.md
+  - _pages/year-archive.html
+  - assets/css/main.scss
+  - markdown_generator
+  - scripts
+  - talkmap
+  - talkmap.py
+  - talkmap.ipynb
+  - talkmap_out.ipynb
+  - Gemfile
+  - Gemfile.lock
+  - Dockerfile
+  - docker-compose.yaml
+  - _config_docker.yml
+  - package.json
+  - CONTRIBUTING.md
+  - README.md
+  - LICENSE
