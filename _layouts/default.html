@@ -15,6 +15,7 @@
 {{ page.head_extra }}
 </head>
 <body class="page-{{ page.url | slugify | default: 'home' }}">
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
 
 <header class="topbar">
   <div class="topbar-in">
@@ -44,7 +45,7 @@
     document.querySelectorAll('.topnav a').forEach(function(a){ a.addEventListener('click', function(){ root.classList.remove('nav-open'); }); });
   }
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
-  var els = document.querySelectorAll('.prose > *, .card, .entry, .explainer, .stat-card, .explainer-teaser__card');
+  var els = document.querySelectorAll('.prose > *:not(.bleed), .story, .card, .entry, .explainer, .explainer-teaser__card');
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(e){ if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
   }, { threshold: 0.04, rootMargin: '0px 0px -8px 0px' });
