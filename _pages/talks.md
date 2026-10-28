@@ -8,6 +8,7 @@ permalink: /talks/
 
 **HADOF: Industrial Scale Applications on Today’s QPUs**
 
+- [QDC 2026 poster](https://claude.ai/artifact/W5hKawr6TAMTava7DpGo9A)
 - [Live demo: animated poster companion](/qdc2026/)
 - [HADOF research presentation (animated)](/presentation/)
 
@@ -22,5 +23,3 @@ permalink: /talks/
     allowfullscreen>
   </iframe>
 </div>
-
-
