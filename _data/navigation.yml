@@ -3,6 +3,8 @@ main:
     url: /
   - title: "Research"
     url: /research/
+  - title: "Animations"
+    url: /explainers/
   - title: "Projects"
     url: /projects/
   - title: "Publications"
