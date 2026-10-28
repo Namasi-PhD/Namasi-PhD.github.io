@@ -2,25 +2,28 @@
 layout: single
 title: "Talks and Presentations"
 permalink: /talks/
+lede: "Posters, conference talks and the interactive material built around them."
 ---
 
-## IBM Quantum Developer Conference, Chicago, 2026 (poster)
+<div class="entries">
 
-**HADOF: Industrial Scale Applications on Today’s QPUs**
+<div class="card entry">
+  <div class="entry-meta"><span>2026</span><span class="pill">Poster · Chicago</span></div>
+  <h3>IBM Quantum Developer Conference 2026</h3>
+  <p><strong>HADOF: Industrial Scale Applications on Today’s QPUs</strong></p>
+  <div class="links">
+    <a href="https://claude.ai/artifact/W5hKawr6TAMTava7DpGo9A">QDC 2026 poster</a>
+    <a href="/qdc2026/">Live demo: animated poster companion</a>
+    <a href="/presentation/">HADOF research presentation (animated)</a>
+    <a href="/explainers/">How HADOF works: animated explainers</a>
+  </div>
+</div>
 
-- [QDC 2026 poster](https://claude.ai/artifact/W5hKawr6TAMTava7DpGo9A)
-- [Live demo: animated poster companion](/qdc2026/)
-- [HADOF research presentation (animated)](/presentation/)
-- [How HADOF works: animated explainers](/explainers/)
+<div class="card entry">
+  <div class="entry-meta"><span>2025</span><span class="pill">Workshop talk · Bologna</span></div>
+  <h3>AIQxQIA Workshop, ECAI 2025</h3>
+  <p>Scalable quantum optimisation using HADOF.</p>
+  <iframe src="https://www.youtube.com/embed/QtSvdsE0lHA" title="AIQxQIA 2025 talk — HADOF" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="margin-top:16px"></iframe>
+</div>
 
-
-## AIQxQIA Workshop, ECAI, Bologna, 2025
-
-<div align="center">
-  <iframe 
-    src="https://www.youtube.com/embed/QtSvdsE0lHA" 
-    style="width: 100%; max-width: 800px; aspect-ratio: 16 / 9;" 
-    frameborder="0" 
-    allowfullscreen>
-  </iframe>
 </div>
