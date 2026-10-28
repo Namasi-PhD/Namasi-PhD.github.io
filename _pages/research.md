@@ -50,6 +50,20 @@ HADOF proceeds iteratively:
 
 HADOF scales to problem sizes more than 12x beyond the native qubit capacity of current devices with 40x higher accuracy that currently used standard QAOA on NISQ devices. Empirically, HADOF demonstrates strong scalability properties. We demonstrated the optimisation of QUBO problems up to 500 binary variables using only 5 qubit circuits by decomposition, while maintaining above 95\% accuracy compared to classical Simulated Annealing (in traditional quantum methods such as QAOA, this would require 500 qubits in an ideal noise-free setting). 
 
+<div class="explainer-teaser">
+  <a class="explainer-teaser__card" href="/explainers/#qubo">
+    <svg class="explainer-teaser__icon mini-anim mini-qubo" viewBox="0 0 100 40"><rect class="q" x="4" y="8" width="24" height="24" rx="4" fill="var(--global-link-color)"/><rect class="q q2" x="38" y="8" width="24" height="24" rx="4" fill="var(--accent-teal)"/><rect class="q q3" x="72" y="8" width="24" height="24" rx="4" fill="var(--global-link-color)"/></svg>
+    <span class="explainer-teaser__label">QUBO decomposition</span>
+    <span class="explainer-teaser__desc">Watch one big matrix get carved into small solvable blocks →</span>
+  </a>
+  <a class="explainer-teaser__card" href="/explainers/#hadof">
+    <svg class="explainer-teaser__icon mini-anim mini-hadof" viewBox="0 0 100 40"><circle class="n" cx="20" cy="20" r="6" fill="var(--accent-teal)"/><circle class="n n2" cx="50" cy="20" r="6" fill="var(--global-link-color)"/><circle class="n n3" cx="80" cy="20" r="6" fill="var(--accent-teal)"/><line x1="20" y1="20" x2="50" y2="20" stroke="var(--global-border-color)" stroke-width="2"/><line x1="50" y1="20" x2="80" y2="20" stroke="var(--global-border-color)" stroke-width="2"/></svg>
+    <span class="explainer-teaser__label">The HADOF loop</span>
+    <span class="explainer-teaser__desc">See the encode → solve → aggregate cycle in motion →</span>
+  </a>
+</div>
+
+
 ## Parallelisation and Quantum Supercomputing
 
 <img width="709" height="480" alt="ttsquantum" src="https://github.com/user-attachments/assets/7311e06f-61a5-41a5-936d-2620772d1844" />
@@ -63,6 +77,20 @@ To further improve scalability and runtime, HADOF was extended to a parallel exe
 
 
 Building on the scalability of HADOF, the framework was applied to genome assembly, formulated as a Hamiltonian path problem on string graphs. This represents a significant step beyond prior work, which has been limited to small synthetic datasets. Preliminary simulated experiments demonstrate that HADOF can effectively solve assembly problems with increasing graph sizes. Accuracy is evaluated using mis-edge counts and post-processed path lengths, showing that HADOF produces high quality solutions. Further analysis showed that HADOF-QAOA with small circuits outperforms standard QAOA on real hardware, highlighting the advantage of decomposition under noise. Crucially, HADOF enables solving problems beyond hardware limits. The framework was applied to real sequencing data from *Pseudomonas aeruginosa* and integrated into standard assembly practice. The genome consists of 7.3 million base pairs, which is a significant step-up in size compared to current simulated datasets which show examples scaling up to 5 thousand base pairs. The corresponding overlap graph contains 524 nodes and 2313 edges, requiring 2313 noise-free qubits for accurate optimisation, far exceeding the capabilities of current quantum devices (around 150 qubits for gate based devices). By leveraging HADOF-based decomposition, the problem becomes tractable through federated optimisation. Read the full results in our [bioRxiv preprint](https://www.biorxiv.org/content/10.64898/2026.09.04.749434v1). 
+
+<div class="explainer-teaser">
+  <a class="explainer-teaser__card" href="/explainers/#genome">
+    <svg class="explainer-teaser__icon mini-anim mini-genome" viewBox="0 0 100 40"><rect class="g" x="4" y="6" width="40" height="7" rx="3" fill="var(--acgt-a)"/><rect class="g g2" x="4" y="17" width="55" height="7" rx="3" fill="var(--acgt-c)"/><rect class="g g3" x="4" y="28" width="30" height="7" rx="3" fill="var(--acgt-g)"/><rect class="g g4" x="62" y="17" width="34" height="7" rx="3" fill="var(--acgt-t)"/></svg>
+    <span class="explainer-teaser__label">Genome assembly</span>
+    <span class="explainer-teaser__desc">Reads → overlap graph → one assembled sequence →</span>
+  </a>
+  <a class="explainer-teaser__card" href="/explainers/#results">
+    <svg class="explainer-teaser__icon mini-anim mini-qubo" viewBox="0 0 100 40"><rect class="q" x="10" y="20" width="14" height="16" fill="var(--global-border-color)"/><rect class="q q2" x="34" y="10" width="14" height="26" fill="var(--global-link-color)"/><rect class="q q3" x="58" y="4" width="14" height="32" fill="var(--accent-teal)"/></svg>
+    <span class="explainer-teaser__label">Optimisation results</span>
+    <span class="explainer-teaser__desc">Solution quality and speed-up, animated →</span>
+  </a>
+</div>
+
 
 ## Topology-aware HADOF (Preliminary)
 
