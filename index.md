@@ -1,7 +1,7 @@
 ---
 layout: single
 author_profile: true
-title: "🧬 Vision"
+title: "Vision"
 ---
 
 I am a Doctoral candidate at University College Dublin, specializing in quantum algorithms and optimization. My research focuses on bridging the gap between theoretical quantum methods and practical applications, particularly in solving NP-hard problems within genomics. Quantum computing is rapidly evolving from a theoretical curiosity into a transformative computational paradigm. By leveraging the fundamental laws of physics, it offers a way to bypass the scaling walls that traditional silicon-based computers are beginning to hit.
@@ -34,11 +34,9 @@ As hardware improves and we move toward Fault-Tolerant Quantum Computing, these 
 
 By focusing on algorithmic efficiency under current constraints, we don't just wait for better hardware—we actively pull the future of quantum advantage into the present.
 
-## 🚀 Current Progress
+## Current Progress
 I developed the **Hamiltonian Auto Decomposition Optimisation Framework (HADOF)**, a novel federated approach designed to enable robust scalable optimization beyond hardware and qubit limitations on currently available quantum hardware. HADOF supports parallel execution across
 multiple Quantum Processing Units (QPUs), forming a foundation for High Performance Quantum (HPQ) computing. 
 
 Using HADOF, we demonstrated genome assembly of a 7.3 million base pair (bp) genome from real sequencing data within a standard pipeline on IBM quantum hardware, pushing boundaries of current state-of-the-art compared to ~5000bp simulated datasets in literature. The aim of my PhD is to establish quantum optimisation as a practical tool for real world workloads on current quantum hardware, with a focus on high impact applications including viral outbreak and cancer genomics.
-
-
 
