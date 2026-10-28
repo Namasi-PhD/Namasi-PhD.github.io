@@ -3,7 +3,12 @@
     ========================================================================== */
 
 /* Color codes used for the theme */
-$primary-color              : #0ea1c5;
+$primary-color              : #9C8CFF;
+$teal-accent                : #2DD4BF;
+$acgt-a                      : #55C68E;
+$acgt-c                      : #86A2FF;
+$acgt-g                      : #E2B84A;
+$acgt-t                      : #F27767;
 $gray                       : #7a8288;
 $dark-gray                  : mix(#000, $gray, 40%);
 $darker-gray                : mix(#000, $gray, 60%);
@@ -13,7 +18,7 @@ $background                 : #474747;
 $background-light           : mix(#fff, $background, 80%);
 $background-lighter         : mix(#fff, $background, 90%);
 $text                       : #ffffff;
-$link                       : #0ea1c5;
+$link                       : #9C8CFF;
 $link-dark                  : mix(#000, $link, 25%);
 $link-light                 : mix(#fff, $link, 25%);
 
@@ -52,5 +57,9 @@ html[data-theme="dark"] {
     --global-text-color                 : #{$text};
     --global-text-color-light           : #f3f3f3;
     --global-thead-color                : #{$background-lighter};
+    --accent-teal                       : #{$teal-accent};
+    --acgt-a                            : #{$acgt-a};
+    --acgt-c                            : #{$acgt-c};
+    --acgt-g                            : #{$acgt-g};
+    --acgt-t                            : #{$acgt-t};
 }
-
