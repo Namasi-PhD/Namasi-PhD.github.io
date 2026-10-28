@@ -34,11 +34,11 @@
                 observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.05, rootMargin: '0px 0px -10px 0px' });
 
     targets.forEach(function (el, i) {
         el.classList.add('reveal');
-        el.style.transitionDelay = (Math.min(i, 6) * 0.05) + 's';
+        el.style.transitionDelay = (Math.min(i, 4) * 0.03) + 's';
         observer.observe(el);
     });
 })();
