@@ -1,32 +1,35 @@
 ---
-layout: single
-author_profile: true
+layout: home
 title: "Vision"
+headline: "Pulling quantum advantage into the present"
+intro: "I build quantum optimisation methods that scale beyond the limits of today's hardware, and put them to work on real genomics problems. I created HADOF, the Hamiltonian Auto Decomposition Optimisation Framework."
 ---
 
 I am a Doctoral candidate at University College Dublin, specializing in quantum algorithms and optimization. My research focuses on bridging the gap between theoretical quantum methods and practical applications, particularly in solving NP-hard problems within genomics. Quantum computing is rapidly evolving from a theoretical curiosity into a transformative computational paradigm. By leveraging the fundamental laws of physics, it offers a way to bypass the scaling walls that traditional silicon-based computers are beginning to hit.
 
-**Why Quantum? Solving the "Hard" Problems**
+### Why quantum? Solving the "hard" problems
 
 Classical computers process information in bits (0 or 1). While they are incredibly efficient, they struggle with problems where the number of possible states grows exponentially. Quantum computers use qubits, which exploit quantum phenomena to navigate these massive problem spaces:
+
 *   **Superposition:** Unlike a bit, a qubit can exist in a complex linear combination of states. This allows a quantum computer to represent a vast multidimensional space of possibilities simultaneously.
 *   **Entanglement:** This creates a deep correlation between qubits. When qubits are entangled, the state of one cannot be described independently of the others, allowing the system to perform massive parallel-like logic across the entire processor.
 *   **Quantum Tunneling:** In the context of optimization, quantum systems can "tunnel" through high-energy barriers in a probability landscape to find the lowest energy state (the solution) more efficiently than classical "hill-climbing" algorithms.
 
-**The Scalability Gap and Quantum Advantage**
+### The scalability gap and quantum advantage
 
 Current classical devices use highly optimized heuristics that work exceptionally well for medium-to-large problems. However, as the complexity of a problem increases—such as simulating a large caffeine molecule or optimizing a global logistics network—classical resources required often grow exponentially.
 
 Quantum Advantage occurs when a quantum device solves a useful, real-world problem faster or more accurately than the best possible classical supercomputer. To reach this, we must scale to large-scale problems where the "quantum speedup" (often exponential) finally overtakes the raw processing speed of classical hardware.
 
 We are currently in the Noisy Intermediate-Scale Quantum (NISQ) era. Our hardware is limited by:
+
 *   **Qubit Count:** Not enough "memory" for large problems.
 *   **Hardware Noise:** Environmental interference causes "decoherence," leading to errors.
 *   **Connectivity:** Physical limitations on how many qubits can "talk" to each other.
 
 **The Goal:** To develop noise-resilient, scalable algorithms that extract maximum performance from today’s limited hardware while laying the groundwork for future systems.
 
-**A Framework for Quantum Supercomputing**
+### A framework for quantum supercomputing
 
 My vision involves the creation of a High Performance Quantum (HPQ) framework. This framework treats the Quantum Processing Unit (QPU) not as a standalone machine, but as a specialized accelerator within a larger supercomputing ecosystem—much like how GPUs are used today for AI.
 
@@ -35,8 +38,6 @@ As hardware improves and we move toward Fault-Tolerant Quantum Computing, these 
 By focusing on algorithmic efficiency under current constraints, we don't just wait for better hardware—we actively pull the future of quantum advantage into the present.
 
 ## Current Progress
-I developed the **Hamiltonian Auto Decomposition Optimisation Framework (HADOF)**, a novel federated approach designed to enable robust scalable optimization beyond hardware and qubit limitations on currently available quantum hardware. HADOF supports parallel execution across
-multiple Quantum Processing Units (QPUs), forming a foundation for High Performance Quantum (HPQ) computing. 
+I developed the **Hamiltonian Auto Decomposition Optimisation Framework (HADOF)**, a novel federated approach designed to enable robust scalable optimization beyond hardware and qubit limitations on currently available quantum hardware. HADOF supports parallel execution across multiple Quantum Processing Units (QPUs), forming a foundation for High Performance Quantum (HPQ) computing. 
 
 Using HADOF, we demonstrated genome assembly of a 7.3 million base pair (bp) genome from real sequencing data within a standard pipeline on IBM quantum hardware, pushing boundaries of current state-of-the-art compared to ~5000bp simulated datasets in literature. The aim of my PhD is to establish quantum optimisation as a practical tool for real world workloads on current quantum hardware, with a focus on high impact applications including viral outbreak and cancer genomics.
-
