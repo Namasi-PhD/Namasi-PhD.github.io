@@ -191,11 +191,11 @@ html.loop .kbar{display:flex;position:fixed;inset:auto 0 0;z-index:6;height:54px
   <section class="scene track" id="gap" data-lane="nT" data-name="The gap" data-dur="12">
     <div class="wrap">
       <div class="lane" style="--lc:var(--nT)"><i></i>The gap</div>
-      <h2>Real problems are hundreds of times bigger than the chip</h2>
+      <h2>Real problems are hundreds of times bigger than the QPU</h2>
       <p class="lede">A state-of-the-art IBM Heron processor has 156 qubits. Industrial optimisation problems run to tens of thousands of variables.</p>
       <div class="grid2">
-        <div class="panel"><canvas id="gapCanvas" aria-label="A grid of 45,000 variables beside a 156-qubit heavy-hex chip; pieces of the grid light up and are sent to the chip in turn"></canvas>
-          <div class="cap">Left: 45,000 variables, one dot each. Right: ibm_aachen’s 156 qubits (heavy-hex, layout illustrative). HADOF sends the problem through the chip piece by piece.</div></div>
+        <div class="panel"><canvas id="gapCanvas" aria-label="A grid of 45,000 variables beside a 156-qubit heavy-hex QPU; pieces of the grid light up and are sent to the QPU in turn"></canvas>
+          <div class="cap">Left: 45,000 variables, one dot each. Right: ibm_aachen’s 156 qubits (heavy-hex, layout illustrative). HADOF sends the problem through the QPU piece by piece.</div></div>
         <div class="stats">
           <div class="stat" style="--lc:var(--nT)"><div class="v num">45,000</div><p>variables in our largest run, a fully dense QUBO</p></div>
           <div class="stat" style="--lc:var(--nG)"><div class="v num">1.01<small> billion</small></div><p>pairwise couplings in that problem</p></div>
@@ -277,12 +277,12 @@ html.loop .kbar{display:flex;position:fixed;inset:auto 0 0;z-index:6;height:54px
     <div class="wrap">
       <div class="lane" style="--lc:var(--nT)"><i></i>New · Topology-aware HADOF</div>
       <h2>From 5-qubit circuits to 150-qubit circuits</h2>
-      <p class="lede">Our newest version fills almost the whole chip in every circuit. That took a fully dense 45,000-variable QUBO onto ibm_aachen in 300 circuits.</p>
+      <p class="lede">Our newest version fills almost the whole QPU in every circuit. That took a fully dense 45,000-variable QUBO onto ibm_aachen in 300 circuits.</p>
       <div class="grid2">
         <div class="panel">
           <div class="hexrow">
-            <div class="hexcard"><div class="label">Published HADOF</div><canvas id="hexA" aria-label="156-qubit heavy-hex chip with 5 qubits lit"></canvas><div class="big num" id="hexAn">5<small>qubits per circuit</small></div></div>
-            <div class="hexcard"><div class="label">Topology-aware HADOF</div><canvas id="hexB" aria-label="156-qubit heavy-hex chip with 150 qubits lit"></canvas><div class="big num" id="hexBn">150<small>qubits per circuit</small></div></div>
+            <div class="hexcard"><div class="label">Published HADOF</div><canvas id="hexA" aria-label="156-qubit heavy-hex QPU with 5 qubits lit"></canvas><div class="big num" id="hexAn">5<small>qubits per circuit</small></div></div>
+            <div class="hexcard"><div class="label">Topology-aware HADOF</div><canvas id="hexB" aria-label="156-qubit heavy-hex QPU with 150 qubits lit"></canvas><div class="big num" id="hexBn">150<small>qubits per circuit</small></div></div>
           </div>
           <div class="cap">ibm_aachen, 156-qubit Heron r2. Lattice drawn for illustration; which qubits each circuit uses is not shown.</div>
         </div>
