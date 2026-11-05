@@ -151,6 +151,8 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .on .track > span,.track.on > span{width:var(--w)}
 .bv{font:600 20px/1 var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
 .marker{position:absolute;top:-4px;bottom:-4px;width:0;border-left:2px dashed var(--fg);opacity:.55}
+.atoms{position:relative;height:30px;margin-top:-12px}
+.atoms span{position:absolute;left:var(--x);top:0;padding:8px 0 0 12px;border-left:2px dashed color-mix(in srgb,var(--fg) 55%,transparent);font:500 17px/1.2 var(--sans);color:var(--fg);white-space:nowrap}
 
 /* landscape */
 .legend{display:flex;gap:28px;flex-wrap:wrap}
@@ -446,8 +448,9 @@ const MODULES = [
     return `<h2>${by(a,{general:'Some problems grow faster than any computer', all:'Combinatorial explosion'})}</h2>
     <p class="lede">${by(a,{general:'With n yes/no choices there are 2ⁿ possible answers. Checking them all stops being possible very quickly.', all:'n binary decisions give 2ⁿ candidate solutions. Routing, scheduling, partitioning and genome assembly all live here.'})}</p>
     <div class="body"><div class="bars">
-      <div></div><div class="label" style="position:relative">possible answers (log scale) <span style="position:absolute;left:${(80/700*100).toFixed(1)}%;transform:translateX(-50%);top:0;white-space:nowrap;color:var(--fg)">┆ 10⁸⁰ ≈ atoms in the observable universe</span></div><div></div>
+      <div></div><div class="label">possible answers (log scale)</div><div></div>
       ${rows.map((r, i) => `<div class="bl"${S(i+1)}>${r[3]}${r[4] ? `<small>${r[4]}</small>` : ''}</div><div class="track${i === 3 ? '' : ''}"${S(i+1)} style="--w:${Math.max(.6, r[2]/700*100).toFixed(2)}%;--bc:${i === 3 ? 'var(--green)' : 'var(--teal)'}"><span></span><div class="marker" style="left:${(80/700*100).toFixed(1)}%"></div></div><div class="bv"${S(i+1)}>${r[1]}</div>`).join('')}
+      <div></div><div class="atoms"${S(1)} style="--x:${(80/700*100).toFixed(1)}%"><span>10⁸⁰ ≈ number of atoms in the observable universe</span></div><div></div>
     </div>
     <p class="note"${S(4)}>${by(a,{general:'This is why classical software relies on clever shortcuts (heuristics). They work well, but give no guarantee of the best answer.', industry:'Classical tools fall back on problem-specific heuristics. They work, but don’t generalise and don’t guarantee optimality.', technical:'Exact solvers become intractable; specialised heuristics (e.g. Lin–Kernighan for TSP) are fast but problem-specific.'})}</p></div>`;
   },
