@@ -68,8 +68,11 @@ body{background:var(--bg);color:var(--fg);font:15px/1.5 var(--sans);overflow:hid
 .ideo button.done{opacity:.6}
 .ideo button.cur{opacity:1;height:16px}
 .modid{font:500 12px/1 var(--mono);color:var(--muted);white-space:nowrap}
-.present .top{display:none}
-.present .notes{display:none}
+#app.present{grid-template-rows:1fr}
+.present .top,.present .foot,.present .notes{display:none}
+.present .vp{background:var(--surface)}
+.present .stage{border:0;border-radius:0;box-shadow:none}
+.present.idle,.present.idle *{cursor:none}
 
 .sheet{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:16px;background:color-mix(in srgb,var(--fg) 35%,transparent)}
 .sheet-card{background:var(--surface);color:var(--fg);width:100%;max-width:820px;max-height:100%;overflow:auto;border-radius:12px;border:1px solid var(--line);padding:20px 20px 16px;display:flex;flex-direction:column;gap:14px}
@@ -968,7 +971,7 @@ const deck = () => { const c = st.custom[ckey()]; return c ? MODULES.filter(m =>
 
 const stage = $('#stage'), vp = $('#vp'), wrap = $('#wrap'), notesEl = $('#notes');
 let cur = {}, slideEl = null, maxStep = 0;
-function fit(){ const r = vp.getBoundingClientRect(); const s = Math.max(.1, Math.min((r.width - 24)/1280, (r.height - 24)/720)); wrap.style.setProperty('--s', s.toFixed(4)); }
+function fit(){ const r = vp.getBoundingClientRect(), g = $('#app').classList.contains('present') ? 0 : 24; const s = Math.max(.1, Math.min((r.width - g)/1280, (r.height - g)/720)); wrap.style.setProperty('--s', s.toFixed(4)); }
 new ResizeObserver(fit).observe(vp); fit();
 
 function render(atEnd){
@@ -1043,9 +1046,11 @@ $$('#segLen button').forEach(b => b.addEventListener('click', () => { st.len = +
 $('#bNotes').addEventListener('click', () => { st.notes = !st.notes; renderNotes(); });
 $('#bPrev').addEventListener('click', prev);
 $('#bNext').addEventListener('click', next);
-const toggleFull = () => { const app = $('#app'); if (document.fullscreenElement){ document.exitFullscreen().catch(() => {}); } else if (document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen().catch(() => app.classList.toggle('present')); } else app.classList.toggle('present'); };
+const toggleFull = () => { const app = $('#app'), fb = () => { app.classList.toggle('present'); requestAnimationFrame(fit); }; if (document.fullscreenElement){ document.exitFullscreen().catch(() => {}); } else if (app.classList.contains('present')){ fb(); } else if (document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen().catch(fb); } else fb(); };
 $('#bFull').addEventListener('click', toggleFull);
 document.addEventListener('fullscreenchange', () => { $('#app').classList.toggle('present', !!document.fullscreenElement); requestAnimationFrame(fit); });
+let idleT = null;
+document.addEventListener('pointermove', () => { const app = $('#app'); app.classList.remove('idle'); clearTimeout(idleT); idleT = setTimeout(() => app.classList.add('idle'), 1500); });
 document.addEventListener('keydown', e => {
   if (!$('#sheet').hidden){ if (e.key === 'Escape') closeSheet(); return; }
   const t = e.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
